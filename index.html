@@ -4,16 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Shift Scale</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f766e'/><path d='M38 18h24v20h20v24h-20v20h-24v-20h-20v-24h20z' fill='white'/></svg>">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f766e'/><path d='M38 18h24v20h20v24h-20v20h-24v-20h-20v-24h20z' fill='white'/></svg>">
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Shift Scale">
+
   <style>
     :root {
       --bg: #f2f2f7;
       --card: #ffffff;
       --tint: #0f766e;
       --tint-soft: #ccfbf1;
-      --text: #1c1c1e;
-      --muted: #8e8e93;
+      --text: #111827;
+      --muted: #6b7280;
       --border: rgba(0,0,0,0.08);
       --pedia-tint: #db2777;
       --pedia-soft: #fce7f3;
@@ -27,12 +32,12 @@
       line-height: 1.4;
     }
     .container {
-      max-width: 500px;
+      max-width: 520px;
       margin: 0 auto;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-bottom: 40px;
+      padding-bottom: 50px;
     }
     header {
       position: sticky;
@@ -69,7 +74,7 @@
       background: #e3e3e8;
       border-radius: 12px;
       padding: 3px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       gap: 3px;
     }
     .target-opt {
@@ -99,13 +104,13 @@
       background: #e9e9ee;
       border-radius: 8px;
       padding: 2px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       gap: 2px;
     }
     .sub-tab {
       flex: 1;
       text-align: center;
-      padding: 6px 4px;
+      padding: 7px 4px;
       font-size: 12px;
       font-weight: 600;
       color: var(--muted);
@@ -192,7 +197,7 @@
       border: 1px solid rgba(0,0,0,0.12);
       border-radius: 10px;
       padding: 10px;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text);
       margin-top: 6px;
       outline: none;
@@ -239,13 +244,15 @@
     </header>
 
     <main>
+      <!-- SCHERMATA PRINCIPALE (HOME) -->
       <div id="view-home">
+        <!-- Switch Adulto / Pediatrico -->
         <div class="target-selector">
           <div id="tgt-adult" class="target-opt active-adult" onclick="setTargetPopulation('adult')">🧑 Adulto</div>
           <div id="tgt-pedia" class="target-opt" onclick="setTargetPopulation('pedia')">👶 Pediatrico</div>
         </div>
 
-        <input type="text" id="search-input" class="search-input" placeholder="🔍 Cerca una scala..." oninput="filterScales(this.value)">
+        <input type="text" id="search-input" class="search-input" placeholder="🔍 Cerca una scala o acronimo..." oninput="filterScales(this.value)">
 
         <div id="search-results" class="hidden">
           <div class="title">Risultati di ricerca</div>
@@ -258,16 +265,19 @@
             <div id="sub-gor" class="sub-tab" onclick="setGroupingMode('gordon')">11 Modelli di Gordon</div>
           </div>
 
+          <!-- Preferiti -->
           <div id="fav-container" class="hidden">
             <div class="title">⭐ Preferiti</div>
             <div id="fav-list"></div>
           </div>
 
+          <!-- Pannello Apparati -->
           <div id="panel-apparati">
-            <div class="title" id="apparati-title">Apparati corporei</div>
+            <div class="title" id="apparati-title">Apparati e Sistemi</div>
             <div class="grid" id="grid-apparati"></div>
           </div>
 
+          <!-- Pannello Gordon -->
           <div id="panel-gordon" class="hidden">
             <div class="title" id="gordon-title">11 Modelli Funzionali di Gordon</div>
             <div class="grid" id="grid-gordon"></div>
@@ -275,11 +285,13 @@
         </div>
       </div>
 
+      <!-- SCHERMATA ELENCO CATEGORIA -->
       <div id="view-category" class="hidden">
         <h2 id="cat-name-header" style="font-size:20px; font-weight:800; margin-bottom:14px;"></h2>
         <div id="cat-items-list"></div>
       </div>
 
+      <!-- SCHERMATA DETTAGLIO SCALA -->
       <div id="view-scale" class="hidden">
         <div style="margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border);">
           <div style="display:flex; gap:6px; margin-bottom:4px;">
@@ -328,113 +340,18 @@
 
   <script>
     var scales = [
-      {
-        id: "gcs",
-        name: "Glasgow Coma Scale (GCS)",
-        summary: "Livello di coscienza e risposta neurologica nell'adulto.",
-        howToUse: "Valuta occhi, risposta verbale e motoria scegliendo il miglior punteggio.",
-        target: "adult",
-        apparato: "Neurologico",
-        gordon: "Cognitivo - Percettivo",
-        items: [
-          { id: "e", t: "Apertura occhi", o: [{ l: "Spontanea", p: 4 }, { l: "Allo stimolo verbale", p: 3 }, { l: "Al dolore", p: 2 }, { l: "Nessuna", p: 1 }] },
-          { id: "v", t: "Risposta verbale", o: [{ l: "Orientata e corretta", p: 5 }, { l: "Confusa", p: 4 }, { l: "Parole inappropriate", p: 3 }, { l: "Suoni incomprensibili", p: 2 }, { l: "Nessuna", p: 1 }] },
-          { id: "m", t: "Risposta motoria", o: [{ l: "Obbedisce ai comandi", p: 6 }, { l: "Localizza il dolore", p: 5 }, { l: "Retrazione al dolore", p: 4 }, { l: "Flessione anomala (decorticazione)", p: 3 }, { l: "Estensione (decerebrazione)", p: 2 }, { l: "Nessuna", p: 1 }] }
-        ],
-        ranges: [{ min: 13, max: 15, m: "Compromissione lieve" }, { min: 9, max: 12, m: "Compromissione moderata" }, { min: 3, max: 8, m: "Grave compromissione (Coma)" }],
-        source: "Teasdale G, Jennett B. Lancet 1974; 2:81-84."
-      },
-      {
-        id: "rass",
-        name: "Scala RASS (Richmond Agitation-Sedation Scale)",
-        summary: "Livello di sedazione e agitazione psicomotoria.",
-        howToUse: "Assegna da +4 a -5 in base al comportamento osservato o alla risposta verbale/fisica.",
-        target: "adult",
-        apparato: "Neurologico",
-        gordon: "Sonno - Riposo",
-        items: [
-          {
-            id: "r",
-            t: "Stato clinico",
-            o: [
-              { l: "+4 Combattivo (violento)", p: 4 }, { l: "+3 Molto agitato (tira tubi/cateteri)", p: 3 },
-              { l: "+2 Agitato (movimenti disordinati)", p: 2 }, { l: "+1 Irrequieto", p: 1 },
-              { l: "0 Vigile e calmo", p: 0 }, { l: "-1 Sonnolento (apre occhi alla voce >10s)", p: -1 },
-              { l: "-2 Sedazione leggera (apre occhi <10s)", p: -2 }, { l: "-3 Sedazione moderata", p: -3 },
-              { l: "-4 Sedazione profonda", p: -4 }, { l: "-5 Non risvegliabile", p: -5 }
-            ]
-          }
-        ],
-        ranges: [{ min: 1, max: 4, m: "Agitazione psicomotoria" }, { min: 0, max: 0, m: "Vigile e calmo (Target)" }, { min: -3, max: -1, m: "Sedazione cosciente" }, { min: -5, max: -4, m: "Sedazione profonda" }],
-        source: "Sessler CN, et al. Am J Respir Crit Care Med 2002; 166(10):1338-1344."
-      },
-      {
-        id: "nrs",
-        name: "Numeric Rating Scale (NRS)",
-        summary: "Autovalutazione dell'intensità del dolore da 0 a 10.",
-        howToUse: "Chiedi al paziente di indicare il dolore da 0 (nessuno) a 10 (massimo immaginabile).",
-        target: "adult",
-        apparato: "Dolore",
-        gordon: "Cognitivo - Percettivo",
-        items: [
-          { id: "p", t: "Intensità del dolore", o: [{ l: "0 - Nessun dolore", p: 0 }, { l: "1", p: 1 }, { l: "2", p: 2 }, { l: "3 - Lieve", p: 3 }, { l: "4", p: 4 }, { l: "5", p: 5 }, { l: "6 - Moderato", p: 6 }, { l: "7", p: 7 }, { l: "8", p: 8 }, { l: "9", p: 9 }, { l: "10 - Massimo possibile", p: 10 }] }
-        ],
-        ranges: [{ min: 0, max: 0, m: "Nessun dolore" }, { min: 1, max: 3, m: "Dolore lieve" }, { min: 4, max: 6, m: "Dolore moderato" }, { min: 7, max: 10, m: "Dolore severo" }],
-        source: "Downie WW, et al. Ann Rheum Dis 1978; 37:378-381."
-      },
-      {
-        id: "news2",
-        name: "NEWS2 (National Early Warning Score)",
-        summary: "Rilevazione tempestiva del deterioramento clinico acuto.",
-        howToUse: "Inserisci i parametri vitali correnti dell'adulto.",
-        target: "adult",
-        apparato: "Cardiovascolare",
-        gordon: "Percezione - Gestione salute",
-        items: [
-          { id: "rr", t: "Atti respiratori/min", o: [{ l: "12 - 20", p: 0 }, { l: "9 - 11", p: 1 }, { l: "21 - 24", p: 2 }, { l: "≤ 8 oppure ≥ 25", p: 3 }] },
-          { id: "sp", t: "SpO2 (%)", o: [{ l: "≥ 96%", p: 0 }, { l: "94 - 95%", p: 1 }, { l: "92 - 93%", p: 2 }, { l: "≤ 91%", p: 3 }] },
-          { id: "ox", t: "Ossigenoterapia supplementare", o: [{ l: "Aria ambiente", p: 0 }, { l: "In ossigeno", p: 2 }] },
-          { id: "pa", t: "Pressione sistolica (mmHg)", o: [{ l: "111 - 219", p: 0 }, { l: "101 - 110", p: 1 }, { l: "91 - 100", p: 2 }, { l: "≤ 90 oppure ≥ 220", p: 3 }] },
-          { id: "hr", t: "Frequenza cardiaca (bpm)", o: [{ l: "51 - 90", p: 0 }, { l: "41 - 50 o 91 - 110", p: 1 }, { l: "111 - 130", p: 2 }, { l: "≤ 40 o ≥ 131", p: 3 }] },
-          { id: "co", t: "Stato di coscienza", o: [{ l: "Alert (Vigile)", p: 0 }, { l: "Confuso / Risponde a Voce o Dolore", p: 3 }] },
-          { id: "tp", t: "Temperatura (°C)", o: [{ l: "36.1 - 38.0", p: 0 }, { l: "35.1 - 36.0 o 38.1 - 39.0", p: 1 }, { l: "≥ 39.1", p: 2 }, { l: "≤ 35.0", p: 3 }] }
-        ],
-        ranges: [{ min: 0, max: 4, m: "Rischio basso" }, { min: 5, max: 6, m: "Rischio medio" }, { min: 7, max: 20, m: "Rischio alto (Emergenza medica)" }],
-        source: "Royal College of Physicians. RCP 2017."
-      },
-      {
-        id: "borg",
-        name: "Scala di Borg CR10",
-        summary: "Quantificazione della dispnea o dello sforzo percepito.",
-        howToUse: "Stima del grado di affanno respiratorio riferito.",
-        target: "adult",
-        apparato: "Respiratorio",
-        gordon: "Attività - Esercizio",
-        items: [
-          {
-            id: "b",
-            t: "Grado di affanno",
-            o: [
-              { l: "0 Nulla", p: 0 }, { l: "1 Molto debole", p: 1 }, { l: "2 Debole", p: 2 },
-              { l: "3 Moderato", p: 3 }, { l: "4 Un po' forte", p: 4 }, { l: "5 Forte", p: 5 },
-              { l: "7 Molto forte", p: 7 }, { l: "10 Massimo / Estremo", p: 10 }
-            ]
-          }
-        ],
-        ranges: [{ min: 0, max: 1, m: "Respirazione normale" }, { min: 2, max: 4, m: "Dispnea moderata" }, { min: 5, max: 10, m: "Dispnea marcata / Insufficienza respiratoria" }],
-        source: "Borg GA. Med Sci Sports Exerc 1982; 14(5):377-381."
-      },
+      // 1. APPARATO TEGUMENTARIO – MODELLO 2: NUTRIZIONE E METABOLISMO
       {
         id: "braden",
         name: "Scala di Braden",
-        summary: "Rischio di lesioni da pressione (LdP).",
-        howToUse: "Valuta i 6 parametri: punteggio totale inferiore indica rischio più alto.",
-        target: "adult",
-        apparato: "Cute e lesioni",
-        gordon: "Nutrizionale - Metabolico",
+        summary: "Valutazione del rischio di lesioni da pressione (LdP).",
+        howToUse: "Valuta i 6 sub-item. Più basso è il punteggio, maggiore è il rischio.",
+        targets: ["adult"],
+        apparato: "Tegumentario",
+        gordon: "Modello 2: Nutrizionale - Metabolico",
         items: [
           { id: "s", t: "Percezione sensoriale", o: [{ l: "Completamente limitata", p: 1 }, { l: "Molto limitata", p: 2 }, { l: "Leggermente limitata", p: 3 }, { l: "Nessuna compromissione", p: 4 }] },
-          { id: "u", t: "Umidità", o: [{ l: "Costantemente umida", p: 1 }, { l: "Spesso umida", p: 2 }, { l: "Occasionalmente umida", p: 3 }, { l: "Raramente umida", p: 4 }] },
+          { id: "u", t: "Umidità cutanea", o: [{ l: "Costantemente umida", p: 1 }, { l: "Spesso umida", p: 2 }, { l: "Occasionalmente umida", p: 3 }, { l: "Raramente umida", p: 4 }] },
           { id: "af", t: "Attività fisica", o: [{ l: "Allettato", p: 1 }, { l: "In carrozzina", p: 2 }, { l: "Cammina occasionalmente", p: 3 }, { l: "Cammina frequentemente", p: 4 }] },
           { id: "mb", t: "Mobilità", o: [{ l: "Completamente immobile", p: 1 }, { l: "Molto limitata", p: 2 }, { l: "Leggermente limitata", p: 3 }, { l: "Nessuna limitazione", p: 4 }] },
           { id: "nu", t: "Nutrizione", o: [{ l: "Molto povera", p: 1 }, { l: "Inadeguata", p: 2 }, { l: "Adeguata", p: 3 }, { l: "Eccellente", p: 4 }] },
@@ -446,11 +363,11 @@
       {
         id: "norton",
         name: "Scala di Norton",
-        summary: "Screening sintetico del rischio di lesioni da decubito.",
-        howToUse: "Attribuisci un punteggio da 1 a 4 alle 5 condizioni cliniche.",
-        target: "adult",
-        apparato: "Cute e lesioni",
-        gordon: "Nutrizionale - Metabolico",
+        summary: "Screening sintetico del rischio lesioni da decubito.",
+        howToUse: "Attribuisci un punteggio da 1 a 4 alle 5 condizioni cliniche generali.",
+        targets: ["adult"],
+        apparato: "Tegumentario",
+        gordon: "Modello 2: Nutrizionale - Metabolico",
         items: [
           { id: "no_c", t: "Condizioni generali", o: [{ l: "Pessime", p: 1 }, { l: "Scadenti", p: 2 }, { l: "Discrete", p: 3 }, { l: "Buone", p: 4 }] },
           { id: "no_s", t: "Stato mentale", o: [{ l: "Comatoso", p: 1 }, { l: "Confuso", p: 2 }, { l: "Apatico", p: 3 }, { l: "Lucido", p: 4 }] },
@@ -459,16 +376,54 @@
           { id: "no_i", t: "Incontinenza", o: [{ l: "Urinaria e fecale", p: 1 }, { l: "Abituale", p: 2 }, { l: "Occasionale", p: 3 }, { l: "Continente", p: 4 }] }
         ],
         ranges: [{ min: 5, max: 9, m: "Rischio altissimo" }, { min: 10, max: 14, m: "Rischio elevato (Soglia critica ≤ 14)" }, { min: 15, max: 20, m: "Rischio minimo" }],
-        source: "Norton D, et al. Churchill Livingstone 1962."
+        source: "Norton D, et al. An investigation of geriatric nursing problems. Churchill Livingstone 1962."
       },
+      {
+        id: "waterlow",
+        name: "Scala di Waterlow",
+        summary: "Rischio di lesioni da decubito (adulto e pediatrico ospedalizzato).",
+        howToUse: "Somma i punteggi ponderati dei singoli fattori predisponenti e patologici.",
+        targets: ["adult", "pedia"],
+        apparato: "Tegumentario",
+        gordon: "Modello 2: Nutrizionale - Metabolico",
+        items: [
+          { id: "w_build", t: "Corporatura / Peso per altezza", o: [{ l: "Media", p: 0 }, { l: "Superiore alla media", p: 1 }, { l: "Obeso", p: 2 }, { l: "Sottopeso / Cachettico", p: 3 }] },
+          { id: "w_skin", t: "Tipo di cute e aree a rischio", o: [{ l: "Sana", p: 0 }, { l: "Sottile / Fragile", p: 1 }, { l: "Secca", p: 1 }, { l: "Edematosa", p: 2 }, { l: "Fredda e umida", p: 2 }, { l: "Discromica / Lesione stadio 1", p: 3 }] },
+          { id: "w_sex", t: "Sesso ed Età", o: [{ l: "Uomo / Età 14-49", p: 1 }, { l: "Donna / Età 14-49", p: 2 }, { l: "Età 50-64", p: 2 }, { l: "Età 65-74", p: 3 }, { l: "Età 75-80", p: 4 }, { l: "Età > 81 o Neonato/Pediatrico a rischio", p: 5 }] },
+          { id: "w_cont", t: "Continenza sfinterica", o: [{ l: "Continente / Catetere a permanenza", p: 0 }, { l: "Incontinenza occasionale", p: 1 }, { l: "Incontinenza urinaria abituale", p: 2 }, { l: "Doppia incontinenza fecale e urinaria", p: 3 }] },
+          { id: "w_mob", t: "Mobilità", o: [{ l: "Completa", p: 0 }, { l: "Irrequieto", p: 1 }, { l: "Apatico", p: 2 }, { l: "Limitata", p: 3 }, { l: "Costretto a letto", p: 4 }, { l: "Immobile", p: 5 }] },
+          { id: "w_surg", t: "Chirurgia / Trauma maggiore", o: [{ l: "Nessuno", p: 0 }, { l: "Intervento ortopedico / rachide", p: 5 }, { l: "Intervento > 2 ore in sala", p: 5 }] }
+        ],
+        ranges: [{ min: 0, max: 9, m: "Nessun rischio identificato" }, { min: 10, max: 14, m: "Paziente a rischio" }, { min: 15, max: 19, m: "Alto rischio di lesione" }, { min: 20, max: 30, m: "Altissimo rischio (Very High Risk)" }],
+        source: "Waterlow J. Pressure sores: a risk assessment card. Nurs Times 1985; 81(48):49-55."
+      },
+      {
+        id: "bwat",
+        name: "BWAT (Bates-Jensen Wound Assessment Tool)",
+        summary: "Monitoraggio e stadiazione evolutiva del processo di guarigione della ferita.",
+        howToUse: "Valuta le caratteristiche del letto e dei bordi della lesione cutanea.",
+        targets: ["adult"],
+        apparato: "Tegumentario",
+        gordon: "Modello 2: Nutrizionale - Metabolico",
+        items: [
+          { id: "bw_depth", t: "Profondità del danno tissutale", o: [{ l: "Eritema non sbiancabile", p: 1 }, { l: "Perdita parziale di derma", p: 2 }, { l: "Perdita a tutto spessore (sottocute)", p: 3 }, { l: "Esposizione fasciale o cavità", p: 4 }, { l: "Esposizione di osso, tendini o muscolo", p: 5 }] },
+          { id: "bw_edges", t: "Bordi della lesione", o: [{ l: "Indistinti, sfumati", p: 1 }, { l: "Definiti, piatti con il letto", p: 2 }, { l: "Ben delineati, non adesi", p: 3 }, { l: "Ispessiti / Arrotolati (epibolia)", p: 4 }, { l: "Ipercheratosici / Fibrotici", p: 5 }] },
+          { id: "bw_tissue", t: "Tipologia prevalente di tessuto", o: [{ l: "Tessuto di granulazione roseo/rosso vivo", p: 1 }, { l: "Granulazione superficiale > 75%", p: 2 }, { l: "Slough fibrinoso giallo < 25%", p: 3 }, { l: "Slough fibrinoso giallo dal 25% al 75%", p: 4 }, { l: "Escara necrotica nera dura / Slough > 75%", p: 5 }] },
+          { id: "bw_exudate", t: "Quantità di essudato", o: [{ l: "Nessuno (letto asciutto)", p: 1 }, { l: "Scarso", p: 2 }, { l: "Moderato", p: 3 }, { l: "Abbondante", p: 4 }, { l: "Molto abbondante / Saturante le medicazioni", p: 5 }] }
+        ],
+        ranges: [{ min: 4, max: 8, m: "Rigenerazione e guarigione attiva avanzata" }, { min: 9, max: 14, m: "Ferita cronica in fase di stallo o detersione" }, { min: 15, max: 20, m: "Grave degenerazione tissutale (Necessita sbrigliamento/specialista)" }],
+        source: "Bates-Jensen BM, et al. The Bates-Jensen Wound Assessment Tool (BWAT). Adv Skin Wound Care 2010."
+      },
+
+      // 2. APPARATO MUSCOLO-SCHELETRICO – MODELLO 4: ATTIVITÀ ED ESERCIZIO FISICO
       {
         id: "barthel",
         name: "Indice di Barthel",
-        summary: "Autonomia nelle attività di base della vita quotidiana (ADL).",
-        howToUse: "Valuta le performance effettive del paziente nelle ultime 24-48 ore.",
-        target: "adult",
+        summary: "Grado di autonomia nelle attività di base della vita quotidiana (ADL).",
+        howToUse: "Valuta le performance effettive nelle 10 aree funzionali.",
+        targets: ["adult"],
         apparato: "Muscoloscheletrico",
-        gordon: "Attività - Esercizio",
+        gordon: "Modello 4: Attività - Esercizio",
         items: [
           { id: "b_feed", t: "Alimentazione", o: [{ l: "Incapace", p: 0 }, { l: "Ha bisogno di aiuto", p: 5 }, { l: "Autonomo", p: 10 }] },
           { id: "b_bath", t: "Bagno / Doccia", o: [{ l: "Dipendente", p: 0 }, { l: "Autonomo", p: 5 }] },
@@ -479,242 +434,989 @@
           { id: "b_toilet", t: "Uso del WC", o: [{ l: "Dipendente", p: 0 }, { l: "Ha bisogno di aiuto", p: 5 }, { l: "Autonomo", p: 10 }] },
           { id: "b_trans", t: "Trasferimenti (letto - sedia)", o: [{ l: "Incapace", p: 0 }, { l: "Aiuto consistente (2 persone)", p: 5 }, { l: "Aiuto lieve", p: 10 }, { l: "Autonomo", p: 15 }] },
           { id: "b_walk", t: "Deambulazione", o: [{ l: "Immobile o < 50m", p: 0 }, { l: "In carrozzina", p: 5 }, { l: "Cammina con aiuto", p: 10 }, { l: "Autonomo > 50m", p: 15 }] },
-          { id: "b_stairs", t: "Salire/scendere scale", o: [{ l: "Incapace", p: 0 }, { l: "Ha bisogno di aiuto", p: 5 }, { l: "Autonomo", p: 10 }] }
+          { id: "b_stairs", t: "Salire/scendere le scale", o: [{ l: "Incapace", p: 0 }, { l: "Ha bisogno di aiuto", p: 5 }, { l: "Autonomo", p: 10 }] }
         ],
         ranges: [{ min: 0, max: 20, m: "Dipendenza totale" }, { min: 21, max: 60, m: "Dipendenza grave" }, { min: 61, max: 90, m: "Dipendenza moderata" }, { min: 91, max: 99, m: "Lieve dipendenza" }, { min: 100, max: 100, m: "Completamente indipendente" }],
         source: "Mahoney FI, Barthel DW. Md State Med J 1965; 14:61-65."
       },
       {
-        id: "conley",
-        name: "Scala di Conley",
-        summary: "Screening del rischio di caduta nel paziente ospedalizzato.",
-        howToUse: "Compila le 6 domande per verificare la presenza di rischio caduta.",
-        target: "adult",
+        id: "bim",
+        name: "Indice di Barthel Modificato (BIM - Shah)",
+        summary: "Versione a maggiore sensibilità a 5 livelli di aiuto per ADL.",
+        howToUse: "Attribuisci il livello di dipendenza a 5 gradi per ciascuna delle attività.",
+        targets: ["adult"],
         apparato: "Muscoloscheletrico",
-        gordon: "Attività - Esercizio",
+        gordon: "Modello 4: Attività - Esercizio",
         items: [
-          { id: "c1", t: "Cadute negli ultimi 3 mesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
-          { id: "c2", t: "Vertigini o capogiri", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
-          { id: "c3", t: "Incontinenza urinaria/fecale", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
-          { id: "c4", t: "Giudizio deteriorato", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
-          { id: "c5", t: "Agitazione psicomotoria", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
-          { id: "c6", t: "Deambulazione compromessa", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] }
+          { id: "bim_1", t: "Igiene personale", o: [{ l: "Dipendente (0)", p: 0 }, { l: "Tentativi minimi (1)", p: 1 }, { l: "Aiuto moderato (3)", p: 3 }, { l: "Supervisione (4)", p: 4 }, { l: "Indipendente (5)", p: 5 }] },
+          { id: "bim_2", t: "Fare il bagno / doccia", o: [{ l: "Dipendente (0)", p: 0 }, { l: "Tentativi minimi (1)", p: 1 }, { l: "Aiuto moderato (3)", p: 3 }, { l: "Supervisione (4)", p: 4 }, { l: "Indipendente (5)", p: 5 }] },
+          { id: "bim_3", t: "Alimentarsi", o: [{ l: "Dipendente (0)", p: 0 }, { l: "Aiuto rilevante (2)", p: 2 }, { l: "Aiuto moderato (5)", p: 5 }, { l: "Supervisione (8)", p: 8 }, { l: "Indipendente (10)", p: 10 }] },
+          { id: "bim_4", t: "Uso della toletta (WC)", o: [{ l: "Dipendente (0)", p: 0 }, { l: "Aiuto rilevante (2)", p: 2 }, { l: "Aiuto moderato (5)", p: 5 }, { l: "Supervisione (8)", p: 8 }, { l: "Indipendente (10)", p: 10 }] },
+          { id: "bim_5", t: "Trasferimenti (letto/sedia)", o: [{ l: "Dipendente (0)", p: 0 }, { l: "Aiuto rilevante (3)", p: 3 }, { l: "Aiuto moderato (8)", p: 8 }, { l: "Supervisione (12)", p: 12 }, { l: "Indipendente (15)", p: 15 }] },
+          { id: "bim_6", t: "Deambulazione su superfici piane", o: [{ l: "Immobile (0)", p: 0 }, { l: "Aiuto rilevante (3)", p: 3 }, { l: "Aiuto moderato (8)", p: 8 }, { l: "Supervisione (12)", p: 12 }, { l: "Indipendente (15)", p: 15 }] }
         ],
-        ranges: [{ min: 0, max: 1, m: "Basso rischio caduta" }, { min: 2, max: 10, m: "Alto rischio caduta" }],
-        source: "Conley D, et al. Medsurg Nurs 1999; 8(5):348-354."
+        ranges: [{ min: 0, max: 24, m: "Dipendenza totale" }, { min: 25, max: 49, m: "Dipendenza severa" }, { min: 50, max: 74, m: "Dipendenza moderata" }, { min: 75, max: 90, m: "Indipendenza parziale" }, { min: 91, max: 100, m: "Indipendenza eccellente" }],
+        source: "Shah S, et al. Improving the sensitivity of the Barthel Index for stroke rehabilitation. J Clin Epidemiol 1989; 42(8):703-709."
       },
       {
-        id: "morse",
-        name: "Morse Fall Scale (MFS)",
-        summary: "Valutazione multifattoriale del rischio cadute in reparto.",
-        howToUse: "Assegna i valori ponderati ai 6 fattori predisponenti.",
-        target: "adult",
+        id: "iadl",
+        name: "Scala IADL (Lawton-Brody)",
+        summary: "Autonomia nelle attività strumentali della vita quotidiana.",
+        howToUse: "Assegna 1 (indipendente) o 0 (dipendente/necessita aiuto) per ogni funzione complessa.",
+        targets: ["adult"],
         apparato: "Muscoloscheletrico",
-        gordon: "Attività - Esercizio",
+        gordon: "Modello 4: Attività - Esercizio",
         items: [
-          { id: "m_hist", t: "Cadute negli ultimi 3 mesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 25 }] },
-          { id: "m_diag", t: "Diagnosi secondarie (≥ 2 diagnosi)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 15 }] },
-          { id: "m_aid", t: "Ausili per la deambulazione", o: [{ l: "Nessuno / Allettato", p: 0 }, { l: "Stampelle / Bastone", p: 15 }, { l: "Si appoggia a mobili/pareti", p: 30 }] },
-          { id: "m_iv", t: "Terapia EV / Accesso venoso", o: [{ l: "No", p: 0 }, { l: "Sì", p: 20 }] },
-          { id: "m_gait", t: "Andatura", o: [{ l: "Normale / Allettato", p: 0 }, { l: "Debole", p: 10 }, { l: "Instabile / Barcollante", p: 20 }] },
-          { id: "m_stat", t: "Stato mentale", o: [{ l: "Consapevole delle proprie capacità", p: 0 }, { l: "Sopravvaluta le proprie abilità", p: 15 }] }
+          { id: "ia_tel", t: "Uso del telefono", o: [{ l: "Incapace / non usa", p: 0 }, { l: "Usa autonomamente il telefono", p: 1 }] },
+          { id: "ia_shop", t: "Fare acquisti / spesa", o: [{ l: "Incapace senza accompagnatore", p: 0 }, { l: "Effettua tutti gli acquisti da solo", p: 1 }] },
+          { id: "ia_food", t: "Preparazione dei pasti", o: [{ l: "Ha bisogno che i pasti vengano preparati", p: 0 }, { l: "Pianifica, cucina e serve pasti autonomamente", p: 1 }] },
+          { id: "ia_house", t: "Cura della casa / faccende", o: [{ l: "Non partecipa o solo lavori leggerissimi", p: 0 }, { l: "Mantiene la casa in ordine e pulita", p: 1 }] },
+          { id: "ia_wash", t: "Lavaggio della biancheria", o: [{ l: "Tutto il bucato deve essere fatto da altri", p: 0 }, { l: "Lava autonomamente i propri capi", p: 1 }] },
+          { id: "ia_trans", t: "Uso dei mezzi di trasporto", o: [{ l: "Viaggia solo con taxi/auto assistito", p: 0 }, { l: "Prende mezzi pubblici o guida autonomamente", p: 1 }] },
+          { id: "ia_med", t: "Assunzione delle terapie farmacologiche", o: [{ l: "Incapace di gestirla da solo", p: 0 }, { l: "Assume dosi e farmaci corretti all'orario", p: 1 }] },
+          { id: "ia_money", t: "Gestione delle finanze e denaro", o: [{ l: "Incapace di gestire il denaro", p: 0 }, { l: "Gestisce bilancio, conti e spese autonomamente", p: 1 }] }
         ],
-        ranges: [{ min: 0, max: 24, m: "Rischio basso" }, { min: 25, max: 44, m: "Rischio moderato" }, { min: 45, max: 125, m: "Rischio elevato" }],
-        source: "Morse JM. Sage Publications 1997."
+        ranges: [{ min: 0, max: 2, m: "Dipendenza severa nelle IADL" }, { min: 3, max: 5, m: "Dipendenza moderata (necessita supporto domiciliare)" }, { min: 6, max: 8, m: "Piena autonomia strumentale (vita indipendente)" }],
+        source: "Lawton MP, Brody EM. Assessment of older people: self-maintaining and instrumental activities. Gerontologist 1969; 9(3):179-186."
       },
       {
-        id: "four_at",
-        name: "Scala 4AT",
-        summary: "Screening del delirium e deficit cognitivo.",
-        howToUse: "Valuta allerta, AMT4, attenzione a ritroso ed esordio acuto.",
-        target: "adult",
-        apparato: "Cognitivo",
-        gordon: "Cognitivo - Percettivo",
+        id: "sppb",
+        name: "Scala SPPB (Short Physical Performance Battery)",
+        summary: "Performance fisica, mobilità e fragilità nell'anziano.",
+        howToUse: "Somministra le 3 prove: equilibrio (piedi uniti, semitandem, tandem), velocità del cammino e test sedia.",
+        targets: ["adult"],
+        apparato: "Muscoloscheletrico",
+        gordon: "Modello 4: Attività - Esercizio",
         items: [
-          { id: "a1", t: "1. Allerta / Vigilanza", o: [{ l: "Normale (vigile, calmo)", p: 0 }, { l: "Lieve sonnolenza < 10 sec", p: 0 }, { l: "Agitazione o sonnolenza persistente", p: 4 }] },
-          { id: "a2", t: "2. AMT4 (Età, Nascita, Luogo, Anno)", o: [{ l: "Nessun errore", p: 0 }, { l: "1 errore", p: 1 }, { l: "≥ 2 errori / Non testabile", p: 2 }] },
-          { id: "a3", t: "3. Attenzione (Mesi a ritroso da Dicembre)", o: [{ l: "Arriva a Luglio o oltre", p: 0 }, { l: "Si ferma prima di Luglio", p: 1 }, { l: "Rifiuta o non inizia", p: 2 }] },
-          { id: "a4", t: "4. Variazione o fluttuazione acuta", o: [{ l: "Nessuna variazione acuta", p: 0 }, { l: "Sì, alterazione nelle ultime 24-48 ore", p: 4 }] }
+          { id: "sp_bal", t: "1. Equilibrio statico (10 sec a piedi uniti, semitandem e tandem)", o: [{ l: "Incapace di mantenere piedi uniti per 10s", p: 0 }, { l: "Piedi uniti 10s, fallisce semitandem", p: 1 }, { l: "Semitandem 10s, tandem < 3s", p: 2 }, { l: "Tandem tra 3 e 9.99s", p: 3 }, { l: "Tandem completato per 10s", p: 4 }] },
+          { id: "sp_gait", t: "2. Velocità del cammino sui 4 metri", o: [{ l: "Incapace di deambulare", p: 0 }, { l: "Tempo > 8.70 secondi", p: 1 }, { l: "Tempo tra 6.21 e 8.70 secondi", p: 2 }, { l: "Tempo tra 4.82 e 6.20 secondi", p: 3 }, { l: "Tempo < 4.82 secondi", p: 4 }] },
+          { id: "sp_chair", t: "3. Alzarsi dalla sedia 5 volte senza usare le braccia", o: [{ l: "Incapace o tempo > 60 secondi", p: 0 }, { l: "Tempo ≥ 16.7 secondi", p: 1 }, { l: "Tempo tra 13.7 e 16.6 secondi", p: 2 }, { l: "Tempo tra 11.2 e 13.6 secondi", p: 3 }, { l: "Tempo ≤ 11.1 secondi", p: 4 }] }
         ],
-        ranges: [{ min: 0, max: 0, m: "Delirium improbabile" }, { min: 1, max: 3, m: "Possibile compromissione cronica" }, { min: 4, max: 12, m: "Probabile DELIRIUM" }],
-        source: "Bellelli G, et al. Age Ageing 2014; 43(4):496-502."
+        ranges: [{ min: 0, max: 3, m: "Grave compromissione funzionale / Altissima fragilità" }, { min: 4, max: 6, m: "Bassa performance / Rischio disabilità elevato" }, { min: 7, max: 9, m: "Performance fisica intermedia" }, { min: 10, max: 12, m: "Buona o eccellente performance fisica" }],
+        source: "Guralnik JM, et al. A short physical performance battery assessing lower extremity function. J Gerontol 1994; 49(2):M85-M94."
+      },
+      {
+        id: "tct",
+        name: "Scala TCT (Trunk Control Test)",
+        summary: "Controllo posturale del tronco nel paziente neurologico o post-stroke.",
+        howToUse: "Valuta sul lettino: rotazione sui lati, seduta da supino ed equilibrio seduto.",
+        targets: ["adult"],
+        apparato: "Muscoloscheletrico",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "tc_r", t: "1. Rotazione sul lato sano (da supino)", o: [{ l: "Incapace di iniziare o completare", p: 0 }, { l: "Esegue con aiuto o aggrappandosi", p: 12 }, { l: "Esegue normalmente e autonomamente", p: 25 }] },
+          { id: "tc_l", t: "2. Rotazione sul lato paretico / leso", o: [{ l: "Incapace", p: 0 }, { l: "Esegue con aiuto o compensi", p: 12 }, { l: "Esegue normalmente", p: 25 }] },
+          { id: "tc_sit", t: "3. Passaggio da supino a seduto sul bordo letto", o: [{ l: "Incapace", p: 0 }, { l: "Esegue con assistenza fisica", p: 12 }, { l: "Autonomo", p: 25 }] },
+          { id: "tc_bal", t: "4. Mantenimento postura seduta per 30 sec (piedi a penzoloni)", o: [{ l: "Incapace di stare seduto senza appoggio", p: 0 }, { l: "Sta seduto per 30s con sostegno", p: 12 }, { l: "Sta seduto saldo ed equilibrato per 30s", p: 25 }] }
+        ],
+        ranges: [{ min: 0, max: 36, m: "Scarso controllo del tronco (deambulazione improbabile a breve)" }, { min: 37, max: 74, m: "Controllo del tronco parziale / Moderato" }, { min: 75, max: 100, m: "Buon controllo posturale (predittivo di ripresa deambulazione)" }],
+        source: "Collin C, Wade D. Assessing motor impairment after stroke: a trunk control test. J Neurol Neurosurg Psychiatry 1990; 53(5):437-439."
+      },
+      {
+        id: "scim",
+        name: "Scala SCIM (Spinal Cord Independence Measure)",
+        summary: "Autonomia funzionale specifica per mielolesioni e lesioni midollari.",
+        howToUse: "Valuta le aree di cura personale, respirazione e mobilità nel paziente con lesione midollare.",
+        targets: ["adult"],
+        apparato: "Muscoloscheletrico",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "sc_care", t: "Cura personale (alimentazione, lavarsi, vestirsi)", o: [{ l: "Dipendenza totale nelle cure", p: 0 }, { l: "Richiede aiuto parziale consistente", p: 5 }, { l: "Autonomo con ausili o adattamenti", p: 15 }, { l: "Piena indipendenza senza ausili", p: 20 }] },
+          { id: "sc_resp", t: "Respirazione e gestione sfinterica", o: [{ l: "Ventilato, catetere fisso, svuotamento assistito", p: 0 }, { l: "Respirazione spontanea, cateterismo assistito", p: 15 }, { l: "Continente con ausili o autogestione", p: 30 }, { l: "Autonomo senza incontinenza né ausili", p: 40 }] },
+          { id: "sc_mob", t: "Mobilità (nel letto, trasferimenti, spostamenti interni/esterni)", o: [{ l: "Allettato / Spostato passivamente", p: 0 }, { l: "Spostamenti in carrozzina elettrica/manuale assistita", p: 10 }, { l: "Carrozzina autonoma e trasferimenti indipendenti", p: 25 }, { l: "Deambulazione autonoma anche con tutori/stampelle", p: 40 }] }
+        ],
+        ranges: [{ min: 0, max: 30, m: "Grave dipendenza funzionale tetraplegica/paraplegica" }, { min: 31, max: 69, m: "Indipendenza intermedia / Autonomia in carrozzina" }, { min: 70, max: 100, m: "Buona o elevata indipendenza funzionale" }],
+        source: "Catz A, et al. SCIM--spinal cord independence measure: a new disability scale. Spinal Cord 1997; 35(12):850-856."
+      },
+      {
+        id: "mrc_motor",
+        name: "Scala MRC (Medical Research Council - Forza Muscolare)",
+        summary: "Graduazione clinica della forza muscolare segmentaria (0-5).",
+        howToUse: "Testa il gruppo muscolare contro gravità e contro resistenza manuale.",
+        targets: ["adult", "pedia"],
+        apparato: "Muscoloscheletrico",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          {
+            id: "mrc_grade",
+            t: "Grado di contrazione e movimento",
+            o: [
+              { l: "Grado 0: Nessuna contrazione muscolare visibile o palpabile", p: 0 },
+              { l: "Grado 1: Accenno di contrazione senza movimento articolare", p: 1 },
+              { l: "Grado 2: Movimento articolare attivo ma solo eliminando la gravità", p: 2 },
+              { l: "Grado 3: Movimento attivo completo contro la sola forza di gravità", p: 3 },
+              { l: "Grado 4: Movimento attivo contro gravità e resistenza moderata", p: 4 },
+              { l: "Grado 5: Forza muscolare normale contro resistenza piena", p: 5 }
+            ]
+          }
+        ],
+        ranges: [{ min: 0, max: 2, m: "Deficit motorio severo (Paresi grave / Plegia)" }, { min: 3, max: 3, m: "Forza sufficiente solo a contrastare la gravità" }, { min: 4, max: 4, m: "Ipostenia / Paresi lieve-moderata" }, { min: 5, max: 5, m: "Forza muscolare segmentaria normale" }],
+        source: "Medical Research Council. Aids to the investigation of peripheral nerve injuries. War Memorandum 1943."
+      },
+      {
+        id: "mrs",
+        name: "Modified Rankin Scale (mRS)",
+        summary: "Grado di disabilità ed esito funzionale neurologico globale.",
+        howToUse: "Attribuisci la classe di disabilità residua osservata dopo evento acuto/ictus.",
+        targets: ["adult"],
+        apparato: "Muscoloscheletrico",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          {
+            id: "mrs_val",
+            t: "Livello di disabilità globale",
+            o: [
+              { l: "0: Nessun sintomo", p: 0 },
+              { l: "1: Sintomi non significativi (svolge tutte le solite attività)", p: 1 },
+              { l: "2: Lieve disabilità (incapace di fare le attività precedenti, autonomo)", p: 2 },
+              { l: "3: Moderata disabilità (richiede aiuto ma cammina senza assistenza)", p: 3 },
+              { l: "4: Moderatamente grave (incapace di deambulare senza aiuto o badare a sé)", p: 4 },
+              { l: "5: Grave disabilità (allettato, incontinente, assistenza continua)", p: 5 },
+              { l: "6: Decesso", p: 6 }
+            ]
+          }
+        ],
+        ranges: [{ min: 0, max: 1, m: "Outcome favorevole (Minima o nessuna limitazione)" }, { min: 2, max: 2, m: "Disabilità lieve (Autonomo nelle attività di base)" }, { min: 3, max: 4, m: "Disabilità moderata-severa (Dipendente da terzi)" }, { min: 5, max: 5, m: "Disabilità gravissima (Allettamento permanente)" }, { min: 6, max: 6, m: "Deceduto" }],
+        source: "van Swieten JC, et al. Interobserver agreement for the assessment of handicap in stroke patients. Stroke 1988; 19(5):604-607."
+      },
+
+      // 3. APPARATO NEUROLOGICO – MODELLO 6: COGNITIVO E PERCETTIVO
+      {
+        id: "gcs",
+        name: "Glasgow Coma Scale (GCS)",
+        summary: "Livello di coscienza e risposta neurologica nell'adulto.",
+        howToUse: "Valuta le 3 risposte (motoria, verbale, occhi) registrando il miglior punteggio.",
+        targets: ["adult"],
+        apparato: "Neurologico",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          { id: "e", t: "Apertura occhi", o: [{ l: "Spontanea", p: 4 }, { l: "Allo stimolo verbale", p: 3 }, { l: "Al dolore", p: 2 }, { l: "Nessuna", p: 1 }] },
+          { id: "v", t: "Risposta verbale", o: [{ l: "Orientata e corretta", p: 5 }, { l: "Confusa", p: 4 }, { l: "Parole inappropriate", p: 3 }, { l: "Suoni incomprensibili", p: 2 }, { l: "Nessuna", p: 1 }] },
+          { id: "m", t: "Risposta motoria", o: [{ l: "Obbedisce ai comandi", p: 6 }, { l: "Localizza il dolore", p: 5 }, { l: "Retrazione al dolore", p: 4 }, { l: "Flessione anomala (decorticazione)", p: 3 }, { l: "Estensione (decerebrazione)", p: 2 }, { l: "Nessuna", p: 1 }] }
+        ],
+        ranges: [{ min: 13, max: 15, m: "Compromissione lieve" }, { min: 9, max: 12, m: "Compromissione moderata" }, { min: 3, max: 8, m: "Grave compromissione (Coma)" }],
+        source: "Teasdale G, Jennett B. Lancet 1974; 2:81-84."
+      },
+      {
+        id: "pgcs",
+        name: "GCS Pediatrico (pGCS)",
+        summary: "Coscienza nel neonato e bambino sotto i 4 anni.",
+        howToUse: "Adattamento della risposta verbale e motoria per l'età prescolare e neonatale.",
+        targets: ["pedia"],
+        apparato: "Neurologico",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          { id: "pe_e", t: "Apertura occhi", o: [{ l: "Spontanea", p: 4 }, { l: "Alla voce", p: 3 }, { l: "Al dolore", p: 2 }, { l: "Nessuna", p: 1 }] },
+          { id: "pe_v", t: "Risposta verbale pediatrica", o: [{ l: "Sorride, balbetta, segue suoni", p: 5 }, { l: "Pianto consolabile, interagisce a tratti", p: 4 }, { l: "Pianto inconsolabile o inappropriato", p: 3 }, { l: "Gemiti o suoni incomprensibili", p: 2 }, { l: "Nessuna risposta verbale", p: 1 }] },
+          { id: "pe_m", t: "Risposta motoria pediatrica", o: [{ l: "Movimenti spontanei normali", p: 6 }, { l: "Retrae al tocco", p: 5 }, { l: "Retrae al dolore", p: 4 }, { l: "Flessione anomala", p: 3 }, { l: "Estensione", p: 2 }, { l: "Nessuna risposta", p: 1 }] }
+        ],
+        ranges: [{ min: 13, max: 15, m: "Compromissione lieve" }, { min: 9, max: 12, m: "Compromissione moderata" }, { min: 3, max: 8, m: "Grave compromissione (Coma pediatrico)" }],
+        source: "Reilly PL, et al. Paediatric Glasgow Coma Scale. Lancet 1988."
       },
       {
         id: "camicu",
-        name: "CAM-ICU",
-        summary: "Delirium nel paziente critico in Terapia Intensiva.",
-        howToUse: "Segui le 4 fasi standard (esordio acuto, disattenzione, RASS, pensiero disorganizzato).",
-        target: "adult",
-        apparato: "Cognitivo",
-        gordon: "Cognitivo - Percettivo",
+        name: "CAM-ICU (Confusion Assessment Method for ICU)",
+        summary: "Screening del delirium nel paziente critico/intubato in terapia intensiva.",
+        howToUse: "Valuta le 4 feature (esordio acuto/fluttuante, disattenzione SAVEAHAART, RASS, pensiero disorganizzato).",
+        targets: ["adult"],
+        apparato: "Neurologico",
+        gordon: "Modello 6: Cognitivo - Percettivo",
         items: [
-          { id: "c1", t: "1: Esordio acuto o decorso fluttuante", o: [{ l: "Assente", p: 0 }, { l: "Presente", p: 1 }] },
-          { id: "c2", t: "2: Disattenzione (lettere S-A-V-E-A-H-A-A-R-T)", o: [{ l: "0-2 errori", p: 0 }, { l: "> 2 errori", p: 1 }] },
-          { id: "c3", t: "3: RASS attuale diverso da zero", o: [{ l: "RASS = 0 (Vigile e calmo)", p: 0 }, { l: "RASS ≠ 0", p: 1 }] },
-          { id: "c4", t: "4: Pensiero disorganizzato", o: [{ l: "0-1 errore", p: 0 }, { l: "> 1 errore", p: 1 }] }
+          { id: "c1", t: "Feature 1: Esordio acuto o decorso fluttuante", o: [{ l: "Assente", p: 0 }, { l: "Presente", p: 1 }] },
+          { id: "c2", t: "Feature 2: Disattenzione (lettere S-A-V-E-A-H-A-A-R-T)", o: [{ l: "0-2 errori", p: 0 }, { l: "> 2 errori", p: 1 }] },
+          { id: "c3", t: "Feature 3: Livello di coscienza alterato (RASS ≠ 0)", o: [{ l: "RASS = 0 (Vigile e calmo)", p: 0 }, { l: "RASS diverso da 0", p: 1 }] },
+          { id: "c4", t: "Feature 4: Pensiero disorganizzato", o: [{ l: "0-1 errore", p: 0 }, { l: "> 1 errore", p: 1 }] }
         ],
-        ranges: [{ min: 0, max: 1, m: "CAM-ICU Negativo (No delirium)" }, { min: 2, max: 2, m: "Verificare criteri: 1 + 2 e (3 o 4)" }, { min: 3, max: 4, m: "CAM-ICU Positivo: DELIRIUM" }],
-        source: "Ely EW, et al. Crit Care Med 2001; 29(7):1370-1379."
+        ranges: [{ min: 0, max: 1, m: "CAM-ICU Negativo (Delirium assente)" }, { min: 2, max: 2, m: "Criteri da confermare: se F1 + F2 e (F3 o F4) = Positivo" }, { min: 3, max: 4, m: "CAM-ICU Positivo: DELIRIUM presente in UTI" }],
+        source: "Ely EW, et al. Evaluation of delirium in critically ill patients. Crit Care Med 2001; 29(7):1370-1379."
+      },
+      {
+        id: "mmse",
+        name: "MMSE (Mini Mental State Examination)",
+        summary: "Valutazione sintetica globale delle funzioni cognitive e demenza.",
+        howToUse: "Somministra le prove di orientamento temporo-spaziale, memoria, calcolo e linguaggio.",
+        targets: ["adult"],
+        apparato: "Neurologico",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          { id: "mm_time", t: "Orientamento nel tempo (anno, stagione, mese, giorno, data)", o: [{ l: "0-2 corretti", p: 2 }, { l: "3-4 corretti", p: 4 }, { l: "5/5 corretti", p: 5 }] },
+          { id: "mm_space", t: "Orientamento nello spazio (stato, regione, città, ospedale, piano)", o: [{ l: "0-2 corretti", p: 2 }, { l: "3-4 corretti", p: 4 }, { l: "5/5 corretti", p: 5 }] },
+          { id: "mm_mem", t: "Memoria immediata (fissazione 3 parole)", o: [{ l: "1 parola", p: 1 }, { l: "2 parole", p: 2 }, { l: "3 parole", p: 3 }] },
+          { id: "mm_calc", t: "Attenzione e calcolo (100 - 7 a ritroso per 5 volte)", o: [{ l: "0-1 corretto", p: 1 }, { l: "2-3 corretti", p: 3 }, { l: "4-5 corretti", p: 5 }] },
+          { id: "mm_rec", t: "Richiamo differito delle 3 parole", o: [{ l: "Nessuna parola", p: 0 }, { l: "1 parola", p: 1 }, { l: "2 parole", p: 2 }, { l: "3 parole", p: 3 }] },
+          { id: "mm_lang", t: "Linguaggio (denominazione, ripetizione, comando a 3 stadi, lettura, disegno)", o: [{ l: "Deficit severo (< 4)", p: 3 }, { l: "Lievemente deficitario (5-7)", p: 6 }, { l: "Completato correttamente (8-9)", p: 9 }] }
+        ],
+        ranges: [{ min: 0, max: 9, m: "Deterioramento cognitivo grave" }, { min: 10, max: 19, m: "Deterioramento cognitivo moderato" }, { min: 20, max: 23, m: "Deterioramento cognitivo lieve" }, { min: 24, max: 30, m: "Funzione cognitiva nella norma (Cut-off ≥ 24)" }],
+        source: "Folstein MF, Folstein SE, McHugh PR. J Psychiatr Res 1975; 12(3):189-198."
+      },
+      {
+        id: "spmsq",
+        name: "SPMSQ (Pfeiffer Short Portable Mental Status)",
+        summary: "Screening cognitivo rapido a 10 domande nell'anziano.",
+        howToUse: "Poni le 10 domande dirette (data, giorno, luogo, presidente, sottrazioni) e conta il numero di ERRORI.",
+        targets: ["adult"],
+        apparato: "Neurologico",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          {
+            id: "spm_err",
+            t: "Numero complessivo di risposte errate (Errori)",
+            o: [
+              { l: "0 - 2 errori", p: 0 },
+              { l: "3 - 4 errori", p: 1 },
+              { l: "5 - 7 errori", p: 2 },
+              { l: "8 - 10 errori", p: 3 }
+            ]
+          }
+        ],
+        ranges: [{ min: 0, max: 0, m: "Funzione intellettiva intatta (0-2 errori)" }, { min: 1, max: 1, m: "Compromissione cognitiva lieve (3-4 errori)" }, { min: 2, max: 2, m: "Compromissione cognitiva moderata (5-7 errori)" }, { min: 3, max: 3, m: "Grave deficit cognitivo (8-10 errori)" }],
+        source: "Pfeiffer E. A short portable mental status questionnaire. J Am Geriatr Soc 1975; 23(10):433-441."
+      },
+      {
+        id: "nihss",
+        name: "NIH Stroke Scale (NIHSS)",
+        summary: "Quantificazione della severità del deficit neurologico nell'ictus ischemico acuto.",
+        howToUse: "Esegui i punti chiave dell'esame neurologico standard NIHSS.",
+        targets: ["adult"],
+        apparato: "Neurologico",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          { id: "ni_1a", t: "1a. Livello di coscienza", o: [{ l: "Vigile e responsivo", p: 0 }, { l: "Sonnolento ma risvegliabile", p: 1 }, { l: "Stupor (richiede stimoli continui)", p: 2 }, { l: "Coma", p: 3 }] },
+          { id: "ni_gaze", t: "2. Sguardo coniugato", o: [{ l: "Normale", p: 0 }, { l: "Paresi parziale dello sguardo", p: 1 }, { l: "Deviazione forzata dello sguardo", p: 2 }] },
+          { id: "ni_visual", t: "3. Campo visivo (emianopsia)", o: [{ l: "Nessun deficit visivo", p: 0 }, { l: "Emianopsia parziale", p: 1 }, { l: "Emianopsia completa", p: 2 }, { l: "Cecità bilaterale", p: 3 }] },
+          { id: "ni_palsy", t: "4. Paresi facciale", o: [{ l: "Simmetria normale", p: 0 }, { l: "Paresi minima (appiattimento rima)", p: 1 }, { l: "Paresi parziale (bocca/volto inferiore)", p: 2 }, { l: "Paralisi completa unila/bilaterale", p: 3 }] },
+          { id: "ni_arm", t: "5. Deficit motorio arto superiore (braccio cade prima di 10s)", o: [{ l: "Mantiene la posizione per 10s", p: 0 }, { l: "Cade prima di 10s senza toccare letto", p: 1 }, { l: "Cade e tocca il letto", p: 2 }, { l: "Nessun movimento contro gravità", p: 3 }, { l: "Plegia completa", p: 4 }] },
+          { id: "ni_leg", t: "6. Deficit motorio arto inferiore (gamba cade prima di 5s)", o: [{ l: "Mantiene per 5s", p: 0 }, { l: "Cade prima di 5s senza toccare letto", p: 1 }, { l: "Cade e tocca il letto", p: 2 }, { l: "Nessun movimento contro gravità", p: 3 }, { l: "Plegia completa", p: 4 }] },
+          { id: "ni_afas", t: "9. Miglior linguaggio (Afasia)", o: [{ l: "Nessuna afasia", p: 0 }, { l: "Afasia lieve-moderata", p: 1 }, { l: "Afasia severa / globale", p: 2 }, { l: "Muto / Nessuna espressione", p: 3 }] }
+        ],
+        ranges: [{ min: 0, max: 4, m: "Ictus minore (Minor stroke)" }, { min: 5, max: 15, m: "Ictus moderato" }, { min: 16, max: 20, m: "Ictus moderatamente severo" }, { min: 21, max: 26, m: "Ictus severo (Grave compromissione)" }],
+        source: "Brott T, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke 1989; 20(7):864-870."
+      },
+      {
+        id: "lcf",
+        name: "Levels of Cognitive Functioning (LCF - Rancho Los Amigos)",
+        summary: "Stadiazione del recupero cognitivo e comportamentale post-trauma cranico.",
+        howToUse: "Seleziona il livello da I a VIII che descrive il comportamento attuale del paziente.",
+        targets: ["adult"],
+        apparato: "Neurologico",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          {
+            id: "lcf_lvl",
+            t: "Livello comportamentale osservato",
+            o: [
+              { l: "Livello I: Nessuna risposta (Coma profondo)", p: 1 },
+              { l: "Livello II: Risposta generalizzata aspecifica", p: 2 },
+              { l: "Livello III: Risposta localizzata (es. ritira al dolore/voce)", p: 3 },
+              { l: "Livello IV: Confuso - Agitato (aggressivo, disorientato)", p: 4 },
+              { l: "Livello V: Confuso - Inappropriato, non agitato", p: 5 },
+              { l: "Livello VI: Confuso - Appropriato (risposte coerenti con guida)", p: 6 },
+              { l: "Livello VII: Automatico - Appropriato (esegue routine quotidiane)", p: 7 },
+              { l: "Livello VIII: Scopo-Diretto - Appropriato (autonomo)", p: 8 }
+            ]
+          }
+        ],
+        ranges: [{ min: 1, max: 3, m: "Fase di coma / Risveglio iniziale (Grave compromissione)" }, { min: 4, max: 6, m: "Fase di confusione e disorientamento (Supervisione continua)" }, { min: 7, max: 8, m: "Fase di recupero delle autonomie (Reinserimento sociale)" }],
+        source: "Hagen C, Malkmus D, Durham P. Levels of cognitive functioning. Communication Disorders Service, Rancho Los Amigos Hospital 1972."
+      },
+      {
+        id: "gos",
+        name: "Glasgow Outcome Scale (GOS)",
+        summary: "Valutazione dell'esito funzionale e prognosi a lungo termine post-lesione cerebrale.",
+        howToUse: "Assegna la categoria di outcome raggiunta dal paziente.",
+        targets: ["adult"],
+        apparato: "Neurologico",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          {
+            id: "gos_val",
+            t: "Esito globale del paziente",
+            o: [
+              { l: "1: Decesso (Dead)", p: 1 },
+              { l: "2: Stato Vegetativo (Vegetative State)", p: 2 },
+              { l: "3: Grave Disabilità (Severe Disability - dipendente da terzi)", p: 3 },
+              { l: "4: Moderata Disabilità (Moderate Disability - indipendente ma disabile)", p: 4 },
+              { l: "5: Buona Ripresa (Good Recovery - ripresa vita normale)", p: 5 }
+            ]
+          }
+        ],
+        ranges: [{ min: 1, max: 2, m: "Esito infausto / Stato vegetativo permanente" }, { min: 3, max: 3, m: "Dipendenza continua per le necessità quotidiane" }, { min: 4, max: 4, m: "Disabilità compatibile con vita quotidiana indipendente" }, { min: 5, max: 5, m: "Buon recupero funzionale e lavorativo" }],
+        source: "Jennett B, Bond M. Assessment of outcome after severe brain damage. Lancet 1975; 1(7905):480-484."
+      },
+
+      // 4. APPARATO RESPIRATORIO – MODELLO 4: ATTIVITÀ ED ESERCIZIO FISICO
+      {
+        id: "mrc_ds",
+        name: "Scala mMRC (Modified Medical Research Council Dyspnea)",
+        summary: "Grado di dispnea cronica durante le normali attività quotidiane.",
+        howToUse: "Fai scegliere al paziente l'affermazione che descrive il suo limite respiratorio da 0 a 4.",
+        targets: ["adult"],
+        apparato: "Respiratorio",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          {
+            id: "mmrc_val",
+            t: "Grado di limitazione respiratoria",
+            o: [
+              { l: "Grado 0: Mi manca il fiato solo per sforzi molto intensi", p: 0 },
+              { l: "Grado 1: Mi manca il fiato se cammino veloce in piano o salita lieve", p: 1 },
+              { l: "Grado 2: Cammino più piano dei coetanei in piano o devo fermarmi", p: 2 },
+              { l: "Grado 3: Mi fermo per respirare dopo circa 100 metri o pochi minuti in piano", p: 3 },
+              { l: "Grado 4: Mi manca il fiato per uscire di casa o nel vestirmi/spogliarmi", p: 4 }
+            ]
+          }
+        ],
+        ranges: [{ min: 0, max: 1, m: "Dispnea lieve (Basso impatto sintomatologico)" }, { min: 2, max: 2, m: "Dispnea moderata (Soglia d'impatto clinico BPCO)" }, { min: 3, max: 4, m: "Dispnea grave o disabilitante (Alto rischio riacutizzazioni)" }],
+        source: "Fletcher CM. The clinical diagnosis of pulmonary emphysema; an experimental study. Proc R Soc Med 1952; 45(9):577-584."
+      },
+      {
+        id: "mborg",
+        name: "Scala M-BORG (Borg Modificata 0-10)",
+        summary: "Misura dell'intensità della dispnea e della fatica da sforzo.",
+        howToUse: "Chiedi al paziente di indicare il grado di fatica respiratoria percepita da 0 a 10.",
+        targets: ["adult"],
+        apparato: "Respiratorio",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          {
+            id: "mb_val",
+            t: "Percezione del respiro affannoso",
+            o: [
+              { l: "0 Nessuna dispnea", p: 0 },
+              { l: "0.5 Appena percettibile", p: 0.5 },
+              { l: "1 Molto debole", p: 1 },
+              { l: "2 Debole / Leggera", p: 2 },
+              { l: "3 Moderata", p: 3 },
+              { l: "4 Un po' forte", p: 4 },
+              { l: "5 Forte / Marcata", p: 5 },
+              { l: "7 Molto forte", p: 7 },
+              { l: "10 Massima / Intollerabile", p: 10 }
+            ]
+          }
+        ],
+        ranges: [{ min: 0, max: 1, m: "Assenza o dispnea trascurabile" }, { min: 2, max: 4, m: "Dispnea moderata tollerabile" }, { min: 5, max: 10, m: "Dispnea severa (Interrompere sforzo / Supporto O2)" }],
+        source: "Borg GA. Psychophysical bases of perceived exertion. Med Sci Sports Exerc 1982."
+      },
+      {
+        id: "barthel_dispnea",
+        name: "Barthel Dispnea",
+        summary: "Impatto della dispnea nelle consuete attività della vita quotidiana.",
+        howToUse: "Valuta quanto la mancanza di respiro ostacola le comuni attività igienico-motorie.",
+        targets: ["adult"],
+        apparato: "Respiratorio",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "bd_1", t: "Vestirsi e spogliarsi", o: [{ l: "Nessuna dispnea", p: 0 }, { l: "Lieve affanno", p: 1 }, { l: "Forte affanno / necessita pause", p: 2 }, { l: "Incapace per dispnea", p: 3 }] },
+          { id: "bd_2", t: "Lavarsi viso e denti", o: [{ l: "Nessuna dispnea", p: 0 }, { l: "Lieve affanno", p: 1 }, { l: "Forte affanno", p: 2 }, { l: "Incapace", p: 3 }] },
+          { id: "bd_3", t: "Camminare in stanza", o: [{ l: "Nessuna dispnea", p: 0 }, { l: "Lieve affanno", p: 1 }, { l: "Forte affanno", p: 2 }, { l: "Incapace", p: 3 }] },
+          { id: "bd_4", t: "Mangiare", o: [{ l: "Nessuna dispnea", p: 0 }, { l: "Lieve affanno", p: 1 }, { l: "Forte affanno", p: 2 }, { l: "Incapace", p: 3 }] }
+        ],
+        ranges: [{ min: 0, max: 2, m: "Minimo impatto respiratorio sulle ADL" }, { min: 3, max: 6, m: "Impatto moderato sulla vita quotidiana" }, { min: 7, max: 12, m: "Grave disabilità respiratoria nelle ADL" }],
+        source: "Vitacca M, et al. A modified Barthel Index to assess dyspnoea. Eur Respir J 2006."
+      },
+      {
+        id: "smwt",
+        name: "Test 6MWT (Six-Minute Walking Test)",
+        summary: "Capacità funzionale respiratoria e tolleranza allo sforzo aerobico sub-massimale.",
+        howToUse: "Misura i metri percorsi in 6 minuti lungo un corridoio piano di 30 metri.",
+        targets: ["adult"],
+        apparato: "Respiratorio",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          {
+            id: "sm_dist",
+            t: "Distanza totale percorsa in 6 minuti",
+            o: [
+              { l: "< 200 metri (o interruzione precoce per desaturazione)", p: 1 },
+              { l: "200 - 299 metri", p: 2 },
+              { l: "300 - 399 metri", p: 3 },
+              { l: "400 - 499 metri", p: 4 },
+              { l: "≥ 500 metri", p: 5 }
+            ]
+          }
+        ],
+        ranges: [{ min: 1, max: 1, m: "Grave compromissione funzionale cardio-respiratoria" }, { min: 2, max: 2, m: "Capacità aerobica ridotta (Aumentato rischio mortalità)" }, { min: 3, max: 3, m: "Limitazione funzionale moderata" }, { min: 4, max: 5, m: "Buona tolleranza allo sforzo (Normale per fascia età)" }],
+        source: "ATS Statement: Guidelines for the Six-Minute Walk Test. Am J Respir Crit Care Med 2002; 166(1):111-117."
+      },
+
+      // 5. APPARATO CARDIOVASCOLARE – MODELLO 4: ATTIVITÀ ED ESERCIZIO FISICO
+      {
+        id: "chads_vasc",
+        name: "Scala CHA₂DS₂-VASc",
+        summary: "Rischio tromboembolico e ictus nella Fibrillazione Atriale non valvolare.",
+        howToUse: "Seleziona i fattori di rischio clinici presenti nel paziente.",
+        targets: ["adult"],
+        apparato: "Cardiovascolare",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "ch_c", t: "C: Scompenso cardiaco congestizio / FE ≤ 40%", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "ch_h", t: "H: Ipertensione arteriosa (o in terapia antiipertensiva)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "ch_a", t: "A₂: Età del paziente", o: [{ l: "< 65 anni", p: 0 }, { l: "65 - 74 anni", p: 1 }, { l: "≥ 75 anni", p: 2 }] },
+          { id: "ch_d", t: "D: Diabete mellito", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "ch_s", t: "S₂: Pregresso TIA, Stroke o Tromboembolismo", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
+          { id: "ch_v", t: "V: Vasculopatia nota (IMA pregresso, PAD, placca aortica)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "ch_sc", t: "Sc: Sesso femminile", o: [{ l: "Maschio", p: 0 }, { l: "Femmina", p: 1 }] }
+        ],
+        ranges: [{ min: 0, max: 0, m: "Basso rischio tromboembolico (Nessuna terapia anticoagulante)" }, { min: 1, max: 1, m: "Rischio moderato (Considerare Anticoagulanti Orali NAO/AVK)" }, { min: 2, max: 9, m: "Alto rischio tromboembolico (Terapia anticoagulante indicata)" }],
+        source: "Lip GY, et al. Refining clinical risk stratification in atrial fibrillation. Chest 2010; 137(2):263-272."
+      },
+      {
+        id: "has_bled",
+        name: "Scala HAS-BLED",
+        summary: "Rischio di sanguinamento maggiore in corso di terapia anticoagulante.",
+        howToUse: "Assegna 1 punto per ciascun fattore di rischio emorragico accertato.",
+        targets: ["adult"],
+        apparato: "Cardiovascolare",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "hb_h", t: "H: Ipertensione sistolica non controllata (> 160 mmHg)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "hb_a", t: "A: Funzione renale o epatica alterata (1 punto ciascuna)", o: [{ l: "No", p: 0 }, { l: "Una delle due alterata", p: 1 }, { l: "Entrambe alterate", p: 2 }] },
+          { id: "hb_s", t: "S: Pregresso Stroke / Ictus", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "hb_b", t: "B: Anamnesi positiva per sanguinamento maggiore o diatesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "hb_l", t: "L: INR labile o instabile (TTR < 60% se in AVK)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "hb_e", t: "E: Età > 65 anni", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "hb_d", t: "D: Uso di farmaci FANS/antiaggreganti o alcol (1 punto ciascuno)", o: [{ l: "No", p: 0 }, { l: "Uno presente", p: 1 }, { l: "Entrambi presenti", p: 2 }] }
+        ],
+        ranges: [{ min: 0, max: 2, m: "Basso rischio emorragico (Monitoraggio standard)" }, { min: 3, max: 9, m: "Alto rischio emorragico (Attenzione clinica e controlli frequenti)" }],
+        source: "Pisters R, et al. A novel user-friendly score (HAS-BLED) for assessing bleeding risk. Chest 2010; 138(5):1093-1100."
+      },
+      {
+        id: "abcd2",
+        name: "Scala ABCD₂",
+        summary: "Stratificazione del rischio di ictus ischemico a 48 ore dopo TIA.",
+        howToUse: "Valuta le 5 caratteristiche cliniche di esordio dell'attacco ischemico transitorio.",
+        targets: ["adult"],
+        apparato: "Cardiovascolare",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "ab_a", t: "A: Età ≥ 60 anni", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "ab_b", t: "B: Pressione arteriosa alla prima visita ≥ 140/90 mmHg", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "ab_c", t: "C: Clinica neurologica durante TIA", o: [{ l: "Altri sintomi (es. solo sensitivi)", p: 0 }, { l: "Disturbi del linguaggio senza debolezza", p: 1 }, { l: "Ipostenia/debolezza monolaterale", p: 2 }] },
+          { id: "ab_d", t: "D: Durata dei sintomi del TIA", o: [{ l: "< 10 minuti", p: 0 }, { l: "10 - 59 minuti", p: 1 }, { l: "≥ 60 minuti", p: 2 }] },
+          { id: "ab_diab", t: "D: Diabete mellito noto", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] }
+        ],
+        ranges: [{ min: 0, max: 3, m: "Basso rischio di ictus a 48h (Rischio ~1%)" }, { min: 4, max: 5, m: "Rischio moderato a 48h (Rischio ~4%)" }, { min: 6, max: 7, m: "Alto rischio di ictus a 48h (Rischio ~8% - Ricovero urgente)" }],
+        source: "Johnston SC, et al. Validation and refinement of scores to predict very early stroke after TIA. Lancet 2007; 369(9558):283-292."
+      },
+      {
+        id: "egsys",
+        name: "Scala EGSYS",
+        summary: "Eziologia e probabilità di sincope a origine cardiaca in pronto soccorso.",
+        howToUse: "Seleziona i fattori anamnestici, clinici ed elettrocardiografici della sincope.",
+        targets: ["adult"],
+        apparato: "Cardiovascolare",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "eg_ecg", t: "ECG anomalo e/o cardiopatia nota", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] },
+          { id: "eg_palp", t: "Presenza di palpitazioni prima della sincope", o: [{ l: "No", p: 0 }, { l: "Sì", p: 4 }] },
+          { id: "eg_eff", t: "Sincope insorta durante lo sforzo fisico", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] },
+          { id: "eg_sup", t: "Sincope avvenuta in posizione supina", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
+          { id: "eg_prod", t: "Presenza di prodromi neurovegetativi (nausea, sudorazione)", o: [{ l: "No", p: 0 }, { l: "Sì (fattore protettivo vasovagale)", p: -1 }] },
+          { id: "eg_pred", t: "Fattori scatenanti tipici (calore, ortostatismo prolungato)", o: [{ l: "No", p: 0 }, { l: "Sì (fattore protettivo vasovagale)", p: -1 }] }
+        ],
+        ranges: [{ min: -2, max: 2, m: "Bassa probabilità di sincope cardiogena (Probabile neuromediata/vasovagale)" }, { min: 3, max: 12, m: "Alta probabilità di sincope cardiaca (Indicato monitoraggio/ricovero)" }],
+        source: "Del Rosso A, et al. Clinical predictors of cardiac syncope: the EGSYS score. J Am Coll Cardiol 2008; 51(3):276-282."
+      },
+      {
+        id: "padua",
+        name: "Padua Prediction Score (PPS)",
+        summary: "Rischio di tromboembolismo venoso (TEV / TVP) nel paziente medico internistico.",
+        howToUse: "Identifica i fattori di rischio tromboembolico del paziente medico ospedalizzato.",
+        targets: ["adult"],
+        apparato: "Cardiovascolare",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "pd_canc", t: "Neoplasia attiva / metastasi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] },
+          { id: "pd_tev", t: "Pregresso tromboembolismo venoso (TVP/EP)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] },
+          { id: "pd_mob", t: "Ridotta mobilità / allettamento con bagno per ≥ 3 giorni", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] },
+          { id: "pd_tromb", t: "Trombofilia nota (deficit prot C/S, fattore V Leiden)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] },
+          { id: "pd_trauma", t: "Trauma recente o chirurgia maggiore ≤ 1 mese", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
+          { id: "pd_age", t: "Età ≥ 70 anni", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "pd_heart", t: "Insufficienza cardiaca o respiratoria acuta", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "pd_inf", t: "Infezione acuta o malattia reumatologica attiva", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "pd_bmi", t: "Obesità (BMI ≥ 30)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] }
+        ],
+        ranges: [{ min: 0, max: 3, m: "Basso rischio TEV (Profilassi farmacologica non raccomandata di routine)" }, { min: 4, max: 20, m: "Alto rischio TEV (Indicata tromboprofilassi con EBPM)" }],
+        source: "Barbar S, et al. A risk assessment model for identification of hospitalized medical patients at risk for VTE. J Thromb Haemost 2010; 8(11):2450-2457."
+      },
+
+      // 6. APPARATO GASTROINTESTINALE E NUTRIZIONALE – MODELLO 2: NUTRIZIONE E METABOLISMO
+      {
+        id: "mna_sf",
+        name: "MNA-SF (Mini Nutritional Assessment Short-Form)",
+        summary: "Screening sintetico dello stato di nutrizione e rischio malnutrizione nell'anziano.",
+        howToUse: "Compila i 6 item anamnestico-antropometrici dello screening nutrizionale.",
+        targets: ["adult"],
+        apparato: "Gastrointestinale",
+        gordon: "Modello 2: Nutrizionale - Metabolico",
+        items: [
+          { id: "mn_food", t: "A. Riduzione dell'assunzione di cibo negli ultimi 3 mesi", o: [{ l: "Grave diminuzione", p: 0 }, { l: "Moderata diminuzione", p: 1 }, { l: "Nessuna diminuzione", p: 2 }] },
+          { id: "mn_loss", t: "B. Perdita di peso recente negli ultimi 3 mesi", o: [{ l: "Perdita > 3 kg", p: 0 }, { l: "Non nota", p: 1 }, { l: "Perdita tra 1 e 3 kg", p: 2 }, { l: "Nessuna perdita", p: 3 }] },
+          { id: "mn_mob", t: "C. Mobilità", o: [{ l: "Allettato o in carrozzina", p: 0 }, { l: "In grado di alzarsi ma non esce", p: 1 }, { l: "Autonomo nell'uscire di casa", p: 2 }] },
+          { id: "mn_stress", t: "D. Malattia acuta o stress psicologico negli ultimi 3 mesi", o: [{ l: "Sì", p: 0 }, { l: "No", p: 2 }] },
+          { id: "mn_neuro", t: "E. Problemi neuropsicologici", o: [{ l: "Demenza grave o depressione severa", p: 0 }, { l: "Demenza o depressione lieve", p: 1 }, { l: "Nessun problema psicologico", p: 2 }] },
+          { id: "mn_bmi", t: "F. Indice di Massa Corporea (BMI in kg/m²)", o: [{ l: "BMI < 19", p: 0 }, { l: "BMI 19 - 20.9", p: 1 }, { l: "BMI 21 - 22.9", p: 2 }, { l: "BMI ≥ 23", p: 3 }] }
+        ],
+        ranges: [{ min: 0, max: 7, m: "Malnutrito (Intervento nutrizionale urgente)" }, { min: 8, max: 11, m: "A rischio di malnutrizione" }, { min: 12, max: 14, m: "Stato nutrizionale normale" }],
+        source: "Rubenstein LZ, et al. Screening for undernutrition in geriatric practice: developing the short-form MNA. J Gerontol 2001; 56(6):M366-M372."
+      },
+      {
+        id: "must",
+        name: "MUST (Malnutrition Universal Screening Tool)",
+        summary: "Screening universale della malnutrizione nell'adulto in ospedale o territorio.",
+        howToUse: "Combina BMI attuale, calo ponderale non intenzionale e malattia acuta.",
+        targets: ["adult"],
+        apparato: "Gastrointestinale",
+        gordon: "Modello 2: Nutrizionale - Metabolico",
+        items: [
+          { id: "mu_bmi", t: "Step 1: Punteggio BMI (kg/m²)", o: [{ l: "BMI > 20 (> 30 obeso)", p: 0 }, { l: "BMI 18.5 - 20", p: 1 }, { l: "BMI < 18.5", p: 2 }] },
+          { id: "mu_loss", t: "Step 2: Calo ponderale involontario negli ultimi 3-6 mesi", o: [{ l: "< 5%", p: 0 }, { l: "5 - 10%", p: 1 }, { l: "> 10%", p: 2 }] },
+          { id: "mu_acute", t: "Step 3: Effetto di malattia acuta (digiuno/no apporto per > 5 giorni)", o: [{ l: "No", p: 0 }, { l: "Sì, gravemente malato senza introiti", p: 2 }] }
+        ],
+        ranges: [{ min: 0, max: 0, m: "Basso rischio (Assistenza clinica ordinaria)" }, { min: 1, max: 1, m: "Medio rischio (Monitoraggio documentato per 1 settimana)" }, { min: 2, max: 6, m: "Alto rischio malnutrizione (Trattamento e dietista/supporto clinico)" }],
+        source: "Todorovic V, et al. The MUST report. BAPEN 2003."
+      },
+      {
+        id: "nrs2002",
+        name: "NRS 2002 (Nutritional Risk Screening)",
+        summary: "Rilevazione del rischio nutrizionale nel paziente ricoverato (ESPEN).",
+        howToUse: "Valuta compromissione dello stato nutrizionale, severità di malattia ed età.",
+        targets: ["adult"],
+        apparato: "Gastrointestinale",
+        gordon: "Modello 2: Nutrizionale - Metabolico",
+        items: [
+          { id: "nr_stat", t: "1. Stato nutrizionale alterato", o: [{ l: "Assente (normonutrito)", p: 0 }, { l: "Lieve: calo >5% in 3 mesi o intake 50-75%", p: 1 }, { l: "Moderato: calo >5% in 2 mesi o intake 25-50%", p: 2 }, { l: "Grave: calo >5% in 1 mese o BMI <18.5", p: 3 }] },
+          { id: "nr_sev", t: "2. Severità della malattia / Stress metabolico", o: [{ l: "Assente (fabbisogni normali)", p: 0 }, { l: "Lieve: frattura femore, cirrosi, BPCO, dialisi", p: 1 }, { l: "Moderata: chirurgia addominale maggiore, ictus, polmonite", p: 2 }, { l: "Grave: trauma cranico, trapianto midollo, UTI (APACHE>10)", p: 3 }] },
+          { id: "nr_age", t: "3. Fattore correttivo dell'età", o: [{ l: "Età < 70 anni", p: 0 }, { l: "Età ≥ 70 anni", p: 1 }] }
+        ],
+        ranges: [{ min: 0, max: 2, m: "Non a rischio nutrizionale (Rivalutare settimanalmente)" }, { min: 3, max: 7, m: "A RISCHIO NUTRIZIONALE (Impostare piano di supporto nutrizionale)" }],
+        source: "Kondrup J, et al. Nutritional risk screening (NRS 2002): a new method based on an analysis of controlled clinical trials. Clin Nutr 2003; 22(3):321-336."
+      },
+
+      // 7. APPARATO URINARIO E INTESTINALE – MODELLO 3: ELIMINAZIONE
+      {
+        id: "incont_urina",
+        name: "Scala Valutazione Incontinenza Urinaria (ICIQ-UI Short Form)",
+        summary: "Severità e frequenza delle perdite urinarie e impatto sulla qualità di vita.",
+        howToUse: "Quantifica frequenza, volume delle perdite involontarie di urina e impatto quotidiano.",
+        targets: ["adult"],
+        apparato: "Urinario e Intestinale",
+        gordon: "Modello 3: Eliminazione",
+        items: [
+          { id: "iu_freq", t: "Quanto spesso perdi urina?", o: [{ l: "Mai", p: 0 }, { l: "Circa una volta a settimana o meno", p: 1 }, { l: "Due o tre volte a settimana", p: 2 }, { l: "Circa una volta al giorno", p: 3 }, { l: "Diverse volte al giorno", p: 4 }, { l: "Continuamente", p: 5 }] },
+          { id: "iu_vol", t: "Quanta urina perdi di solito?", o: [{ l: "Nessuna perdita", p: 0 }, { l: "Una piccola quantità (gocce)", p: 2 }, { l: "Una quantità moderata", p: 4 }, { l: "Una grande quantità (svuotamento)", p: 6 }] },
+          { id: "iu_imp", t: "Quanto queste perdite disturbano la tua vita da 0 a 10?", o: [{ l: "0 (Per nulla)", p: 0 }, { l: "1 - 3 (Lieve disturbo)", p: 2 }, { l: "4 - 6 (Disturbo moderato)", p: 5 }, { l: "7 - 10 (Gravemente invalidante)", p: 8 }] }
+        ],
+        ranges: [{ min: 0, max: 0, m: "Paziente continente" }, { min: 1, max: 5, m: "Incontinenza urinaria lieve" }, { min: 6, max: 12, m: "Incontinenza urinaria moderata" }, { min: 13, max: 19, m: "Incontinenza urinaria grave / severa" }],
+        source: "Avery K, et al. ICIQ: a brief and robust measure for evaluating the symptoms and impact of urinary incontinence. Neurourol Urodyn 2004; 23(4):322-330."
+      },
+      {
+        id: "incont_fecale",
+        name: "Scala Incontinenza Fecale (Wexner / Cleveland Clinic Incontinence)",
+        summary: "Frequenza della perdita sfinterica di gas, feci liquide o solide e uso di presidi.",
+        howToUse: "Assegna da 0 (mai) a 4 (sempre) per ciascuna delle 5 voci cliniche.",
+        targets: ["adult", "pedia"],
+        apparato: "Urinario e Intestinale",
+        gordon: "Modello 3: Eliminazione",
+        items: [
+          { id: "if_sol", t: "Incontinenza a feci solide", o: [{ l: "Mai", p: 0 }, { l: "Raramente (<1 al mese)", p: 1 }, { l: "Talvolta (<1 a settimana)", p: 2 }, { l: "Spesso (≥1 a settimana)", p: 3 }, { l: "Sempre (giornaliera)", p: 4 }] },
+          { id: "if_liq", t: "Incontinenza a feci liquide", o: [{ l: "Mai", p: 0 }, { l: "Raramente", p: 1 }, { l: "Talvolta", p: 2 }, { l: "Spesso", p: 3 }, { l: "Sempre", p: 4 }] },
+          { id: "if_gas", t: "Incontinenza ai gas", o: [{ l: "Mai", p: 0 }, { l: "Raramente", p: 1 }, { l: "Talvolta", p: 2 }, { l: "Spesso", p: 3 }, { l: "Sempre", p: 4 }] },
+          { id: "if_pad", t: "Necessità di indossare pannolino / assorbente", o: [{ l: "Mai", p: 0 }, { l: "Raramente", p: 1 }, { l: "Talvolta", p: 2 }, { l: "Spesso", p: 3 }, { l: "Sempre", p: 4 }] },
+          { id: "if_life", t: "Alterazione dello stile di vita (evita di uscire)", o: [{ l: "Mai", p: 0 }, { l: "Raramente", p: 1 }, { l: "Talvolta", p: 2 }, { l: "Spesso", p: 3 }, { l: "Sempre", p: 4 }] }
+        ],
+        ranges: [{ min: 0, max: 0, m: "Perfetta continenza anale" }, { min: 1, max: 7, m: "Incontinenza fecale lieve" }, { min: 8, max: 14, m: "Incontinenza fecale moderata" }, { min: 15, max: 20, m: "Grave incontinenza fecale" }],
+        source: "Jorge JM, Wexner SD. Etiology and management of fecal incontinence. Dis Colon Rectum 1993; 36(1):77-97."
       },
       {
         id: "bristol",
         name: "Scala di Bristol (BSFS)",
-        summary: "Forma e consistenza delle feci umane.",
-        howToUse: "Identifica la tipologia fecale da tipo 1 a tipo 7.",
-        target: "adult",
-        apparato: "Escrezione",
-        gordon: "Eliminazione",
+        summary: "Classificazione visiva della forma e consistenza delle feci umane.",
+        howToUse: "Individua la forma prevalente delle feci eliminate da tipo 1 a tipo 7.",
+        targets: ["adult", "pedia"],
+        apparato: "Urinario e Intestinale",
+        gordon: "Modello 3: Eliminazione",
         items: [
           {
             id: "b_type",
             t: "Tipologia fecale",
             o: [
-              { l: "Tipo 1: Grumi duri e separati (nocciole)", p: 1 },
-              { l: "Tipo 2: A salsiccia, ma formata da grumi", p: 2 },
-              { l: "Tipo 3: Come una salsiccia, con crepe sulla superficie", p: 3 },
-              { l: "Tipo 4: Come un serpente o salsiccia, liscia e morbida", p: 4 },
+              { l: "Tipo 1: Grumi duri separati (nocciole)", p: 1 },
+              { l: "Tipo 2: A salsiccia ma formata da grumi", p: 2 },
+              { l: "Tipo 3: Come una salsiccia con crepe", p: 3 },
+              { l: "Tipo 4: Come un serpente o salsiccia liscia e morbida", p: 4 },
               { l: "Tipo 5: Pezzi morbidi con bordi netti", p: 5 },
               { l: "Tipo 6: Pezzi soffici con bordi frastagliati", p: 6 },
-              { l: "Tipo 7: Acquosa, nessun pezzo solido", p: 7 }
+              { l: "Tipo 7: Acquosa, senza pezzi solidi", p: 7 }
             ]
           }
         ],
-        ranges: [{ min: 1, max: 2, m: "Costipazione / Stipsi marcata" }, { min: 3, max: 4, m: "Feci ideali e normoformate" }, { min: 5, max: 6, m: "Tendenza diarroica" }, { min: 7, max: 7, m: "Diarrea acquosa" }],
+        ranges: [{ min: 1, max: 2, m: "Costipazione / Stipsi severa" }, { min: 3, max: 4, m: "Feci ideali e normoformate" }, { min: 5, max: 6, m: "Tendenza diarroica / Feci sfatte" }, { min: 7, max: 7, m: "Diarrea acquosa" }],
         source: "Lewis SJ, Heaton KW. Scand J Gastroenterol 1997; 32(9):920-924."
       },
 
-      // PEDIATRICO
+      // 8. APPARATO SENSORIALE E DOLORE – MODELLO 6: COGNITIVO E PERCETTIVO
       {
-        id: "apgar",
-        name: "Indice di Apgar",
-        summary: "Adattamento neonatale a 1 e 5 minuti dalla nascita.",
-        howToUse: "Valuta i 5 parametri clinici standard alla nascita.",
-        target: "pedia",
-        apparato: "Cardiovascolare",
-        gordon: "Percezione - Gestione salute",
+        id: "nrs",
+        name: "Scala NRS (Numerical Rating Scale)",
+        summary: "Autovalutazione unidimensionale del dolore da 0 a 10.",
+        howToUse: "Chiedi al paziente di quantificare il dolore attuale da 0 (nessuno) a 10 (massimo dolore).",
+        targets: ["adult"],
+        apparato: "Sensoriale e Dolore",
+        gordon: "Modello 6: Cognitivo - Percettivo",
         items: [
-          { id: "ap_hr", t: "Frequenza cardiaca", o: [{ l: "Assente", p: 0 }, { l: "< 100 bpm", p: 1 }, { l: "≥ 100 bpm", p: 2 }] },
-          { id: "ap_rr", t: "Respirazione ed espansione", o: [{ l: "Assente", p: 0 }, { l: "Lenta, irregolare, pianto debole", p: 1 }, { l: "Buona, vigorosa, pianto valido", p: 2 }] },
-          { id: "ap_tone", t: "Tono muscolare", o: [{ l: "Atonico / Flaccido", p: 0 }, { l: "Lieve flessione delle estremità", p: 1 }, { l: "Movimenti attivi e vivaci", p: 2 }] },
-          { id: "ap_reflex", t: "Riflessi ed eccitabilità", o: [{ l: "Nessuna risposta", p: 0 }, { l: "Smorfia o pianto debole", p: 1 }, { l: "Pianto vigoroso, tosse, starnuto", p: 2 }] },
-          { id: "ap_color", t: "Colorito cutaneo", o: [{ l: "Cianotico o pallido", p: 0 }, { l: "Corpo roseo, estremità cianotiche", p: 1 }, { l: "Completamente roseo", p: 2 }] }
+          { id: "p_nrs", t: "Intensità del dolore", o: [{ l: "0 - Nessun dolore", p: 0 }, { l: "1", p: 1 }, { l: "2", p: 2 }, { l: "3 - Lieve", p: 3 }, { l: "4", p: 4 }, { l: "5", p: 5 }, { l: "6 - Moderato", p: 6 }, { l: "7", p: 7 }, { l: "8", p: 8 }, { l: "9", p: 9 }, { l: "10 - Massimo dolore possibile", p: 10 }] }
         ],
-        ranges: [{ min: 7, max: 10, m: "Condizioni ottime / Normale adattamento" }, { min: 4, max: 6, m: "Difficoltà moderata (Assistenza/O2)" }, { min: 0, max: 3, m: "Grave asfissia / Rianimazione immediata" }],
-        source: "Apgar V. Curr Res Anesth Analg 1953; 32(4):260-267."
+        ranges: [{ min: 0, max: 0, m: "Nessun dolore" }, { min: 1, max: 3, m: "Dolore lieve" }, { min: 4, max: 6, m: "Dolore moderato" }, { min: 7, max: 10, m: "Dolore severo / Intenso" }],
+        source: "Downie WW, et al. Ann Rheum Dis 1978; 37:378-381."
+      },
+      {
+        id: "painad",
+        name: "Scala PAINAD (Pain Assessment in Advanced Dementia)",
+        summary: "Valutazione osservazionale del dolore nel paziente con demenza avanzata o afasico.",
+        howToUse: "Osserva il paziente per 5 minuti e assegna da 0 a 2 per ciascun parametro.",
+        targets: ["adult"],
+        apparato: "Sensoriale e Dolore",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          { id: "pn_resp", t: "Respiro (indipendente dalla vocalizzazione)", o: [{ l: "Normale", p: 0 }, { l: "Affannoso o iperventilazione breve", p: 1 }, { l: "Respiro rumoroso, faticoso o Cheyne-Stokes", p: 2 }] },
+          { id: "pn_voc", t: "Vocalizzazione negativa", o: [{ l: "Nessuna", p: 0 }, { l: "Gemiti occasionali, tono basso o lamentele", p: 1 }, { l: "Grida, urla o lamenti continui", p: 2 }] },
+          { id: "pn_exp", t: "Espressione facciale", o: [{ l: "Sorriso, rilassata, neutra", p: 0 }, { l: "Triste, corrucciata, smorfia occasionale", p: 1 }, { l: "Smorfia marcata e costante, occhi serrati", p: 2 }] },
+          { id: "pn_body", t: "Linguaggio corporeo", o: [{ l: "Rilassato", p: 0 }, { l: "Teso, irrequieto, pugni chiusi", p: 1 }, { l: "Rigido, pugni serrati, pugni, retrazione marcata", p: 2 }] },
+          { id: "pn_cons", t: "Consolabilità", o: [{ l: "Nessuna necessità di consolazione", p: 0 }, { l: "Rassicurato da voce, tocco o distrazione", p: 1 }, { l: "Impossibile da consolare o distrarre", p: 2 }] }
+        ],
+        ranges: [{ min: 0, max: 0, m: "Assenza di dolore" }, { min: 1, max: 3, m: "Dolore lieve" }, { min: 4, max: 6, m: "Dolore moderato" }, { min: 7, max: 10, m: "Dolore severo" }],
+        source: "Warden V, Hurley AC, Volicer L. Development and psychometric evaluation of the PAINAD. J Am Med Dir Assoc 2003; 4(1):9-15."
       },
       {
         id: "flacc",
         name: "Scala FLACC",
-        summary: "Dolore pediatrico (2 mesi - 7 anni) o non comunicante.",
-        howToUse: "Osserva il bambino per 1-5 minuti e assegna il punteggio da 0 a 2.",
-        target: "pedia",
-        apparato: "Dolore",
-        gordon: "Cognitivo - Percettivo",
+        summary: "Dolore pediatrico (2 mesi - 7 anni) o paziente adulto non comunicante.",
+        howToUse: "Valuta le 5 aree comportamentali (viso, gambe, attività, pianto, consolabilità).",
+        targets: ["adult", "pedia"],
+        apparato: "Sensoriale e Dolore",
+        gordon: "Modello 6: Cognitivo - Percettivo",
         items: [
-          { id: "f", t: "Facciale (Face)", o: [{ l: "Rilassata, neutra, sorridente", p: 0 }, { l: "Occasionale smorfia, fronte corrucciata", p: 1 }, { l: "Mento tremante, mascella serrata", p: 2 }] },
-          { id: "l", t: "Gambe (Legs)", o: [{ l: "Posizione normale o rilassata", p: 0 }, { l: "Irrequiete, tese", p: 1 }, { l: "Calci, gambe tese o flesse", p: 2 }] },
-          { id: "a", t: "Attività (Activity)", o: [{ l: "Tranquillo, si muove normalmente", p: 0 }, { l: "Si contorce, cambia posizione", p: 1 }, { l: "Incurvato, rigido, a scatti", p: 2 }] },
-          { id: "c", t: "Pianto (Cry)", o: [{ l: "Nessun pianto", p: 0 }, { l: "Lamenti o gemiti occasionali", p: 1 }, { l: "Pianto costante, urla", p: 2 }] },
-          { id: "co", t: "Consolabilità", o: [{ l: "Calmo, non necessita consolazione", p: 0 }, { l: "Rassicurato da carezze o voce", p: 1 }, { l: "Difficile o impossibile da consolare", p: 2 }] }
+          { id: "f", t: "F - Facciale (Face)", o: [{ l: "Rilassata, neutra, sorridente", p: 0 }, { l: "Occasionale smorfia, fronte corrucciata", p: 1 }, { l: "Mento tremante, mascella serrata", p: 2 }] },
+          { id: "l", t: "L - Gambe (Legs)", o: [{ l: "Posizione normale o rilassata", p: 0 }, { l: "Irrequiete, tese", p: 1 }, { l: "Calci, gambe tese o flesse", p: 2 }] },
+          { id: "a", t: "A - Attività (Activity)", o: [{ l: "Tranquillo, si muove normalmente", p: 0 }, { l: "Si contorce, cambia posizione", p: 1 }, { l: "Incurvato, rigido, a scatti", p: 2 }] },
+          { id: "c", t: "C - Pianto (Cry)", o: [{ l: "Nessun pianto", p: 0 }, { l: "Lamenti o gemiti occasionali", p: 1 }, { l: "Pianto costante, urla", p: 2 }] },
+          { id: "co", t: "C - Consolabilità", o: [{ l: "Calmo, non serve conforto", p: 0 }, { l: "Rassicurato da carezze o voce", p: 1 }, { l: "Difficile o impossibile da consolare", p: 2 }] }
         ],
         ranges: [{ min: 0, max: 0, m: "Rilassato (Nessun dolore)" }, { min: 1, max: 3, m: "Dolore lieve" }, { min: 4, max: 6, m: "Dolore moderato" }, { min: 7, max: 10, m: "Dolore severo" }],
-        source: "Merkel SI, et al. Pediatr Nurs 1997; 23(3):293-297."
+        source: "Merkel SI, et al. The FLACC: a behavioral scale. Pediatr Nurs 1997; 23(3):293-297."
+      },
+      {
+        id: "bps",
+        name: "Scala BPS (Behavioral Pain Scale)",
+        summary: "Dolore nel paziente adulto sedato e intubato in terapia intensiva.",
+        howToUse: "Attribuisci da 1 a 4 alle 3 dimensioni comportamentali durante la mobilizzazione o aspirazione.",
+        targets: ["adult"],
+        apparato: "Sensoriale e Dolore",
+        gordon: "Modello 6: Cognitivo - Percettivo",
+        items: [
+          { id: "bp_face", t: "Espressione facciale", o: [{ l: "Completamente rilassata", p: 1 }, { l: "Parzialmente tesa (fronte corrucciata)", p: 2 }, { l: "Totalmente contratta (occhi serrati)", p: 3 }, { l: "Smorfia permanente di sofferenza", p: 4 }] },
+          { id: "bp_arms", t: "Movimenti degli arti superiori", o: [{ l: "Nessun movimento", p: 1 }, { l: "Parzialmente flessi", p: 2 }, { l: "Completamente flessi con pugni chiusi", p: 3 }, { l: "Retrazione permanente / Tenta di estubarsi", p: 4 }] },
+          { id: "bp_vent", t: "Tolleranza alla ventilazione meccanica", o: [{ l: "Tollera bene il ventilatore", p: 1 }, { l: "Tossisce ma tollera la maggior parte dei cicli", p: 2 }, { l: "Lotta contro il ventilatore / Disadattamento", p: 3 }, { l: "Asincronia totale / Ventilazione ostacolata", p: 4 }] }
+        ],
+        ranges: [{ min: 3, max: 5, m: "Nessun dolore o dolore lieve ben controllato" }, { min: 6, max: 8, m: "Dolore moderato (Necessario adeguamento analgesico)" }, { min: 9, max: 12, m: "Dolore severo non controllato" }],
+        source: "Payen JF, et al. Assessing pain in critically ill sedated patients by using a behavioral pain scale. Crit Care Med 2001; 29(12):2258-2263."
       },
       {
         id: "wong_baker",
         name: "Scala dei Volti di Wong-Baker",
-        summary: "Autovalutazione del dolore pediatrico (dai 3 anni in su).",
-        howToUse: "Mostra i volti disegnati e chiedi al bambino di scegliere il viso.",
-        target: "pedia",
-        apparato: "Dolore",
-        gordon: "Cognitivo - Percettivo",
+        summary: "Autovalutazione analogica del dolore mediante espressioni facciali (bambini ≥ 3 anni).",
+        howToUse: "Fai indicare al bambino il viso che corrisponde a quanto male sente.",
+        targets: ["pedia"],
+        apparato: "Sensoriale e Dolore",
+        gordon: "Modello 6: Cognitivo - Percettivo",
         items: [
           {
-            id: "wb",
-            t: "Espressione facciale scelta dal bambino",
+            id: "wb_v",
+            t: "Viso scelto",
             o: [
               { l: "Viso 0: Molto felice (Nessun dolore)", p: 0 },
               { l: "Viso 2: Fa male solo un pochino", p: 2 },
               { l: "Viso 4: Fa male un po' di più", p: 4 },
               { l: "Viso 6: Fa ancora più male", p: 6 },
               { l: "Viso 8: Fa davvero molto male", p: 8 },
-              { l: "Viso 10: Fa il massimo male possibile (in lacrime)", p: 10 }
+              { l: "Viso 10: Fa il massimo male possibile", p: 10 }
             ]
           }
         ],
         ranges: [{ min: 0, max: 0, m: "Nessun dolore" }, { min: 2, max: 4, m: "Dolore lieve" }, { min: 6, max: 6, m: "Dolore moderato" }, { min: 8, max: 10, m: "Dolore severo" }],
-        source: "Wong DL, Baker CM. 1988."
+        source: "Wong DL, Baker CM. Reference manual for the Wong-Baker FACES Pain Rating Scale 1988."
+      },
+
+      // 9. APPARATO PSICHICO E SFERA EMOTIVA – MODELLO 10: COPING E TOLLERANZA ALLO STRESS
+      {
+        id: "gds",
+        name: "Scala GDS (Geriatric Depression Scale - 15 item)",
+        summary: "Screening della depressione nella popolazione anziana.",
+        howToUse: "Poni le 15 domande con risposta Sì/No riferite all'ultima settimana.",
+        targets: ["adult"],
+        apparato: "Psichico ed Emotivo",
+        gordon: "Modello 10: Coping - Tolleranza stress",
+        items: [
+          { id: "gd_1", t: "È sostanzialmente soddisfatto della sua vita?", o: [{ l: "Sì", p: 0 }, { l: "No", p: 1 }] },
+          { id: "gd_2", t: "Ha abbandonato molte delle sue attività e interessi?", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "gd_3", t: "Sente che la sua vita è vuota?", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "gd_4", t: "Si sente spesso annoiato?", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "gd_5", t: "È di buon umore per la maggior parte del tempo?", o: [{ l: "Sì", p: 0 }, { l: "No", p: 1 }] },
+          { id: "gd_6", t: "Ha paura che le stia per succedere qualcosa di brutto?", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "gd_7", t: "Si sente felice per la maggior parte del tempo?", o: [{ l: "Sì", p: 0 }, { l: "No", p: 1 }] },
+          { id: "gd_8", t: "Si sente spesso impotente o senza speranza?", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] }
+        ],
+        ranges: [{ min: 0, max: 2, m: "Normale (Umore eutimico / Assenza di depressione)" }, { min: 3, max: 5, m: "Sospetta depressione lieve (Necessario approfondimento)" }, { min: 6, max: 8, m: "Probabile depressione severa" }],
+        source: "Sheikh JI, Yesavage JA. Geriatric Depression Scale (GDS): recent evidence and development of a shorter version. Clin Gerontol 1986; 5:165-173."
+      },
+      {
+        id: "adrs",
+        name: "Scala ADRS (Alzheimer’s Disease-Related Depression Scale)",
+        summary: "Rilevazione dei sintomi depressivi nel paziente affetto da demenza o decadimento cognitivo.",
+        howToUse: "Valuta le manifestazioni comportamentali ed emotive riportate dal caregiver o infermiere.",
+        targets: ["adult"],
+        apparato: "Psichico ed Emotivo",
+        gordon: "Modello 10: Coping - Tolleranza stress",
+        items: [
+          { id: "ad_sad", t: "Espressione di tristezza, pianto o disperazione", o: [{ l: "Assente", p: 0 }, { l: "Rara o lieve", p: 1 }, { l: "Frequente e marcata", p: 2 }] },
+          { id: "ad_anx", t: "Ansia, agitazione motoria, inquietudine continua", o: [{ l: "Assente", p: 0 }, { l: "Moderata", p: 1 }, { l: "Grave e costante", p: 2 }] },
+          { id: "ad_apat", t: "Apatia, perdita di reattività agli stimoli piacevoli", o: [{ l: "Assente", p: 0 }, { l: "Presente a tratti", p: 1 }, { l: "Completa perdita di interesse", p: 2 }] },
+          { id: "ad_somatic", t: "Lamentele somatiche ricorrenti o insonnia", o: [{ l: "Assenti", p: 0 }, { l: "Occasionali", p: 1 }, { l: "Costanti ogni giorno", p: 2 }] }
+        ],
+        ranges: [{ min: 0, max: 2, m: "Assenza di depressione significativa" }, { min: 3, max: 5, m: "Sintomi depressivi moderati correlati a demenza" }, { min: 6, max: 8, m: "Sindrome depressiva marcata" }],
+        source: "Sultzer DL, et al. The Alzheimer's Disease-Related Depression Scale. Am J Geriatr Psychiatry 2002."
+      },
+      {
+        id: "gad7",
+        name: "Scala per l'Ansia (GAD-7)",
+        summary: "Screening e quantificazione della severità del disturbo d'ansia generalizzato.",
+        howToUse: "Frequenza dei disturbi d'ansia avvertiti nelle ultime 2 settimane da 0 a 3.",
+        targets: ["adult"],
+        apparato: "Psichico ed Emotivo",
+        gordon: "Modello 10: Coping - Tolleranza stress",
+        items: [
+          { id: "ga_1", t: "Sentirsi nervoso, ansioso o con i nervi a fior di pelle", o: [{ l: "Mai", p: 0 }, { l: "Diversi giorni", p: 1 }, { l: "Più di metà dei giorni", p: 2 }, { l: "Quasi ogni giorno", p: 3 }] },
+          { id: "ga_2", t: "Non riuscire a smettere o a controllare le preoccupazioni", o: [{ l: "Mai", p: 0 }, { l: "Diversi giorni", p: 1 }, { l: "Più di metà dei giorni", p: 2 }, { l: "Quasi ogni giorno", p: 3 }] },
+          { id: "ga_3", t: "Difficoltà a rilassarsi", o: [{ l: "Mai", p: 0 }, { l: "Diversi giorni", p: 1 }, { l: "Più di metà dei giorni", p: 2 }, { l: "Quasi ogni giorno", p: 3 }] },
+          { id: "ga_4", t: "Irrequietezza tale da rendere difficile stare fermo", o: [{ l: "Mai", p: 0 }, { l: "Diversi giorni", p: 1 }, { l: "Più di metà dei giorni", p: 2 }, { l: "Quasi ogni giorno", p: 3 }] }
+        ],
+        ranges: [{ min: 0, max: 3, m: "Livello di ansia minimo o nullo" }, { min: 4, max: 7, m: "Ansia lieve" }, { min: 8, max: 12, m: "Ansia moderata / severa (Consigliata valutazione specialistica)" }],
+        source: "Spitzer RL, et al. A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med 2006; 166(10):1092-1097."
+      },
+
+      // 10. APPARATO DEL SONNO – MODELLO 5: SONNO E RIPOSO
+      {
+        id: "psqi",
+        name: "PSQI (Pittsburgh Sleep Quality Index - Sintetico)",
+        summary: "Valutazione della qualità del sonno e dei disturbi notturni nell'ultimo mese.",
+        howToUse: "Valuta le dimensioni di latenza, durata, disturbi e sonnolenza diurna.",
+        targets: ["adult"],
+        apparato: "Sonno e Riposo",
+        gordon: "Modello 5: Sonno - Riposo",
+        items: [
+          { id: "ps_qual", t: "Qualità soggettiva complessiva del sonno", o: [{ l: "Molto buona", p: 0 }, { l: "Abbastanza buona", p: 1 }, { l: "Abbastanza cattiva", p: 2 }, { l: "Molto cattiva", p: 3 }] },
+          { id: "ps_lat", t: "Tempo per addormentarsi (latenza)", o: [{ l: "≤ 15 minuti", p: 0 }, { l: "16 - 30 minuti", p: 1 }, { l: "31 - 60 minuti", p: 2 }, { l: "> 60 minuti", p: 3 }] },
+          { id: "ps_dur", t: "Ore effettive di sonno per notte", o: [{ l: "> 7 ore", p: 0 }, { l: "6 - 7 ore", p: 1 }, { l: "5 - 6 ore", p: 2 }, { l: "< 5 ore", p: 3 }] },
+          { id: "ps_med", t: "Uso di farmaci per dormire", o: [{ l: "Mai", p: 0 }, { l: "Meno di una volta a settimana", p: 1 }, { l: "1-2 volte a settimana", p: 2 }, { l: "≥ 3 volte a settimana", p: 3 }] }
+        ],
+        ranges: [{ min: 0, max: 4, m: "Buona qualità del sonno (Buon dormitore)" }, { min: 5, max: 12, m: "Cattiva qualità del sonno / Presenza di disturbi del sonno (Cut-off > 5)" }],
+        source: "Buysse DJ, et al. The Pittsburgh Sleep Quality Index: a new instrument for psychiatric practice and research. Psychiatry Res 1989; 28(2):193-213."
+      },
+      {
+        id: "ess",
+        name: "Epworth Sleepiness Scale (ESS)",
+        summary: "Misura della sonnolenza diurna e propensione al sonno nelle situazioni quotidiane.",
+        howToUse: "Attribuisci la probabilità di assopirsi da 0 (mai) a 3 (alta) in ciascun scenario.",
+        targets: ["adult"],
+        apparato: "Sonno e Riposo",
+        gordon: "Modello 5: Sonno - Riposo",
+        items: [
+          { id: "es_sit", t: "Seduto mentre leggi", o: [{ l: "Nessuna probabilità (0)", p: 0 }, { l: "Lieve (1)", p: 1 }, { l: "Moderata (2)", p: 2 }, { l: "Alta (3)", p: 3 }] },
+          { id: "es_tv", t: "Guardando la televisione", o: [{ l: "Nessuna probabilità (0)", p: 0 }, { l: "Lieve (1)", p: 1 }, { l: "Moderata (2)", p: 2 }, { l: "Alta (3)", p: 3 }] },
+          { id: "es_pub", t: "Seduto inattivo in un luogo pubblico (es. sala d'attesa)", o: [{ l: "Nessuna probabilità (0)", p: 0 }, { l: "Lieve (1)", p: 1 }, { l: "Moderata (2)", p: 2 }, { l: "Alta (3)", p: 3 }] },
+          { id: "es_car", t: "Passeggero in auto per un'ora senza interruzioni", o: [{ l: "Nessuna probabilità (0)", p: 0 }, { l: "Lieve (1)", p: 1 }, { l: "Moderata (2)", p: 2 }, { l: "Alta (3)", p: 3 }] },
+          { id: "es_rest", t: "Sdraiato per riposare nel pomeriggio", o: [{ l: "Nessuna probabilità (0)", p: 0 }, { l: "Lieve (1)", p: 1 }, { l: "Moderata (2)", p: 2 }, { l: "Alta (3)", p: 3 }] }
+        ],
+        ranges: [{ min: 0, max: 7, m: "Sonnolenza diurna nella norma" }, { min: 8, max: 9, m: "Sonnolenza media borderline" }, { min: 10, max: 15, m: "Eccessiva sonnolenza diurna (Possibile apnea ostruttiva OSAS)" }],
+        source: "Johns MW. A new method for measuring daytime sleepiness: the Epworth sleepiness scale. Sleep 1991; 14(6):540-545."
+      },
+
+      // 11. AREA ASSISTENZIALE, CADUTE E CONTINUITÀ DELLE CURE – MODELLO 1 & MODELLO 4
+      {
+        id: "conley",
+        name: "Scala di Conley",
+        summary: "Screening rapido del rischio di caduta nel paziente ospedalizzato.",
+        howToUse: "Rispondi alle domande per individuare la propensione al rischio di caduta.",
+        targets: ["adult"],
+        apparato: "Area Assistenziale e Cadute",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "c1", t: "Cadute negli ultimi 3 mesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "c2", t: "Vertigini o capogiri", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "c3", t: "Incontinenza urinaria o fecale", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "c4", t: "Giudizio deteriorato (non riconosce i propri limiti)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
+          { id: "c5", t: "Agitazione psicomotoria", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
+          { id: "c6", t: "Difficoltà nella deambulazione / mobilità ridotta", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] }
+        ],
+        ranges: [{ min: 0, max: 1, m: "Basso rischio di caduta" }, { min: 2, max: 10, m: "Alto rischio di caduta (Attivare protocollo preventivo)" }],
+        source: "Conley D, et al. Falls prediction in acute care. Medsurg Nurs 1999; 8(5):348-354."
+      },
+      {
+        id: "morse",
+        name: "Scala di Morse (Morse Fall Scale)",
+        summary: "Valutazione multifattoriale del rischio di cadute durante la degenza.",
+        howToUse: "Assegna i punteggi ponderati ai 6 fattori predisponenti.",
+        targets: ["adult"],
+        apparato: "Area Assistenziale e Cadute",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          { id: "m_hist", t: "Cadute negli ultimi 3 mesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 25 }] },
+          { id: "m_diag", t: "Diagnosi secondarie (≥ 2 diagnosi)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 15 }] },
+          { id: "m_aid", t: "Ausili per la deambulazione", o: [{ l: "Nessuno / Allettato", p: 0 }, { l: "Stampelle / Bastone", p: 15 }, { l: "Si appoggia all'arredo", p: 30 }] },
+          { id: "m_iv", t: "Terapia EV / Accesso venoso attivo", o: [{ l: "No", p: 0 }, { l: "Sì", p: 20 }] },
+          { id: "m_gait", t: "Andatura", o: [{ l: "Normale / Allettato", p: 0 }, { l: "Debole", p: 10 }, { l: "Compromessa / Instabile", p: 20 }] },
+          { id: "m_stat", t: "Stato mentale", o: [{ l: "Consapevole delle proprie capacità", p: 0 }, { l: "Sopravvaluta le proprie abilità", p: 15 }] }
+        ],
+        ranges: [{ min: 0, max: 24, m: "Rischio basso (Interventi base)" }, { min: 25, max: 44, m: "Rischio moderato (Misure standard)" }, { min: 45, max: 125, m: "Rischio elevato (Misure intensive anticaduta)" }],
+        source: "Morse JM. Preventing Patient Falls. Sage Publications 1997."
+      },
+      {
+        id: "brass",
+        name: "Scala BRASS (Blaylock Risk Assessment Screening Score)",
+        summary: "Identificazione del rischio di dimissione difficile e continuità delle cure.",
+        howToUse: "Valuta all'ingresso in reparto i parametri anagrafici, sociali e funzionali del paziente.",
+        targets: ["adult"],
+        apparato: "Area Assistenziale e Cadute",
+        gordon: "Modello 1: Percezione - Gestione salute",
+        items: [
+          { id: "br_age", t: "1. Età", o: [{ l: "Età 55 - 64", p: 1 }, { l: "Età 65 - 79", p: 2 }, { l: "Età ≥ 80 anni", p: 3 }] },
+          { id: "br_liv", t: "2. Situazione abitativa / Rete sociale", o: [{ l: "Vive con coniuge o famiglia", p: 0 }, { l: "Vive con altri o badante", p: 1 }, { l: "Vive solo senza supporto immediato", p: 2 }] },
+          { id: "br_func", t: "3. Livello funzionale (autonomia nel muoversi, mangiare, lavarsi)", o: [{ l: "Completamente indipendente", p: 0 }, { l: "Richiede aiuto in alcune attività", p: 1 }, { l: "Dipendente nella maggior parte delle attività", p: 2 }] },
+          { id: "br_cog", t: "4. Stato cognitivo", o: [{ l: "Orientato e vigile", p: 0 }, { l: "Confusione lieve o disorientamento episodico", p: 1 }, { l: "Grave disorientamento o demenza", p: 2 }] },
+          { id: "br_meds", t: "5. Numero di farmaci assunti", o: [{ l: "< 3 farmaci", p: 0 }, { l: "3 - 5 farmaci", p: 1 }, { l: "> 5 farmaci (Polifarmacoterapia)", p: 2 }] }
+        ],
+        ranges: [{ min: 0, max: 10, m: "Basso rischio di dimissione difficile (Dimissione ordinaria a domicilio)" }, { min: 11, max: 19, m: "Medio rischio (Pianificare continuità cure territoriali)" }, { min: 20, max: 40, m: "Alto rischio (Paziente complesso / Dimissione protetta RSA o ADI)" }],
+        source: "Blaylock A, Cason CL. Discharge planning: predicting patients' needs. J Gerontol Nurs 1992; 18(7):5-10."
+      },
+      {
+        id: "cirs",
+        name: "Scala CIRS (Cumulative Illness Rating Scale)",
+        summary: "Valutazione multidimensionale della comorbilità e gravità clinica degli organi.",
+        howToUse: "Attribuisci un punteggio di gravità da 1 (nessun problema) a 5 (patologia terminale) per gli apparati principali.",
+        targets: ["adult"],
+        apparato: "Area Assistenziale e Cadute",
+        gordon: "Modello 1: Percezione - Gestione salute",
+        items: [
+          { id: "ci_heart", t: "Apparato cardiaco", o: [{ l: "Nessun problema (1)", p: 1 }, { l: "Lieve / compensato (2)", p: 2 }, { l: "Moderato / terapia cronica (3)", p: 3 }, { l: "Severo / scompenso (4)", p: 4 }] },
+          { id: "ci_resp", t: "Apparato respiratorio", o: [{ l: "Nessun problema (1)", p: 1 }, { l: "Lieve (2)", p: 2 }, { l: "Moderato (3)", p: 3 }, { l: "Severo / ossigenoterapia (4)", p: 4 }] },
+          { id: "ci_ren", t: "Apparato renale ed epatico", o: [{ l: "Nessun problema (1)", p: 1 }, { l: "Lieve (2)", p: 2 }, { l: "Moderato (3)", p: 3 }, { l: "Severo / dialisi (4)", p: 4 }] },
+          { id: "ci_met", t: "Patologie metaboliche (Diabete, ecc.)", o: [{ l: "Nessun problema (1)", p: 1 }, { l: "Lieve (2)", p: 2 }, { l: "Moderato (3)", p: 3 }, { l: "Severo / complicanze d'organo (4)", p: 4 }] }
+        ],
+        ranges: [{ min: 4, max: 6, m: "Basso indice di comorbilità" }, { min: 7, max: 11, m: "Comorbilità moderata" }, { min: 12, max: 16, m: "Alta comorbilità e fragilità clinica severa" }],
+        source: "Linn BS, Linn MW, Gurel L. Cumulative illness rating scale. J Am Geriatr Soc 1968; 16(5):622-626."
+      },
+      {
+        id: "srs",
+        name: "Supervision Rating Scale (SRS)",
+        summary: "Livello effettivo di supervisione e assistenza richiesto dal paziente.",
+        howToUse: "Seleziona il grado di sorveglianza necessario nelle 24 ore.",
+        targets: ["adult"],
+        apparato: "Area Assistenziale e Cadute",
+        gordon: "Modello 4: Attività - Esercizio",
+        items: [
+          {
+            id: "sr_lvl",
+            t: "Grado di supervisione",
+            o: [
+              { l: "1: Piena indipendenza (può vivere da solo senza controllo)", p: 1 },
+              { l: "2: Può essere lasciato solo per la notte e alcune ore di giorno", p: 2 },
+              { l: "3: Supervisione a tempo parziale (solo per compiti specifici)", p: 3 },
+              { l: "4: Supervisione a tempo pieno indiretta (qualcuno sempre reperibile in casa)", p: 4 },
+              { l: "5: Supervisione a tempo pieno continua diretta (a vista)", p: 5 }
+            ]
+          }
+        ],
+        ranges: [{ min: 1, max: 1, m: "Completamente indipendente" }, { min: 2, max: 3, m: "Supervisione intermittente" }, { min: 4, max: 5, m: "Supervisione continua 24h necessaria" }],
+        source: "Boake C. Supervision Rating Scale: a measure of support in patients with head injury. J Clin Exp Neuropsychol 1996; 18(5):765-780."
+      },
+
+      // PEDIATRICHE SPECIFICHE
+      {
+        id: "apgar",
+        name: "Indice di Apgar",
+        summary: "Adattamento neonatale al 1° e 5° minuto di vita.",
+        howToUse: "Valuta frequenza cardiaca, respirazione, tono, riflessi e colorito.",
+        targets: ["pedia"],
+        apparato: "Cardiovascolare",
+        gordon: "Modello 1: Percezione - Gestione salute",
+        items: [
+          { id: "ap_hr", t: "Frequenza cardiaca", o: [{ l: "Assente", p: 0 }, { l: "< 100 bpm", p: 1 }, { l: "≥ 100 bpm", p: 2 }] },
+          { id: "ap_rr", t: "Respirazione ed espansione", o: [{ l: "Assente", p: 0 }, { l: "Lenta, irregolare", p: 1 }, { l: "Buona, pianto valido", p: 2 }] },
+          { id: "ap_tone", t: "Tono muscolare", o: [{ l: "Atonico / Flaccido", p: 0 }, { l: "Lieve flessione", p: 1 }, { l: "Movimenti attivi", p: 2 }] },
+          { id: "ap_reflex", t: "Riflessi ed eccitabilità", o: [{ l: "Nessuna risposta", p: 0 }, { l: "Smorfia o pianto debole", p: 1 }, { l: "Pianto vigoroso, tosse", p: 2 }] },
+          { id: "ap_color", t: "Colorito cutaneo", o: [{ l: "Cianotico o pallido", p: 0 }, { l: "Corpo roseo, estremità cianotiche", p: 1 }, { l: "Completamente roseo", p: 2 }] }
+        ],
+        ranges: [{ min: 7, max: 10, m: "Condizioni ottime / Normale adattamento" }, { min: 4, max: 6, m: "Difficoltà moderata (Assistenza/O2)" }, { min: 0, max: 3, m: "Grave asfissia / Rianimazione neonatale immediata" }],
+        source: "Apgar V. Curr Res Anesth Analg 1953; 32(4):260-267."
       },
       {
         id: "pews",
         name: "PEWS (Pediatric Early Warning Score)",
-        summary: "Deterioramento clinico nel bambino ricoverato.",
-        howToUse: "Valuta comportamento, apparato cardiovascolare e respiratorio.",
-        target: "pedia",
+        summary: "Deterioramento clinico tempestivo nel bambino ricoverato.",
+        howToUse: "Valuta comportamento, apparato cardiovascolare e respiratorio pediatrico.",
+        targets: ["pedia"],
         apparato: "Cardiovascolare",
-        gordon: "Percezione - Gestione salute",
+        gordon: "Modello 1: Percezione - Gestione salute",
         items: [
-          { id: "pe_b", t: "Comportamento", o: [{ l: "Gioca / Appropriato", p: 0 }, { l: "Sonnolento / Irritabile ma consolabile", p: 1 }, { l: "Irritabile non consolabile", p: 2 }, { l: "Letargico / Risposta ridotta al dolore", p: 3 }] },
-          { id: "pe_c", t: "Cardiovascolare (Colorito / Refill)", o: [{ l: "Roseo / Refill < 2 sec", p: 0 }, { l: "Pallido / Refill 2-3 sec", p: 1 }, { l: "Grigiastro / Refill 4 sec / Tachicardia (+20)", p: 2 }, { l: "Cianotico / Refill ≥ 5 sec / Tachicardia (+30) o Bradicardia", p: 3 }] },
+          { id: "pe_b", t: "Comportamento", o: [{ l: "Gioca / Appropriato", p: 0 }, { l: "Sonnolento / Irritabile consolabile", p: 1 }, { l: "Irritabile non consolabile", p: 2 }, { l: "Letargico / Risposta ridotta al dolore", p: 3 }] },
+          { id: "pe_c", t: "Cardiovascolare (Colorito / Refill capillare)", o: [{ l: "Roseo / Refill < 2s", p: 0 }, { l: "Pallido / Refill 2-3s", p: 1 }, { l: "Grigiastro / Refill 4s / Tachicardia (+20)", p: 2 }, { l: "Cianotico / Refill ≥ 5s / Tachicardia (+30) o Bradicardia", p: 3 }] },
           { id: "pe_r", t: "Respiratorio", o: [{ l: "Normale frequenza, nessun rientro", p: 0 }, { l: "Tachipnea (+10) o rientri lievi", p: 1 }, { l: "Tachipnea (+20) o rientri moderati o O2 30%", p: 2 }, { l: "Tachipnea (+30 con gemito) o rientri severi o O2 ≥ 50%", p: 3 }] }
         ],
-        ranges: [{ min: 0, max: 2, m: "Rischio basso (Monitoraggio standard)" }, { min: 3, max: 4, m: "Rischio medio (Allerta clinica)" }, { min: 5, max: 9, m: "Rischio critico (Team Emergenza Pediatrica)" }],
+        ranges: [{ min: 0, max: 2, m: "Rischio basso (Monitoraggio standard)" }, { min: 3, max: 4, m: "Rischio medio (Allerta clinica e rivalutazione)" }, { min: 5, max: 9, m: "Rischio critico (Allertare Team Emergenza Pediatrica)" }],
         source: "Monaghan A. Paediatr Nurs 2005; 17(1):32-37."
-      },
-      {
-        id: "pgcs",
-        name: "GCS Pediatrico (pGCS)",
-        summary: "Livello di coscienza nel neonato e bambino sotto i 4 anni.",
-        howToUse: "Adattamento verbale e motorio per l'età prescolare e neonatale.",
-        target: "pedia",
-        apparato: "Neurologico",
-        gordon: "Cognitivo - Percettivo",
-        items: [
-          { id: "pe_e", t: "Apertura occhi", o: [{ l: "Spontanea", p: 4 }, { l: "Alla voce", p: 3 }, { l: "Al dolore", p: 2 }, { l: "Nessuna", p: 1 }] },
-          { id: "pe_v", t: "Risposta verbale pediatrica", o: [{ l: "Sorride, vocalizza, segue oggetti", p: 5 }, { l: "Pianto consolabile, interagisce a tratti", p: 4 }, { l: "Pianto inconsolabile o inappropriato", p: 3 }, { l: "Gemiti, suoni incomprensibili", p: 2 }, { l: "Nessuna risposta verbale", p: 1 }] },
-          { id: "pe_m", t: "Risposta motoria pediatrica", o: [{ l: "Movimenti spontanei e corretti", p: 6 }, { l: "Retrae al tocco", p: 5 }, { l: "Retrae al dolore", p: 4 }, { l: "Flessione anomala (decorticazione)", p: 3 }, { l: "Estensione (decerebrazione)", p: 2 }, { l: "Nessuna risposta", p: 1 }] }
-        ],
-        ranges: [{ min: 13, max: 15, m: "Compromissione lieve" }, { min: 9, max: 12, m: "Compromissione moderata" }, { min: 3, max: 8, m: "Grave compromissione (Coma pediatrico)" }],
-        source: "Reilly PL, et al. Lancet 1988."
       }
     ];
 
+    // APPARATI
     var allApparati = [
-      { id: "Neurologico", n: "Neurologico ed Encefalo", icon: "🧠", bg: "#9333ea" },
-      { id: "Respiratorio", n: "Respiratorio e Polmonare", icon: "🫁", bg: "#06b6d4" },
-      { id: "Cardiovascolare", n: "Cardiovascolare ed Emodinamica", icon: "❤️", bg: "#ef4444" },
-      { id: "Cute e lesioni", n: "Cute, Tegumenti e Lesioni", icon: "🩹", bg: "#f97316" },
-      { id: "Muscoloscheletrico", n: "Muscoloscheletrico e Cadute", icon: "🚶", bg: "#6366f1" },
-      { id: "Dolore", n: "Dolore e Sintomi", icon: "⚡", bg: "#ec4899" },
-      { id: "Cognitivo", n: "Psichico, Cognitivo e Umore", icon: "💭", bg: "#3b82f6" },
-      { id: "Escrezione", n: "Escrezione, Renale e Urinario", icon: "💧", bg: "#0284c7" },
-      { id: "Digerente", n: "Deglutizione, Nutrizione e GI", icon: "🍴", bg: "#b45309" },
-      { id: "Tromboembolico", n: "Ematologico e Tromboembolico", icon: "🩸", bg: "#be123c" }
+      { id: "Tegumentario", n: "Apparato Tegumentario", icon: "🩹", bg: "#f97316" },
+      { id: "Muscoloscheletrico", n: "Apparato Muscolo-Scheletrico", icon: "🚶", bg: "#6366f1" },
+      { id: "Neurologico", n: "Apparato Neurologico", icon: "🧠", bg: "#9333ea" },
+      { id: "Respiratorio", n: "Apparato Respiratorio", icon: "🫁", bg: "#06b6d4" },
+      { id: "Cardiovascolare", n: "Apparato Cardiovascolare", icon: "❤️", bg: "#ef4444" },
+      { id: "Gastrointestinale", n: "Apparato Gastrointestinale", icon: "🥗", bg: "#16a34a" },
+      { id: "Urinario e Intestinale", n: "Apparato Urinario e Intestinale", icon: "🚽", bg: "#0284c7" },
+      { id: "Sensoriale e Dolore", n: "Apparato Sensoriale e Dolore", icon: "⚡", bg: "#ec4899" },
+      { id: "Psichico ed Emotivo", n: "Apparato Psichico ed Emotivo", icon: "💭", bg: "#3b82f6" },
+      { id: "Sonno e Riposo", n: "Apparato del Sonno", icon: "🌙", bg: "#4f46e5" },
+      { id: "Area Assistenziale e Cadute", n: "Area Assistenziale e Cadute", icon: "🛡️", bg: "#475569" }
     ];
 
+    // 11 MODELLI FUNZIONALI DI GORDON
     var allGordons = [
-      { id: "Percezione - Gestione salute", n: "Percezione - Gestione salute", icon: "🩺", bg: "#0f766e" },
-      { id: "Nutrizionale - Metabolico", n: "Nutrizionale - Metabolico", icon: "🥗", bg: "#16a34a" },
-      { id: "Eliminazione", n: "Eliminazione", icon: "🚽", bg: "#0284c7" },
-      { id: "Attività - Esercizio", n: "Attività - Esercizio", icon: "🏃", bg: "#d97706" },
-      { id: "Sonno - Riposo", n: "Sonno - Riposo", icon: "🌙", bg: "#4f46e5" },
-      { id: "Cognitivo - Percettivo", n: "Cognitivo - Percettivo", icon: "💡", bg: "#7c3aed" },
-      { id: "Autopercezione - Concetto di sé", n: "Autopercezione - Concetto sé", icon: "🪞", bg: "#db2777" },
-      { id: "Ruoli - Relazioni", n: "Ruoli - Relazioni", icon: "👥", bg: "#2563eb" },
-      { id: "Sessualità - Riproduzione", n: "Sessualità - Riproduzione", icon: "🧬", bg: "#e11d48" },
-      { id: "Coping - Tolleranza allo stress", n: "Coping - Tolleranza stress", icon: "🛡️", bg: "#475569" },
-      { id: "Valori - Convinzioni", n: "Valori - Convinzioni", icon: "⚖️", bg: "#52525b" }
+      { id: "Modello 1: Percezione - Gestione salute", n: "Modello 1: Percezione - Gestione salute", icon: "🩺", bg: "#0f766e" },
+      { id: "Modello 2: Nutrizionale - Metabolico", n: "Modello 2: Nutrizione e Metabolismo", icon: "🥗", bg: "#16a34a" },
+      { id: "Modello 3: Eliminazione", n: "Modello 3: Eliminazione", icon: "🚽", bg: "#0284c7" },
+      { id: "Modello 4: Attività - Esercizio", n: "Modello 4: Attività ed Esercizio Fisico", icon: "🏃", bg: "#d97706" },
+      { id: "Modello 5: Sonno - Riposo", n: "Modello 5: Sonno e Riposo", icon: "🌙", bg: "#4f46e5" },
+      { id: "Modello 6: Cognitivo - Percettivo", n: "Modello 6: Cognitivo e Percettivo", icon: "💡", bg: "#7c3aed" },
+      { id: "Modello 7: Autopercezione - Concetto sé", n: "Modello 7: Autopercezione - Concetto di sé", icon: "🪞", bg: "#db2777" },
+      { id: "Modello 8: Ruoli - Relazioni", n: "Modello 8: Ruoli e Relazioni", icon: "👥", bg: "#2563eb" },
+      { id: "Modello 9: Sessualità - Riproduzione", n: "Modello 9: Sessualità e Riproduzione", icon: "🧬", bg: "#e11d48" },
+      { id: "Modello 10: Coping - Tolleranza stress", n: "Modello 10: Coping e Tolleranza allo stress", icon: "🛡️", bg: "#475569" },
+      { id: "Modello 11: Valori - Convinzioni", n: "Modello 11: Valori e Convinzioni", icon: "⚖️", bg: "#52525b" }
     ];
 
     var currentTarget = "adult";
     var currentGrouping = "apparati";
-    var favorites = JSON.parse(localStorage.getItem("app_favs_v2") || "[]");
+    var favorites = JSON.parse(localStorage.getItem("app_favs_v3") || "[]");
     var activeScale = null;
     var userScores = {};
     var currentCat = null;
 
     function saveFavs() {
-      localStorage.setItem("app_favs_v2", JSON.stringify(favorites));
+      localStorage.setItem("app_favs_v3", JSON.stringify(favorites));
     }
 
     function toggleFavorite(id) {
@@ -746,14 +1448,14 @@
     }
 
     function renderGrids() {
-      var activePool = scales.filter(function(s) { return s.target === currentTarget; });
+      var activePool = scales.filter(function(s) { return s.targets.indexOf(currentTarget) > -1; });
 
       var aHtml = "";
       allApparati.forEach(function(a) {
         var count = activePool.filter(function(s) { return s.apparato === a.id; }).length;
         aHtml += '<div class="card" onclick="openCategory(\'' + a.id + '\', \'apparato\')">' +
           '<div class="badge" style="background:' + a.bg + ';">' + a.icon + '</div>' +
-          '<div><div style="font-weight:700; font-size:13px; line-height:1.2;">' + a.n + '</div>' +
+          '<div><div style="font-weight:700; font-size:12px; line-height:1.2;">' + a.n + '</div>' +
           '<div style="font-size:11px; color:var(--muted); margin-top:2px;">' + count + ' scale</div></div>' +
         '</div>';
       });
@@ -764,7 +1466,7 @@
         var count = activePool.filter(function(s) { return s.gordon === g.id; }).length;
         gHtml += '<div class="card" onclick="openCategory(\'' + g.id + '\', \'gordon\')">' +
           '<div class="badge" style="background:' + g.bg + ';">' + g.icon + '</div>' +
-          '<div><div style="font-weight:700; font-size:13px; line-height:1.2;">' + g.n + '</div>' +
+          '<div><div style="font-weight:700; font-size:12px; line-height:1.2;">' + g.n + '</div>' +
           '<div style="font-size:11px; color:var(--muted); margin-top:2px;">' + count + ' scale</div></div>' +
         '</div>';
       });
@@ -775,7 +1477,7 @@
       var box = document.getElementById("fav-container");
       var list = document.getElementById("fav-list");
       var favScales = scales.filter(function(s) {
-        return favorites.indexOf(s.id) > -1 && s.target === currentTarget;
+        return favorites.indexOf(s.id) > -1 && s.targets.indexOf(currentTarget) > -1;
       });
 
       if (favScales.length === 0) {
@@ -791,7 +1493,7 @@
     function createRowHtml(s) {
       var isF = favorites.indexOf(s.id) > -1;
       return '<div class="row" onclick="openScale(\'' + s.id + '\')">' +
-        '<div style="flex:1;">' +
+        '<div style="flex:1; padding-right:8px;">' +
           '<div style="font-size:14px; font-weight:700;">' + s.name + '</div>' +
           '<div style="font-size:12px; color:var(--muted); margin-top:2px;">' + s.summary + '</div>' +
         '</div>' +
@@ -805,19 +1507,22 @@
     function openCategory(catId, type) {
       currentCat = { id: catId, type: type };
       var matching = scales.filter(function(s) {
-        return s.target === currentTarget && (type === 'apparato' ? s.apparato === catId : s.gordon === catId);
+        return s.targets.indexOf(currentTarget) > -1 && (type === 'apparato' ? s.apparato === catId : s.gordon === catId);
       });
 
       var titleText = catId;
       if (type === 'apparato') {
         var foundA = allApparati.find(function(a) { return a.id === catId; });
         if (foundA) titleText = foundA.n;
+      } else {
+        var foundG = allGordons.find(function(g) { return g.id === catId; });
+        if (foundG) titleText = foundG.n;
       }
 
       document.getElementById("cat-name-header").innerText = titleText;
       var html = "";
       if (matching.length === 0) {
-        html = '<p style="color:var(--muted); font-style:italic; padding:12px 0;">Nessuna scala ' + (currentTarget === 'adult' ? 'adulto' : 'pediatrica') + ' attualmente registrata in questa sezione.</p>';
+        html = '<p style="color:var(--muted); font-style:italic; padding:16px 0;">Nessuna scala ' + (currentTarget === 'adult' ? 'adulto' : 'pediatrica') + ' registrata in questa sezione.</p>';
       } else {
         matching.forEach(function(s) { html += createRowHtml(s); });
       }
@@ -838,14 +1543,18 @@
       userScores = {};
 
       var popBadge = document.getElementById("scale-badge-pop");
-      if (activeScale.target === 'adult') {
-        popBadge.innerText = "Adulto";
-        popBadge.style.background = "var(--tint-soft)";
-        popBadge.style.color = "var(--tint)";
-      } else {
+      if (activeScale.targets.indexOf('adult') > -1 && activeScale.targets.indexOf('pedia') > -1) {
+        popBadge.innerText = "Adulto e Pediatrico";
+        popBadge.style.background = "#e0e7ff";
+        popBadge.style.color = "#4338ca";
+      } else if (activeScale.targets.indexOf('pedia') > -1) {
         popBadge.innerText = "Pediatrico";
         popBadge.style.background = "var(--pedia-soft)";
         popBadge.style.color = "var(--pedia-tint)";
+      } else {
+        popBadge.innerText = "Adulto";
+        popBadge.style.background = "var(--tint-soft)";
+        popBadge.style.color = "var(--tint)";
       }
 
       document.getElementById("scale-badge-app").innerText = activeScale.apparato;
@@ -860,7 +1569,7 @@
         inHtml += '<div style="margin-bottom:12px;">' +
           '<label style="font-size:13px; font-weight:600;">' + it.t + '</label>' +
           '<select id="input-' + it.id + '" onchange="setAnswer(\'' + it.id + '\', this.value)">' +
-            '<option value="">Seleziona...</option>';
+            '<option value="">Seleziona opzione...</option>';
         it.o.forEach(function(opt) {
           inHtml += '<option value="' + opt.p + '">' + opt.l + ' (' + (opt.p >= 0 ? '+' : '') + opt.p + ')</option>';
         });
@@ -871,7 +1580,7 @@
       var rHtml = "";
       activeScale.ranges.forEach(function(r) {
         rHtml += '<div class="range-line"><strong>' + (r.min === r.max ? r.min : r.min + '–' + r.max) + '</strong>' +
-          '<span style="color:var(--muted);">' + r.m + '</span></div>';
+          '<span style="color:var(--muted); text-align:right;">' + r.m + '</span></div>';
       });
       document.getElementById("scale-ranges-box").innerHTML = rHtml;
 
@@ -913,8 +1622,8 @@
       if (count === activeScale.items.length) {
         var match = activeScale.ranges.find(function(r) { return tot >= r.min && tot <= r.max; });
         box.innerHTML = '<div class="score-num">' + (Number.isInteger(tot) ? tot : tot.toFixed(1)) + '</div>' +
-          '<div class="score-text">' + (match ? match.m : '') + '</div>' +
-          '<div style="font-size:12px; color:var(--muted); margin-top:4px;">Punteggio totale</div>';
+          '<div class="score-text">' + (match ? match.m : 'Non classificabile') + '</div>' +
+          '<div style="font-size:12px; color:var(--muted); margin-top:4px;">Punteggio calcolato</div>';
       } else {
         box.innerHTML = '<p style="font-size:13px; color:var(--muted); padding:8px 0;">Compila tutte le voci per vedere il punteggio.</p>';
       }
@@ -968,7 +1677,7 @@
       cBox.className = "hidden";
 
       var res = scales.filter(function(s) {
-        return s.target === currentTarget && (
+        return s.targets.indexOf(currentTarget) > -1 && (
           s.name.toLowerCase().indexOf(query) > -1 ||
           s.summary.toLowerCase().indexOf(query) > -1 ||
           s.apparato.toLowerCase().indexOf(query) > -1 ||
@@ -977,7 +1686,7 @@
       });
 
       if (res.length === 0) {
-        list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:24px 0;">Nessuna scala trovata per questa popolazione</p>';
+        list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:24px 0;">Nessuna scala trovata per questa selezione</p>';
       } else {
         var html = "";
         res.forEach(function(s) { html += createRowHtml(s); });
@@ -985,7 +1694,7 @@
       }
     }
 
-    // Inizializzazione griglie e avvio
+    // Inizializzazione automatica
     renderGrids();
     refreshFavorites();
   </script>
