@@ -4,37 +4,215 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Shift Scale</title>
-  
-  <!-- Tailwind CSS per styling rapido stile iOS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- React & ReactDOM -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <!-- Babel per parsing JSX direttamente nel browser -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
   <style>
+    :root {
+      --bg-grouped: #f2f2f7;
+      --card-bg: #ffffff;
+      --tint: #0d9488;
+      --text-main: #1c1c1e;
+      --text-secondary: #8e8e93;
+      --border-color: rgba(0, 0, 0, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
+      background-color: var(--bg-grouped);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
+    .app-container {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 40px;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(242, 242, 247, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--tint);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .fav-btn {
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    main {
+      flex: 1;
+      padding: 16px;
+    }
+    .search-box {
+      width: 100%;
+      background: #e3e3e8;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+    .grid-sectors {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .sector-card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 128px;
+      cursor: pointer;
+    }
+    .sector-card:active, .scale-row:active {
+      background-color: #f7f7f9;
+    }
+    .sector-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+    }
+    .scale-row {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    .scale-row h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .scale-row p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 16px;
+    }
+    .card-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+    select {
+      width: 100%;
+      background: var(--bg-grouped);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 14px;
+      color: var(--text-main);
+      margin-top: 6px;
+      outline: none;
+    }
+    .score-box {
+      text-align: center;
+      padding: 24px 16px;
+    }
+    .score-value {
+      font-size: 60px;
+      font-weight: 800;
+      color: var(--tint);
+      line-height: 1;
+    }
+    .score-meaning {
+      font-size: 17px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    .score-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .btn-reset {
+      background: none;
+      border: none;
+      color: #ef4444;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .range-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .range-row:last-child { border-bottom: none; }
   </style>
 </head>
-<body class="bg-[#f2f2f7] text-neutral-900 min-h-screen">
-  <div id="root"></div>
+<body>
+  <div class="app-container" id="app"></div>
 
-  <script type="text/babel">
-    const { useState, useEffect, useMemo } = React;
-
-    // Dati integrali dai modelli Swift
-    const initialSectors = [
+  <script>
+    const sectorsData = [
       {
         name: "Neurologico",
-        icon: "brain",
-        color: "bg-purple-500",
+        icon: "🧠",
+        bg: "#9333ea",
         scales: [
           {
             name: "Glasgow Coma Scale (GCS)",
@@ -83,17 +261,12 @@
             source: "Verifica su fonte ufficiale (es. Teasdale & Jennett, 1974)."
           }
         ],
-        upcoming: [
-          "AVPU",
-          "RASS (sedazione e agitazione)",
-          "CAM-ICU (delirium in terapia intensiva)",
-          "NIHSS (ictus)"
-        ]
+        upcoming: ["AVPU", "RASS", "CAM-ICU", "NIHSS"]
       },
       {
         name: "Dolore",
-        icon: "activity",
-        color: "bg-pink-500",
+        icon: "⚡",
+        bg: "#ec4899",
         scales: [
           {
             name: "Numeric Rating Scale (NRS)",
@@ -115,27 +288,251 @@
             source: "Verifica su fonte ufficiale."
           }
         ],
-        upcoming: [
-          "VAS (scala analogica visiva)",
-          "Wong-Baker (volti, pediatrico)",
-          "FLACC (pediatrico / non collaboranti)",
-          "PAINAD (demenza)",
-          "BPS (paziente intubato)"
-        ]
+        upcoming: ["VAS", "Wong-Baker", "FLACC", "PAINAD", "BPS"]
       },
-      {
-        name: "Cardiovascolare",
-        icon: "heart",
-        color: "bg-red-500",
-        scales: [],
-        upcoming: ["NEWS2 (parametri vitali)", "MEWS", "PEWS (pediatrico)"]
-      },
-      {
-        name: "Respiratorio",
-        icon: "wind",
-        color: "bg-cyan-500",
-        scales: [],
-        upcoming: ["Scala di Borg (dispnea)", "mMRC (dispnea)"]
-      },
-      {
-        name: "Cute e lesioni",
+      { name: "Cardiovascolare", icon: "❤️", bg: "#ef4444", scales: [], upcoming: ["NEWS2", "MEWS", "PEWS"] },
+      { name: "Respiratorio", icon: "🫁", bg: "#06b6d4", scales: [], upcoming: ["Scala di Borg", "mMRC"] },
+      { name: "Cute e lesioni", icon: "🩹", bg: "#f97316", scales: [], upcoming: ["Braden", "Norton", "Waterlow", "PUSH"] },
+      { name: "Cadute e mobilità", icon: "🚶", bg: "#6366f1", scales: [], upcoming: ["Conley", "Morse", "Tinetti", "Timed Up and Go"] },
+      { name: "Autonomia (ADL)", icon: "👤", bg: "#10b981", scales: [], upcoming: ["Barthel", "Katz (ADL)", "Lawton (IADL)"] },
+      { name: "Nutrizione", icon: "🍴", bg: "#b45309", scales: [], upcoming: ["MUST", "MNA", "NRS-2002", "GUSS"] },
+      { name: "Cognitivo e umore", icon: "💭", bg: "#3b82f6", scales: [], upcoming: ["4AT", "CAM", "MMSE", "GDS"] },
+      { name: "Rischi e complicanze", icon: "⚠️", bg: "#6b7280", scales: [], upcoming: ["Padua", "Caprini", "CIWA-Ar"] }
+    ];
+
+    let state = {
+      view: "home",
+      selectedSectorIndex: null,
+      selectedScale: null,
+      search: "",
+      favorites: JSON.parse(localStorage.getItem("favoriteScaleNames") || "[]"),
+      answers: {}
+    };
+
+    function saveFavs() {
+      localStorage.setItem("favoriteScaleNames", JSON.stringify(state.favorites));
+    }
+
+    function toggleFav(name) {
+      if (state.favorites.includes(name)) {
+        state.favorites = state.favorites.filter(n => n !== name);
+      } else {
+        state.favorites.push(name);
+      }
+      saveFavs();
+      render();
+    }
+
+    function getAllScales() {
+      return sectorsData.flatMap(s => s.scales);
+    }
+
+    function render() {
+      const app = document.getElementById("app");
+      const all = getAllScales();
+      const favScales = all.filter(s => state.favorites.includes(s.name));
+
+      let header = `
+        <header>
+          ${state.view !== "home" ? `
+            <button class="nav-btn" onclick="goBack()">‹ Indietro</button>
+          ` : `<h1>Shift Scale</h1>`}
+          
+          ${state.view === "scale" && state.selectedScale ? `
+            <button class="fav-btn" onclick="toggleFav('${state.selectedScale.name}')">
+              ${state.favorites.includes(state.selectedScale.name) ? "⭐" : "☆"}
+            </button>
+          ` : `<div></div>`}
+        </header>
+      `;
+
+      let content = `<main>`;
+
+      if (state.view === "home") {
+        content += `
+          <input type="text" id="searchInput" class="search-box" value="${state.search}" oninput="onSearch(this.value)" placeholder="🔍 Cerca una scala..." />
+        `;
+
+        if (state.search.trim()) {
+          const results = all.filter(s => s.name.toLowerCase().includes(state.search.toLowerCase()));
+          content += `<div class="section-title">Risultati</div>`;
+          if (results.length === 0) {
+            content += `<p style="text-align:center; color:#8e8e93; padding:24px 0;">Nessuna scala trovata</p>`;
+          } else {
+            results.forEach(s => { content += renderScaleRow(s); });
+          }
+        } else {
+          if (favScales.length > 0) {
+            content += `<div class="section-title">Preferiti</div>`;
+            favScales.forEach(s => { content += renderScaleRow(s); });
+            content += `<div style="height: 14px;"></div>`;
+          }
+
+          content += `
+            <div class="section-title">Settori</div>
+            <div class="grid-sectors">
+              ${sectorsData.map((sec, i) => `
+                <div class="sector-card" onclick="openSector(${i})">
+                  <div class="sector-badge" style="background:${sec.bg};">${sec.icon}</div>
+                  <div>
+                    <div style="font-weight:600; font-size:14px;">${sec.name}</div>
+                    <div style="font-size:12px; color:#8e8e93; margin-top:2px;">${sec.scales.length === 1 ? "1 scala" : `${sec.scales.length} scale`}</div>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          `;
+        }
+      } else if (state.view === "sector") {
+        const sec = sectorsData[state.selectedSectorIndex];
+        content += `
+          <h2 style="font-size:24px; font-weight:700; margin-bottom:14px;">${sec.name}</h2>
+          ${sec.scales.length === 0 ? `<p style="color:#8e8e93; font-style:italic;">Nessuna scala attiva in questo settore.</p>` : sec.scales.map(s => renderScaleRow(s)).join("")}
+          
+          ${sec.upcoming.length > 0 ? `
+            <div style="margin-top:24px;">
+              <div class="section-title" style="font-size:16px;">Da aggiungere</div>
+              ${sec.upcoming.map(u => `
+                <div class="scale-row" style="cursor:default; opacity:0.8; border-style:dashed;">
+                  <span style="font-size:14px; color:#6b7280;">+ ${u}</span>
+                </div>
+              `).join("")}
+            </div>
+          ` : ""}
+        `;
+      } else if (state.view === "scale" && state.selectedScale) {
+        const s = state.selectedScale;
+        const total = Object.values(state.answers).reduce((a, b) => a + b, 0);
+        const allAnswered = s.items.every(it => state.answers[it.id] !== undefined);
+        const match = allAnswered ? s.ranges.find(r => total >= r.min && total <= r.max) : null;
+
+        content += `
+          <div style="margin-bottom:14px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+            <h2 style="font-size:20px; font-weight:700;">${s.name}</h2>
+            <p style="font-size:13px; color:#8e8e93; margin-top:2px;">${s.summary}</p>
+          </div>
+
+          <div class="card-block">
+            <span class="card-label">Come si usa</span>
+            <p style="font-size:14px; line-height:1.4;">${s.howToUse}</p>
+          </div>
+
+          <div class="card-block">
+            <span class="card-label">Valutazione</span>
+            ${s.items.map(it => `
+              <div style="margin-bottom:12px;">
+                <label style="font-size:13px; font-weight:600;">${it.title}</label>
+                <select onchange="setAnswer('${it.id}', this.value)">
+                  <option value="">Seleziona...</option>
+                  ${it.options.map(opt => `
+                    <option value="${opt.points}" ${state.answers[it.id] === opt.points ? "selected" : ""}>
+                      ${opt.label} (${opt.points})
+                    </option>
+                  `).join("")}
+                </select>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="card-block score-box">
+            <span class="card-label">Risultato</span>
+            ${allAnswered ? `
+              <div class="score-value">${total}</div>
+              <div class="score-meaning">${match ? match.meaning : ""}</div>
+              <div class="score-subtitle">Punteggio totale</div>
+            ` : `<p style="font-size:13px; color:#8e8e93; padding:10px 0;">Compila tutte le voci per vedere il punteggio.</p>`}
+            <button class="btn-reset" onclick="resetAnswers()">Azzera</button>
+          </div>
+
+          <div class="card-block">
+            <span class="card-label">Interpretazione</span>
+            ${s.ranges.map(r => `
+              <div class="range-row">
+                <strong>${r.min === r.max ? r.min : `${r.min}–${r.max}`}</strong>
+                <span style="color:#6b7280;">${r.meaning}</span>
+              </div>
+            `).join("")}
+          </div>
+
+          <div style="padding:0 8px;">
+            <span class="card-label">Fonte</span>
+            <p style="font-size:11px; color:#8e8e93;">${s.source}</p>
+          </div>
+        `;
+      }
+
+      content += `</main>`;
+      app.innerHTML = header + content;
+    }
+
+    function renderScaleRow(s) {
+      const isFav = state.favorites.includes(s.name);
+      return `
+        <div class="scale-row" onclick="openScaleByName('${encodeURIComponent(s.name)}')">
+          <div style="flex:1; padding-right:8px;">
+            <h3>${s.name}</h3>
+            <p>${s.summary}</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            ${isFav ? `<span style="font-size:14px;">⭐</span>` : ""}
+            <span style="color:#c7c7cc; font-weight:bold;">›</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function openSector(idx) {
+      state.selectedSectorIndex = idx;
+      state.view = "sector";
+      window.scrollTo(0, 0);
+      render();
+    }
+
+    function openScaleByName(encodedName) {
+      const name = decodeURIComponent(encodedName);
+      state.selectedScale = getAllScales().find(s => s.name === name);
+      state.answers = {};
+      state.view = "scale";
+      window.scrollTo(0, 0);
+      render();
+    }
+
+    function goBack() {
+      if (state.view === "scale" && state.selectedSectorIndex !== null) {
+        state.view = "sector";
+      } else {
+        state.view = "home";
+      }
+      window.scrollTo(0, 0);
+      render();
+    }
+
+    function onSearch(val) {
+      state.search = val;
+      render();
+      const inp = document.getElementById("searchInput");
+      if (inp) {
+        inp.focus();
+        inp.setSelectionRange(val.length, val.length);
+      }
+    }
+
+    function setAnswer(id, val) {
+      if (val === "") {
+        delete state.answers[id];
+      } else {
+        state.answers[id] = parseInt(val, 10);
+      }
+      render();
+    }
+
+    function resetAnswers() {
+      state.answers = {};
+      render();
+    }
+
+    // Avvio immediato
+    render();
+  </script>
+</body>
+</html>
