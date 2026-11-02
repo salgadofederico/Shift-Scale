@@ -3,111 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Shift Scale</title>
+  <title>Shift Scale - Scale Infermieristiche</title>
   <style>
     :root {
       --bg-grouped: #f2f2f7;
       --card-bg: #ffffff;
-      --tint: #0d9488;
-      --text-main: #1c1c1e;
-      --text-secondary: #8e8e93;
-      --border-color: rgba(0, 0, 0, 0.08);
+      --card-subtle: #f8f9fa;
+      --tint: #0f766e;
+      --tint-light: #ccfbf1;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: rgba(0, 0, 0, 0.07);
+      --shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.05), 0 1px 4px -1px rgba(0, 0, 0, 0.03);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       background-color: var(--bg-grouped);
       color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      line-height: 1.45;
     }
+
     .app-container {
-      max-width: 480px;
+      max-width: 500px;
       margin: 0 auto;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-bottom: 40px;
+      padding-bottom: 50px;
     }
+
+    /* Header e Navigazione */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(242, 242, 247, 0.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-color);
-      padding: 14px 16px;
+      background: rgba(242, 242, 247, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 56px;
+      min-height: 54px;
     }
-    header h1 {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.4px;
-    }
+
     .nav-btn {
       background: none;
       border: none;
       color: var(--tint);
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 4px;
+      padding: 4px 0;
     }
-    .fav-btn {
+
+    .fav-toggle-btn {
       background: none;
       border: none;
-      font-size: 22px;
+      font-size: 24px;
       cursor: pointer;
       line-height: 1;
+      padding: 4px;
     }
+
     main {
       flex: 1;
       padding: 16px;
     }
-    .search-box {
+
+    /* Segmented Control iOS */
+    .segmented-control {
+      display: flex;
+      background: #e4e4e9;
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 16px;
+      gap: 2px;
+    }
+
+    .segment-tab {
+      flex: 1;
+      text-align: center;
+      padding: 7px 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .segment-tab.active {
+      background: var(--card-bg);
+      color: var(--text-main);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    /* Search Bar */
+    .search-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .search-input {
       width: 100%;
-      background: #e3e3e8;
+      background: #e5e5ea;
       border: none;
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 10px 14px 10px 38px;
       font-size: 15px;
       outline: none;
-      margin-bottom: 18px;
+      color: var(--text-main);
     }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      opacity: 0.5;
+    }
+
+    /* Griglia e Card */
     .section-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin: 18px 0 10px 2px;
       letter-spacing: -0.3px;
     }
-    .grid-sectors {
+
+    .category-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-    .sector-card {
+
+    .category-card {
       background: var(--card-bg);
       border-radius: 18px;
       padding: 14px;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 128px;
+      height: 125px;
       cursor: pointer;
+      transition: transform 0.1s ease;
     }
-    .sector-card:active, .scale-row:active {
-      background-color: #f7f7f9;
+
+    .category-card:active {
+      transform: scale(0.98);
+      background: #fbfbfd;
     }
-    .sector-badge {
-      width: 42px;
-      height: 42px;
+
+    .category-badge {
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -115,85 +177,88 @@
       font-size: 20px;
       color: white;
     }
+
     .scale-row {
       background: var(--card-bg);
       border-radius: 16px;
       padding: 14px;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
       margin-bottom: 10px;
+      transition: transform 0.1s ease;
     }
-    .scale-row h3 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 3px;
+
+    .scale-row:active {
+      transform: scale(0.99);
+      background: #fbfbfd;
     }
-    .scale-row p {
-      font-size: 12px;
-      color: var(--text-secondary);
-      line-height: 1.3;
-    }
+
     .card-block {
       background: var(--card-bg);
       border-radius: 18px;
       padding: 16px;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
       margin-bottom: 16px;
     }
+
     .card-label {
       font-size: 11px;
       font-weight: 700;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: block;
     }
+
     select {
       width: 100%;
       background: var(--bg-grouped);
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 10px;
-      padding: 10px;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 11px;
+      padding: 10px 12px;
       font-size: 14px;
       color: var(--text-main);
       margin-top: 6px;
       outline: none;
     }
-    .score-box {
+
+    .score-container {
       text-align: center;
       padding: 24px 16px;
     }
+
     .score-value {
-      font-size: 60px;
+      font-size: 58px;
       font-weight: 800;
       color: var(--tint);
       line-height: 1;
     }
+
     .score-meaning {
       font-size: 17px;
-      font-weight: 600;
-      margin-top: 8px;
+      font-weight: 700;
+      margin-top: 10px;
+      color: var(--text-main);
     }
-    .score-subtitle {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
+
     .btn-reset {
-      background: none;
+      background: #fee2e2;
       border: none;
-      color: #ef4444;
+      color: #dc2626;
       font-size: 13px;
       font-weight: 600;
+      border-radius: 8px;
+      padding: 8px 16px;
       cursor: pointer;
-      margin-top: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-top: 16px;
     }
+
     .range-row {
       display: flex;
       justify-content: space-between;
@@ -208,102 +273,437 @@
   <div class="app-container" id="app"></div>
 
   <script>
-    const sectorsData = [
+    // Database Clinico Unificato delle Scale
+    const masterScales = [
       {
-        name: "Neurologico",
-        icon: "🧠",
-        bg: "#9333ea",
-        scales: [
+        id: "gcs",
+        name: "Glasgow Coma Scale (GCS)",
+        summary: "Livello di coscienza e risposta neurologica.",
+        howToUse: "Valuta i 3 parametri scegliendo la migliore risposta motoria, verbale e di apertura occhi.",
+        apparato: "Neurologico",
+        gordon: "Cognitivo - Percettivo",
+        pediatrico: false,
+        items: [
           {
-            name: "Glasgow Coma Scale (GCS)",
-            summary: "Valuta il livello di coscienza.",
-            howToUse: "Si valutano tre aree (occhi, risposta verbale, risposta motoria) e si sommano i punteggi. Si usa la migliore risposta ottenuta.",
-            items: [
-              {
-                id: "eyes",
-                title: "Apertura degli occhi",
-                options: [
-                  { label: "Spontanea", points: 4 },
-                  { label: "Alla voce", points: 3 },
-                  { label: "Al dolore", points: 2 },
-                  { label: "Nessuna", points: 1 }
-                ]
-              },
-              {
-                id: "verbal",
-                title: "Risposta verbale",
-                options: [
-                  { label: "Orientata", points: 5 },
-                  { label: "Confusa", points: 4 },
-                  { label: "Parole inappropriate", points: 3 },
-                  { label: "Suoni incomprensibili", points: 2 },
-                  { label: "Nessuna", points: 1 }
-                ]
-              },
-              {
-                id: "motor",
-                title: "Risposta motoria",
-                options: [
-                  { label: "Obbedisce ai comandi", points: 6 },
-                  { label: "Localizza il dolore", points: 5 },
-                  { label: "Retrae al dolore", points: 4 },
-                  { label: "Flessione anomala", points: 3 },
-                  { label: "Estensione anomala", points: 2 },
-                  { label: "Nessuna", points: 1 }
-                ]
-              }
-            ],
-            ranges: [
-              { min: 13, max: 15, meaning: "Compromissione lieve" },
-              { min: 9, max: 12, meaning: "Compromissione moderata" },
-              { min: 3, max: 8, meaning: "Compromissione grave" }
-            ],
-            source: "Verifica su fonte ufficiale (es. Teasdale & Jennett, 1974)."
+            id: "eyes",
+            title: "Apertura occhi",
+            options: [
+              { label: "Spontanea", points: 4 },
+              { label: "Al comando verbale", points: 3 },
+              { label: "Allo stimolo doloroso", points: 2 },
+              { label: "Nessuna", points: 1 }
+            ]
+          },
+          {
+            id: "verbal",
+            title: "Risposta verbale",
+            options: [
+              { label: "Orientata e appropriata", points: 5 },
+              { label: "Confusa / disorientata", points: 4 },
+              { label: "Parole inappropriate", points: 3 },
+              { label: "Suoni incomprensibili", points: 2 },
+              { label: "Nessuna risposta", points: 1 }
+            ]
+          },
+          {
+            id: "motor",
+            title: "Risposta motoria",
+            options: [
+              { label: "Obbedisce ai comandi", points: 6 },
+              { label: "Localizza il dolore", points: 5 },
+              { label: "Retrazione / flessione al dolore", points: 4 },
+              { label: "Flessione anomala (decorticazione)", points: 3 },
+              { label: "Estensione (decerebrazione)", points: 2 },
+              { label: "Nessuna risposta", points: 1 }
+            ]
           }
         ],
-        upcoming: ["AVPU", "RASS", "CAM-ICU", "NIHSS"]
+        ranges: [
+          { min: 13, max: 15, meaning: "Compromissione lieve / Cosciente" },
+          { min: 9, max: 12, meaning: "Compromissione moderata" },
+          { min: 3, max: 8, meaning: "Grave compromissione (Coma)" }
+        ],
+        source: "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. A practical scale. Lancet 1974; 2:81-84."
       },
       {
-        name: "Dolore",
-        icon: "⚡",
-        bg: "#ec4899",
-        scales: [
+        id: "nrs",
+        name: "Numeric Rating Scale (NRS)",
+        summary: "Autovalutazione unidimensionale del dolore da 0 a 10.",
+        howToUse: "Chiedi al paziente collaborante di quantificare l'intensità del dolore percepito da 0 a 10.",
+        apparato: "Dolore",
+        gordon: "Cognitivo - Percettivo",
+        pediatrico: false,
+        items: [
           {
-            name: "Numeric Rating Scale (NRS)",
-            summary: "Il paziente indica l'intensità del dolore da 0 a 10.",
-            howToUse: "Chiedi al paziente di scegliere un numero da 0 (nessun dolore) a 10 (il peggior dolore immaginabile).",
-            items: [
-              {
-                id: "pain_level",
-                title: "Intensità del dolore",
-                options: Array.from({ length: 11 }, (_, i) => ({ label: `${i}`, points: i }))
-              }
-            ],
-            ranges: [
-              { min: 0, max: 0, meaning: "Nessun dolore" },
-              { min: 1, max: 3, meaning: "Dolore lieve" },
-              { min: 4, max: 6, meaning: "Dolore moderato" },
-              { min: 7, max: 10, meaning: "Dolore severo" }
-            ],
-            source: "Verifica su fonte ufficiale."
+            id: "pain_level",
+            title: "Intensità del dolore riferito",
+            options: Array.from({ length: 11 }, (_, i) => ({ label: `${i} - ${i===0?'Nessun dolore':i===10?'Peggior dolore immaginabile':''}`, points: i }))
           }
         ],
-        upcoming: ["VAS", "Wong-Baker", "FLACC", "PAINAD", "BPS"]
+        ranges: [
+          { min: 0, max: 0, meaning: "Assenza di dolore" },
+          { min: 1, max: 3, meaning: "Dolore lieve" },
+          { min: 4, max: 6, meaning: "Dolore moderato" },
+          { min: 7, max: 10, meaning: "Dolore severo / Intenso" }
+        ],
+        source: "Downie WW, et al. Studies with pain rating scales. Ann Rheum Dis 1978; 37:378-381."
       },
-      { name: "Cardiovascolare", icon: "❤️", bg: "#ef4444", scales: [], upcoming: ["NEWS2", "MEWS", "PEWS"] },
-      { name: "Respiratorio", icon: "🫁", bg: "#06b6d4", scales: [], upcoming: ["Scala di Borg", "mMRC"] },
-      { name: "Cute e lesioni", icon: "🩹", bg: "#f97316", scales: [], upcoming: ["Braden", "Norton", "Waterlow", "PUSH"] },
-      { name: "Cadute e mobilità", icon: "🚶", bg: "#6366f1", scales: [], upcoming: ["Conley", "Morse", "Tinetti", "Timed Up and Go"] },
-      { name: "Autonomia (ADL)", icon: "👤", bg: "#10b981", scales: [], upcoming: ["Barthel", "Katz (ADL)", "Lawton (IADL)"] },
-      { name: "Nutrizione", icon: "🍴", bg: "#b45309", scales: [], upcoming: ["MUST", "MNA", "NRS-2002", "GUSS"] },
-      { name: "Cognitivo e umore", icon: "💭", bg: "#3b82f6", scales: [], upcoming: ["4AT", "CAM", "MMSE", "GDS"] },
-      { name: "Rischi e complicanze", icon: "⚠️", bg: "#6b7280", scales: [], upcoming: ["Padua", "Caprini", "CIWA-Ar"] }
+      {
+        id: "flacc",
+        name: "Scala FLACC",
+        summary: "Dolore pediatrico (2 mesi - 7 anni) o paziente non comunicante.",
+        howToUse: "Osserva il bambino per 1-5 minuti e assegna un punteggio da 0 a 2 per ciascuna delle 5 categorie comportamentali.",
+        apparato: "Dolore",
+        gordon: "Cognitivo - Percettivo",
+        pediatrico: true,
+        items: [
+          {
+            id: "face",
+            title: "F - Espressione facciale (Face)",
+            options: [
+              { label: "Rilassata, espressione neutra o sorridente", points: 0 },
+              { label: "Occasionale smorfia, fronte aggrottata, ritirato", points: 1 },
+              { label: "Mento tremante, mascella serrata, smorfia costante", points: 2 }
+            ]
+          },
+          {
+            id: "legs",
+            title: "L - Posizione delle gambe (Legs)",
+            options: [
+              { label: "Posizione normale o rilassata", points: 0 },
+              { label: "Irrequiete, tese, contratte", points: 1 },
+              { label: "Calci, gambe tese o flesse sull'addome", points: 2 }
+            ]
+          },
+          {
+            id: "activity",
+            title: "A - Attività e postura (Activity)",
+            options: [
+              { label: "Tranquillo, si muove liberamente e con facilità", points: 0 },
+              { label: "Si contorce, cambia continuamente posizione, teso", points: 1 },
+              { label: "Incurvato, rigido, movimenti a scatto o spasmi", points: 2 }
+            ]
+          },
+          {
+            id: "cry",
+            title: "C - Pianto (Cry)",
+            options: [
+              { label: "Nessun pianto (sveglio o che dorme)", points: 0 },
+              { label: "Lamenti, gemiti occasionali o lamentele lievi", points: 1 },
+              { label: "Pianto continuo, urla, singhiozzi frequenti", points: 2 }
+            ]
+          },
+          {
+            id: "consolability",
+            title: "C - Consolabilità (Consolability)",
+            options: [
+              { label: "Calmo, rilassato, non necessita di conforto", points: 0 },
+              { label: "Rassicurato da carezze, contatto o voce", points: 1 },
+              { label: "Difficile o impossibile da consolare/calmare", points: 2 }
+            ]
+          }
+        ],
+        ranges: [
+          { min: 0, max: 0, meaning: "Rilassato e confortevole (Nessun dolore)" },
+          { min: 1, max: 3, meaning: "Disagio / Dolore lieve" },
+          { min: 4, max: 6, meaning: "Dolore moderato" },
+          { min: 7, max: 10, meaning: "Disagio severo / Dolore intenso" }
+        ],
+        source: "Merkel SI, et al. The FLACC: a behavioral scale for scoring postoperative pain in young children. Pediatr Nurs 1997; 23(3):293-297."
+      },
+      {
+        id: "braden",
+        name: "Scala di Braden",
+        summary: "Rischio di sviluppo di lesioni da pressione (LdP).",
+        howToUse: "Valuta i 6 sub-item. Più basso è il punteggio, maggiore è il rischio.",
+        apparato: "Cute e lesioni",
+        gordon: "Nutrizionale - Metabolico",
+        pediatrico: false,
+        items: [
+          {
+            id: "sensory",
+            title: "Percezione sensoriale",
+            options: [
+              { label: "Completamente limitata", points: 1 },
+              { label: "Molto limitata", points: 2 },
+              { label: "Leggermente limitata", points: 3 },
+              { label: "Nessuna compromissione", points: 4 }
+            ]
+          },
+          {
+            id: "moisture",
+            title: "Umidità cutanea",
+            options: [
+              { label: "Costantemente umida", points: 1 },
+              { label: "Spesso umida", points: 2 },
+              { label: "Occasionalmente umida", points: 3 },
+              { label: "Raramente umida", points: 4 }
+            ]
+          },
+          {
+            id: "activity",
+            title: "Attività fisica",
+            options: [
+              { label: "Allettato", points: 1 },
+              { label: "In carrozzina / poltrona", points: 2 },
+              { label: "Cammina occasionalmente", points: 3 },
+              { label: "Cammina frequentemente", points: 4 }
+            ]
+          },
+          {
+            id: "mobility",
+            title: "Mobilità",
+            options: [
+              { label: "Completamente immobile", points: 1 },
+              { label: "Molto limitata", points: 2 },
+              { label: "Leggermente limitata", points: 3 },
+              { label: "Nessuna limitazione", points: 4 }
+            ]
+          },
+          {
+            id: "nutrition",
+            title: "Nutrizione",
+            options: [
+              { label: "Molto povera", points: 1 },
+              { label: "Probabilmente inadeguata", points: 2 },
+              { label: "Adeguata", points: 3 },
+              { label: "Eccellente", points: 4 }
+            ]
+          },
+          {
+            id: "friction",
+            title: "Frizione e scivolamento",
+            options: [
+              { label: "Problema presente", points: 1 },
+              { label: "Problema potenziale", points: 2 },
+              { label: "Nessun problema apparente", points: 3 }
+            ]
+          }
+        ],
+        ranges: [
+          { min: 6, max: 9, meaning: "Rischio altissimo" },
+          { min: 10, max: 12, meaning: "Rischio alto" },
+          { min: 13, max: 14, meaning: "Rischio moderato" },
+          { min: 15, max: 18, meaning: "Rischio basso / border-line" },
+          { min: 19, max: 23, meaning: "Nessun rischio" }
+        ],
+        source: "Bergstrom N, Braden BJ, et al. The Braden Scale for Predicting Pressure Sore Risk. Nurs Res 1987; 36(4):205-210."
+      },
+      {
+        id: "conley",
+        name: "Scala di Conley",
+        summary: "Identificazione del rischio di caduta nel paziente ospedalizzato.",
+        howToUse: "Rispondi alle domande anamnestiche e cliniche per quantificare la propensione alle cadute.",
+        apparato: "Cadute e mobilità",
+        gordon: "Attività - Esercizio",
+        pediatrico: false,
+        items: [
+          {
+            id: "c1",
+            title: "Precedenti cadute negli ultimi 3 mesi",
+            options: [{ label: "No", points: 0 }, { label: "Sì", points: 1 }]
+          },
+          {
+            id: "c2",
+            title: "Episodi di vertigini o capogiri",
+            options: [{ label: "No", points: 0 }, { label: "Sì", points: 1 }]
+          },
+          {
+            id: "c3",
+            title: "Perdita involontaria di feci o urine (Incontinenza)",
+            options: [{ label: "No", points: 0 }, { label: "Sì", points: 1 }]
+          },
+          {
+            id: "c4",
+            title: "Giudizio deteriorato / Mancata consapevolezza dei limiti",
+            options: [{ label: "No", points: 0 }, { label: "Sì", points: 2 }]
+          },
+          {
+            id: "c5",
+            title: "Agitazione psicomotoria",
+            options: [{ label: "No", points: 0 }, { label: "Sì", points: 2 }]
+          },
+          {
+            id: "c6",
+            title: "Difficoltà nella deambulazione / mobilità compromessa",
+            options: [{ label: "No", points: 0 }, { label: "Sì", points: 3 }]
+          }
+        ],
+        ranges: [
+          { min: 0, max: 1, meaning: "Basso rischio di caduta" },
+          { min: 2, max: 10, meaning: "Alto rischio di caduta (Attivare protocollo)" }
+        ],
+        source: "Conley D, et al. Falls prediction in acute care: accurately using the fall prevention screening instrument. Medsurg Nurs 1999; 8(5):348-354."
+      },
+      {
+        id: "news2",
+        name: "NEWS2 (National Early Warning Score)",
+        summary: "Rilevazione tempestiva del deterioramento clinico acuto nell'adulto.",
+        howToUse: "Registra i parametri vitali del paziente e assegna il punteggio ponderato.",
+        apparato: "Cardiovascolare",
+        gordon: "Attività - Esercizio",
+        pediatrico: false,
+        items: [
+          {
+            id: "rr",
+            title: "Frequenza Respiratoria (Atti/min)",
+            options: [
+              { label: "12 - 20", points: 0 },
+              { label: "9 - 11", points: 1 },
+              { label: "21 - 24", points: 2 },
+              { label: "≤ 8 oppure ≥ 25", points: 3 }
+            ]
+          },
+          {
+            id: "spo2",
+            title: "Saturazione Ossigeno SpO2 (%) - Scala 1 standard",
+            options: [
+              { label: "≥ 96%", points: 0 },
+              { label: "94 - 95%", points: 1 },
+              { label: "92 - 93%", points: 2 },
+              { label: "≤ 91%", points: 3 }
+            ]
+          },
+          {
+            id: "o2_therapy",
+            title: "Ossigenoterapia supplementare",
+            options: [
+              { label: "Aria ambiente", points: 0 },
+              { label: "In ossigenoterapia", points: 2 }
+            ]
+          },
+          {
+            id: "sbp",
+            title: "Pressione Sistolica (mmHg)",
+            options: [
+              { label: "111 - 219", points: 0 },
+              { label: "101 - 110", points: 1 },
+              { label: "91 - 100", points: 2 },
+              { label: "≤ 90 oppure ≥ 220", points: 3 }
+            ]
+          },
+          {
+            id: "hr",
+            title: "Frequenza Cardiaca (bpm)",
+            options: [
+              { label: "51 - 90", points: 0 },
+              { label: "41 - 50 oppure 91 - 110", points: 1 },
+              { label: "111 - 130", points: 2 },
+              { label: "≤ 40 oppure ≥ 131", points: 3 }
+            ]
+          },
+          {
+            id: "consciousness",
+            title: "Livello di Coscienza",
+            options: [
+              { label: "Alert (Vigile)", points: 0 },
+              { label: "Confuso / Risposta a voce o dolore / Non responsivo", points: 3 }
+            ]
+          },
+          {
+            id: "temp",
+            title: "Temperatura Corporea (°C)",
+            options: [
+              { label: "36.1 - 38.0", points: 0 },
+              { label: "35.1 - 36.0 oppure 38.1 - 39.0", points: 1 },
+              { label: "≥ 39.1", points: 2 },
+              { label: "≤ 35.0", points: 3 }
+            ]
+          }
+        ],
+        ranges: [
+          { min: 0, max: 4, meaning: "Rischio basso (Monitoraggio standard)" },
+          { min: 5, max: 6, meaning: "Rischio medio (Allerta infermieristica/medica)" },
+          { min: 7, max: 20, meaning: "Rischio alto (Emergenza medica / Rianimazione)" }
+        ],
+        source: "Royal College of Physicians. National Early Warning Score (NEWS) 2: Standardising the assessment of acute-illness severity in the NHS. RCP 2017."
+      },
+      {
+        id: "four_at",
+        name: "Scala 4AT",
+        summary: "Screening rapido del delirium e deterioramento cognitivo.",
+        howToUse: "Esegui i test di allerta, orientamento e attenzione con anamnesi dell'esordio.",
+        apparato: "Cognitivo e umore",
+        gordon: "Cognitivo - Percettivo",
+        pediatrico: false,
+        items: [
+          {
+            id: "alertness",
+            title: "1. Allerta / Vigilanza",
+            options: [
+              { label: "Normale (vigile, non agitato)", points: 0 },
+              { label: "Lieve sonnolenza per < 10 secondi", points: 0 },
+              { label: "Ipervigilanza / agitazione o sonnolenza persistente", points: 4 }
+            ]
+          },
+          {
+            id: "amt4",
+            title: "2. AMT4 (Età, Data nascita, Luogo, Anno attuale)",
+            options: [
+              { label: "Nessun errore", points: 0 },
+              { label: "1 errore", points: 1 },
+              { label: "2 o più errori / Non valutabile", points: 2 }
+            ]
+          },
+          {
+            id: "attention",
+            title: "3. Attenzione (Mesi dell'anno a ritroso da Dicembre)",
+            options: [
+              { label: "Raggiunge Luglio o oltre (≥ 7 mesi corretti)", points: 0 },
+              { label: "Inizia ma si ferma prima di Luglio (< 7 mesi)", points: 1 },
+              { label: "Rifiuta o non è in grado di iniziare", points: 2 }
+            ]
+          },
+          {
+            id: "acute_change",
+            title: "4. Fluttuazione o cambiamento acuto dello stato mentale",
+            options: [
+              { label: "No evidenza di peggioramento acuto", points: 0 },
+              { label: "Sì, alterazione insorta nelle ultime 24-48 ore", points: 4 }
+            ]
+          }
+        ],
+        ranges: [
+          { min: 0, max: 0, meaning: "Delirium o deficit cognitivo improbabile" },
+          { min: 1, max: 3, meaning: "Possibile compromissione cognitiva cronica" },
+          { min: 4, max: 12, meaning: "Probabile DELIRIUM +/- demenza" }
+        ],
+        source: "Bellelli G, et al. Validation of the 4AT, a new tool for delirium detection in older patients. Age Ageing 2014; 43(4):496-502."
+      }
+    ];
+
+    // Categorie: Apparati
+    const apparatiMeta = [
+      { name: "Neurologico", icon: "🧠", bg: "#9333ea" },
+      { name: "Dolore", icon: "⚡", bg: "#ec4899" },
+      { name: "Cardiovascolare", icon: "❤️", bg: "#ef4444" },
+      { name: "Cute e lesioni", icon: "🩹", bg: "#f97316" },
+      { name: "Cadute e mobilità", icon: "🚶", bg: "#6366f1" },
+      { name: "Cognitivo e umore", icon: "💭", bg: "#3b82f6" },
+      { name: "Respiratorio", icon: "🫁", bg: "#06b6d4" },
+      { name: "Nutrizione", icon: "🍴", bg: "#b45309" }
+    ];
+
+    // Categorie: 11 Modelli di Gordon
+    const gordonMeta = [
+      { name: "Percezione - Gestione della salute", icon: "🩺", bg: "#0f766e" },
+      { name: "Nutrizionale - Metabolico", icon: "🥗", bg: "#16a34a" },
+      { name: "Eliminazione", icon: "💧", bg: "#0284c7" },
+      { name: "Attività - Esercizio", icon: "🏃", bg: "#d97706" },
+      { name: "Sonno - Riposo", icon: "🌙", bg: "#4f46e5" },
+      { name: "Cognitivo - Percettivo", icon: "💡", bg: "#7c3aed" },
+      { name: "Autopercezione - Concetto di sé", icon: "🪞", bg: "#db2777" },
+      { name: "Ruoli - Relazioni", icon: "👥", bg: "#2563eb" },
+      { name: "Sessualità - Riproduzione", icon: "🧬", bg: "#e11d48" },
+      { name: "Coping - Tolleranza allo stress", icon: "🛡️", bg: "#475569" },
+      { name: "Valori - Convinzioni", icon: "⚖️", bg: "#52525b" }
     ];
 
     let state = {
-      view: "home",
-      selectedSectorIndex: null,
-      selectedScale: null,
+      view: "home", // home, category_detail, scale
+      categoryType: "apparati", // 'apparati', 'gordon', 'pediatrico'
+      selectedCategoryName: null,
+      selectedScaleId: null,
       search: "",
       favorites: JSON.parse(localStorage.getItem("favoriteScaleNames") || "[]"),
       answers: {}
@@ -323,24 +723,21 @@
       render();
     }
 
-    function getAllScales() {
-      return sectorsData.flatMap(s => s.scales);
-    }
-
     function render() {
       const app = document.getElementById("app");
-      const all = getAllScales();
-      const favScales = all.filter(s => state.favorites.includes(s.name));
+      const currentScale = masterScales.find(s => s.id === state.selectedScaleId);
+      const favScales = masterScales.filter(s => state.favorites.includes(s.name));
 
+      // Header
       let header = `
         <header>
           ${state.view !== "home" ? `
             <button class="nav-btn" onclick="goBack()">‹ Indietro</button>
-          ` : `<h1>Shift Scale</h1>`}
+          ` : `<h1 style="font-size:20px; font-weight:800;">Shift Scale</h1>`}
           
-          ${state.view === "scale" && state.selectedScale ? `
-            <button class="fav-btn" onclick="toggleFav('${state.selectedScale.name}')">
-              ${state.favorites.includes(state.selectedScale.name) ? "⭐" : "☆"}
+          ${state.view === "scale" && currentScale ? `
+            <button class="fav-toggle-btn" onclick="toggleFav('${currentScale.name}')">
+              ${state.favorites.includes(currentScale.name) ? "⭐" : "☆"}
             </button>
           ` : `<div></div>`}
         </header>
@@ -349,190 +746,112 @@
       let content = `<main>`;
 
       if (state.view === "home") {
+        // Barra di Ricerca
         content += `
-          <input type="text" id="searchInput" class="search-box" value="${state.search}" oninput="onSearch(this.value)" placeholder="🔍 Cerca una scala..." />
+          <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" value="${state.search}" oninput="onSearch(this.value)" placeholder="Cerca scala o argomento..." />
+          </div>
         `;
 
         if (state.search.trim()) {
-          const results = all.filter(s => s.name.toLowerCase().includes(state.search.toLowerCase()));
-          content += `<div class="section-title">Risultati</div>`;
+          const results = masterScales.filter(s => 
+            s.name.toLowerCase().includes(state.search.toLowerCase()) || 
+            s.summary.toLowerCase().includes(state.search.toLowerCase()) ||
+            s.apparato.toLowerCase().includes(state.search.toLowerCase()) ||
+            s.gordon.toLowerCase().includes(state.search.toLowerCase())
+          );
+          content += `<div class="section-title">Risultati di ricerca</div>`;
           if (results.length === 0) {
-            content += `<p style="text-align:center; color:#8e8e93; padding:24px 0;">Nessuna scala trovata</p>`;
+            content += `<p style="text-align:center; color:#8e8e93; padding:30px 0;">Nessuna scala trovata.</p>`;
           } else {
             results.forEach(s => { content += renderScaleRow(s); });
           }
         } else {
-          if (favScales.length > 0) {
-            content += `<div class="section-title">Preferiti</div>`;
-            favScales.forEach(s => { content += renderScaleRow(s); });
-            content += `<div style="height: 14px;"></div>`;
-          }
-
+          // Segmented Control per raggruppamento
           content += `
-            <div class="section-title">Settori</div>
-            <div class="grid-sectors">
-              ${sectorsData.map((sec, i) => `
-                <div class="sector-card" onclick="openSector(${i})">
-                  <div class="sector-badge" style="background:${sec.bg};">${sec.icon}</div>
-                  <div>
-                    <div style="font-weight:600; font-size:14px;">${sec.name}</div>
-                    <div style="font-size:12px; color:#8e8e93; margin-top:2px;">${sec.scales.length === 1 ? "1 scala" : `${sec.scales.length} scale`}</div>
-                  </div>
-                </div>
-              `).join("")}
+            <div class="segmented-control">
+              <div class="segment-tab ${state.categoryType === 'apparati' ? 'active' : ''}" onclick="setCategoryType('apparati')">Apparati</div>
+              <div class="segment-tab ${state.categoryType === 'gordon' ? 'active' : ''}" onclick="setCategoryType('gordon')">Modelli Gordon</div>
+              <div class="segment-tab ${state.categoryType === 'pediatrico' ? 'active' : ''}" onclick="setCategoryType('pediatrico')">Pediatrico</div>
             </div>
           `;
-        }
-      } else if (state.view === "sector") {
-        const sec = sectorsData[state.selectedSectorIndex];
-        content += `
-          <h2 style="font-size:24px; font-weight:700; margin-bottom:14px;">${sec.name}</h2>
-          ${sec.scales.length === 0 ? `<p style="color:#8e8e93; font-style:italic;">Nessuna scala attiva in questo settore.</p>` : sec.scales.map(s => renderScaleRow(s)).join("")}
-          
-          ${sec.upcoming.length > 0 ? `
-            <div style="margin-top:24px;">
-              <div class="section-title" style="font-size:16px;">Da aggiungere</div>
-              ${sec.upcoming.map(u => `
-                <div class="scale-row" style="cursor:default; opacity:0.8; border-style:dashed;">
-                  <span style="font-size:14px; color:#6b7280;">+ ${u}</span>
+
+          // Preferiti (mostrati solo se presenti)
+          if (favScales.length > 0) {
+            content += `<div class="section-title">⭐ Preferiti</div>`;
+            favScales.forEach(s => { content += renderScaleRow(s); });
+          }
+
+          // Griglia per Apparati o Gordon
+          if (state.categoryType === "apparati") {
+            content += `
+              <div class="section-title">Apparati e Sistemi</div>
+              <div class="category-grid">
+                ${apparatiMeta.map(sec => {
+                  const count = masterScales.filter(s => s.apparato === sec.name).length;
+                  return `
+                    <div class="category-card" onclick="openCategory('${sec.name}')">
+                      <div class="category-badge" style="background:${sec.bg};">${sec.icon}</div>
+                      <div>
+                        <div style="font-weight:700; font-size:14px;">${sec.name}</div>
+                        <div style="font-size:12px; color:var(--text-muted);">${count} scale</div>
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            `;
+          } else if (state.categoryType === "gordon") {
+            content += `
+              <div class="section-title">11 Modelli di Marjory Gordon</div>
+              <div class="category-grid">
+                ${gordonMeta.map(gm => {
+                  const count = masterScales.filter(s => s.gordon === gm.name).length;
+                  return `
+                    <div class="category-card" onclick="openCategory('${gm.name}')">
+                      <div class="category-badge" style="background:${gm.bg};">${gm.icon}</div>
+                      <div>
+                        <div style="font-weight:700; font-size:13px; line-height:1.2;">${gm.name}</div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${count} scale</div>
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            `;
+          } else if (state.categoryType === "pediatrico") {
+            const pediaScales = masterScales.filter(s => s.pediatrico === true);
+            content += `
+              <div class="section-title">Area Neonatale e Pediatrica</div>
+              ${pediaScales.length === 0 ? `<p style="color:#8e8e93; font-style:italic;">Nessuna scala attiva.</p>` : pediaScales.map(s => renderScaleRow(s)).join("")}
+              
+              <div style="margin-top:24px;">
+                <div class="section-title" style="font-size:15px; color:var(--text-muted);">Prossime aggiunte pediatriche</div>
+                <div class="scale-row" style="cursor:default; border-style:dashed; opacity:0.8;">
+                  <span style="font-size:13px; color:var(--text-muted);">+ Wong-Baker FACES (Scala analogica dei volti)</span>
                 </div>
-              `).join("")}
-            </div>
-          ` : ""}
-        `;
-      } else if (state.view === "scale" && state.selectedScale) {
-        const s = state.selectedScale;
-        const total = Object.values(state.answers).reduce((a, b) => a + b, 0);
-        const allAnswered = s.items.every(it => state.answers[it.id] !== undefined);
-        const match = allAnswered ? s.ranges.find(r => total >= r.min && total <= r.max) : null;
+                <div class="scale-row" style="cursor:default; border-style:dashed; opacity:0.8;">
+                  <span style="font-size:13px; color:var(--text-muted);">+ Indice di Apgar (Adattamento neonatale)</span>
+                </div>
+                <div class="scale-row" style="cursor:default; border-style:dashed; opacity:0.8;">
+                  <span style="font-size:13px; color:var(--text-muted);">+ PEWS (Pediatric Early Warning Score)</span>
+                </div>
+              </div>
+            `;
+          }
+        }
+      } else if (state.view === "category_detail") {
+        const catScales = masterScales.filter(s => 
+          state.categoryType === 'apparati' ? s.apparato === state.selectedCategoryName : s.gordon === state.selectedCategoryName
+        );
 
         content += `
-          <div style="margin-bottom:14px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
-            <h2 style="font-size:20px; font-weight:700;">${s.name}</h2>
-            <p style="font-size:13px; color:#8e8e93; margin-top:2px;">${s.summary}</p>
-          </div>
-
-          <div class="card-block">
-            <span class="card-label">Come si usa</span>
-            <p style="font-size:14px; line-height:1.4;">${s.howToUse}</p>
-          </div>
-
-          <div class="card-block">
-            <span class="card-label">Valutazione</span>
-            ${s.items.map(it => `
-              <div style="margin-bottom:12px;">
-                <label style="font-size:13px; font-weight:600;">${it.title}</label>
-                <select onchange="setAnswer('${it.id}', this.value)">
-                  <option value="">Seleziona...</option>
-                  ${it.options.map(opt => `
-                    <option value="${opt.points}" ${state.answers[it.id] === opt.points ? "selected" : ""}>
-                      ${opt.label} (${opt.points})
-                    </option>
-                  `).join("")}
-                </select>
-              </div>
-            `).join("")}
-          </div>
-
-          <div class="card-block score-box">
-            <span class="card-label">Risultato</span>
-            ${allAnswered ? `
-              <div class="score-value">${total}</div>
-              <div class="score-meaning">${match ? match.meaning : ""}</div>
-              <div class="score-subtitle">Punteggio totale</div>
-            ` : `<p style="font-size:13px; color:#8e8e93; padding:10px 0;">Compila tutte le voci per vedere il punteggio.</p>`}
-            <button class="btn-reset" onclick="resetAnswers()">Azzera</button>
-          </div>
-
-          <div class="card-block">
-            <span class="card-label">Interpretazione</span>
-            ${s.ranges.map(r => `
-              <div class="range-row">
-                <strong>${r.min === r.max ? r.min : `${r.min}–${r.max}`}</strong>
-                <span style="color:#6b7280;">${r.meaning}</span>
-              </div>
-            `).join("")}
-          </div>
-
-          <div style="padding:0 8px;">
-            <span class="card-label">Fonte</span>
-            <p style="font-size:11px; color:#8e8e93;">${s.source}</p>
-          </div>
+          <h2 style="font-size:22px; font-weight:800; margin-bottom:14px;">${state.selectedCategoryName}</h2>
+          ${catScales.length === 0 ? `
+            <div class="card-block" style="text-align:center; padding:30px 16px;">
+              <p style="color:var(--text-muted); font-size:14px;">Nessuna scala attualmente registrata in questa sezione.</p>
+            </div>
+          ` : catScales.map(s => renderScaleRow(s)).join("")}
         `;
-      }
-
-      content += `</main>`;
-      app.innerHTML = header + content;
-    }
-
-    function renderScaleRow(s) {
-      const isFav = state.favorites.includes(s.name);
-      return `
-        <div class="scale-row" onclick="openScaleByName('${encodeURIComponent(s.name)}')">
-          <div style="flex:1; padding-right:8px;">
-            <h3>${s.name}</h3>
-            <p>${s.summary}</p>
-          </div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            ${isFav ? `<span style="font-size:14px;">⭐</span>` : ""}
-            <span style="color:#c7c7cc; font-weight:bold;">›</span>
-          </div>
-        </div>
-      `;
-    }
-
-    function openSector(idx) {
-      state.selectedSectorIndex = idx;
-      state.view = "sector";
-      window.scrollTo(0, 0);
-      render();
-    }
-
-    function openScaleByName(encodedName) {
-      const name = decodeURIComponent(encodedName);
-      state.selectedScale = getAllScales().find(s => s.name === name);
-      state.answers = {};
-      state.view = "scale";
-      window.scrollTo(0, 0);
-      render();
-    }
-
-    function goBack() {
-      if (state.view === "scale" && state.selectedSectorIndex !== null) {
-        state.view = "sector";
-      } else {
-        state.view = "home";
-      }
-      window.scrollTo(0, 0);
-      render();
-    }
-
-    function onSearch(val) {
-      state.search = val;
-      render();
-      const inp = document.getElementById("searchInput");
-      if (inp) {
-        inp.focus();
-        inp.setSelectionRange(val.length, val.length);
-      }
-    }
-
-    function setAnswer(id, val) {
-      if (val === "") {
-        delete state.answers[id];
-      } else {
-        state.answers[id] = parseInt(val, 10);
-      }
-      render();
-    }
-
-    function resetAnswers() {
-      state.answers = {};
-      render();
-    }
-
-    // Avvio immediato
-    render();
-  </script>
-</body>
-</html>
+      } else if (state.view === "scale" &&
