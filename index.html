@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Shift Scale</title>
+  
+  <!-- Tailwind CSS per styling rapido stile iOS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- Babel per parsing JSX direttamente nel browser -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-[#f2f2f7] text-neutral-900 min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    // Dati integrali dai modelli Swift
+    const initialSectors = [
+      {
+        name: "Neurologico",
+        icon: "brain",
+        color: "bg-purple-500",
+        scales: [
+          {
+            name: "Glasgow Coma Scale (GCS)",
+            summary: "Valuta il livello di coscienza.",
+            howToUse: "Si valutano tre aree (occhi, risposta verbale, risposta motoria) e si sommano i punteggi. Si usa la migliore risposta ottenuta.",
+            items: [
+              {
+                id: "eyes",
+                title: "Apertura degli occhi",
+                options: [
+                  { label: "Spontanea", points: 4 },
+                  { label: "Alla voce", points: 3 },
+                  { label: "Al dolore", points: 2 },
+                  { label: "Nessuna", points: 1 }
+                ]
+              },
+              {
+                id: "verbal",
+                title: "Risposta verbale",
+                options: [
+                  { label: "Orientata", points: 5 },
+                  { label: "Confusa", points: 4 },
+                  { label: "Parole inappropriate", points: 3 },
+                  { label: "Suoni incomprensibili", points: 2 },
+                  { label: "Nessuna", points: 1 }
+                ]
+              },
+              {
+                id: "motor",
+                title: "Risposta motoria",
+                options: [
+                  { label: "Obbedisce ai comandi", points: 6 },
+                  { label: "Localizza il dolore", points: 5 },
+                  { label: "Retrae al dolore", points: 4 },
+                  { label: "Flessione anomala", points: 3 },
+                  { label: "Estensione anomala", points: 2 },
+                  { label: "Nessuna", points: 1 }
+                ]
+              }
+            ],
+            ranges: [
+              { min: 13, max: 15, meaning: "Compromissione lieve" },
+              { min: 9, max: 12, meaning: "Compromissione moderata" },
+              { min: 3, max: 8, meaning: "Compromissione grave" }
+            ],
+            source: "Verifica su fonte ufficiale (es. Teasdale & Jennett, 1974)."
+          }
+        ],
+        upcoming: [
+          "AVPU",
+          "RASS (sedazione e agitazione)",
+          "CAM-ICU (delirium in terapia intensiva)",
+          "NIHSS (ictus)"
+        ]
+      },
+      {
+        name: "Dolore",
+        icon: "activity",
+        color: "bg-pink-500",
+        scales: [
+          {
+            name: "Numeric Rating Scale (NRS)",
+            summary: "Il paziente indica l'intensità del dolore da 0 a 10.",
+            howToUse: "Chiedi al paziente di scegliere un numero da 0 (nessun dolore) a 10 (il peggior dolore immaginabile).",
+            items: [
+              {
+                id: "pain_level",
+                title: "Intensità del dolore",
+                options: Array.from({ length: 11 }, (_, i) => ({ label: `${i}`, points: i }))
+              }
+            ],
+            ranges: [
+              { min: 0, max: 0, meaning: "Nessun dolore" },
+              { min: 1, max: 3, meaning: "Dolore lieve" },
+              { min: 4, max: 6, meaning: "Dolore moderato" },
+              { min: 7, max: 10, meaning: "Dolore severo" }
+            ],
+            source: "Verifica su fonte ufficiale."
+          }
+        ],
+        upcoming: [
+          "VAS (scala analogica visiva)",
+          "Wong-Baker (volti, pediatrico)",
+          "FLACC (pediatrico / non collaboranti)",
+          "PAINAD (demenza)",
+          "BPS (paziente intubato)"
+        ]
+      },
+      {
+        name: "Cardiovascolare",
+        icon: "heart",
+        color: "bg-red-500",
+        scales: [],
+        upcoming: ["NEWS2 (parametri vitali)", "MEWS", "PEWS (pediatrico)"]
+      },
+      {
+        name: "Respiratorio",
+        icon: "wind",
+        color: "bg-cyan-500",
+        scales: [],
+        upcoming: ["Scala di Borg (dispnea)", "mMRC (dispnea)"]
+      },
+      {
+        name: "Cute e lesioni",
