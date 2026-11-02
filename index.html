@@ -9,9 +9,12 @@
       --bg: #f2f2f7;
       --card: #ffffff;
       --tint: #0f766e;
+      --tint-soft: #ccfbf1;
       --text: #1c1c1e;
       --muted: #8e8e93;
       --border: rgba(0,0,0,0.08);
+      --pedia-tint: #db2777;
+      --pedia-soft: #fce7f3;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -22,7 +25,7 @@
       line-height: 1.4;
     }
     .container {
-      max-width: 480px;
+      max-width: 500px;
       margin: 0 auto;
       min-height: 100vh;
       display: flex;
@@ -34,8 +37,8 @@
       top: 0;
       z-index: 100;
       background: rgba(242, 242, 247, 0.95);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       height: 54px;
       padding: 0 16px;
@@ -58,81 +61,113 @@
       cursor: pointer;
     }
     main { flex: 1; padding: 16px; }
+
+    .target-selector {
+      display: flex;
+      background: #e3e3e8;
+      border-radius: 12px;
+      padding: 3px;
+      margin-bottom: 14px;
+      gap: 3px;
+    }
+    .target-opt {
+      flex: 1;
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .target-opt.active-adult {
+      background: var(--card);
+      color: var(--tint);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+    .target-opt.active-pedia {
+      background: var(--card);
+      color: var(--pedia-tint);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    .sub-tabs {
+      display: flex;
+      background: #e9e9ee;
+      border-radius: 8px;
+      padding: 2px;
+      margin-bottom: 16px;
+      gap: 2px;
+    }
+    .sub-tab {
+      flex: 1;
+      text-align: center;
+      padding: 6px 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    .sub-tab.active {
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
     .search-input {
       width: 100%;
       background: #e3e3e8;
       border: none;
       border-radius: 10px;
       padding: 10px 14px;
-      font-size: 15px;
+      font-size: 14px;
       outline: none;
-      margin-bottom: 16px;
-    }
-    .tabs {
-      display: flex;
-      background: #e3e3e8;
-      border-radius: 10px;
-      padding: 3px;
-      margin-bottom: 16px;
-      gap: 3px;
-    }
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 8px 4px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .tab.active {
-      background: var(--card);
-      color: var(--text);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 14px;
     }
     .title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       margin: 14px 0 10px;
     }
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
     .card {
       background: var(--card);
-      border-radius: 16px;
-      padding: 14px;
+      border-radius: 15px;
+      padding: 12px;
       border: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 120px;
+      height: 115px;
       cursor: pointer;
     }
     .card:active, .row:active { background: #fafafa; }
     .badge {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 18px;
       color: white;
     }
     .row {
       background: var(--card);
       border-radius: 14px;
-      padding: 14px;
+      padding: 13px 14px;
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      margin-bottom: 10px;
+      margin-bottom: 9px;
     }
     .block {
       background: var(--card);
@@ -162,7 +197,7 @@
     }
     .score-view { text-align: center; padding: 20px; }
     .score-num {
-      font-size: 54px;
+      font-size: 52px;
       font-weight: 800;
       color: var(--tint);
       line-height: 1;
@@ -203,6 +238,11 @@
 
     <main>
       <div id="view-home">
+        <div class="target-selector">
+          <div id="tgt-adult" class="target-opt active-adult" onclick="setTargetPopulation('adult')">🧑 Adulto</div>
+          <div id="tgt-pedia" class="target-opt" onclick="setTargetPopulation('pedia')">👶 Pediatrico</div>
+        </div>
+
         <input type="text" id="search-input" class="search-input" placeholder="🔍 Cerca una scala..." oninput="filterScales(this.value)">
 
         <div id="search-results" class="hidden">
@@ -211,10 +251,9 @@
         </div>
 
         <div id="catalog-area">
-          <div class="tabs">
-            <div id="tab-btn-app" class="tab active" onclick="showTab('apparati')">Apparati</div>
-            <div id="tab-btn-gor" class="tab" onclick="showTab('gordon')">Gordon</div>
-            <div id="tab-btn-ped" class="tab" onclick="showTab('pediatrico')">Pediatrico</div>
+          <div class="sub-tabs">
+            <div id="sub-app" class="sub-tab active" onclick="setGroupingMode('apparati')">Tutti gli Apparati</div>
+            <div id="sub-gor" class="sub-tab" onclick="setGroupingMode('gordon')">11 Modelli di Gordon</div>
           </div>
 
           <div id="fav-container" class="hidden">
@@ -222,19 +261,14 @@
             <div id="fav-list"></div>
           </div>
 
-          <div id="tab-apparati">
-            <div class="title">Apparati e Sistemi</div>
+          <div id="panel-apparati">
+            <div class="title" id="apparati-title">Apparati corporei</div>
             <div class="grid" id="grid-apparati"></div>
           </div>
 
-          <div id="tab-gordon" class="hidden">
-            <div class="title">11 Modelli di Marjory Gordon</div>
+          <div id="panel-gordon" class="hidden">
+            <div class="title" id="gordon-title">11 Modelli Funzionali di Gordon</div>
             <div class="grid" id="grid-gordon"></div>
-          </div>
-
-          <div id="tab-pediatrico" class="hidden">
-            <div class="title">Area Neonatale e Pediatrica</div>
-            <div id="pediatric-list"></div>
           </div>
         </div>
       </div>
@@ -246,8 +280,17 @@
 
       <div id="view-scale" class="hidden">
         <div style="margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+          <div style="display:flex; gap:6px; margin-bottom:4px;">
+            <span id="scale-badge-pop" style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px;"></span>
+            <span id="scale-badge-app" style="background:#e5e7eb; color:#374151; font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px;"></span>
+          </div>
           <h2 id="scale-name-header" style="font-size:20px; font-weight:800;"></h2>
           <p id="scale-summary-header" style="font-size:13px; color:var(--muted); margin-top:2px;"></p>
+        </div>
+
+        <div class="block">
+          <span class="label">Modello di Gordon</span>
+          <p id="scale-gordon-ref" style="font-size:14px; font-weight:600; color:var(--tint);"></p>
         </div>
 
         <div class="block">
@@ -286,11 +329,11 @@
       {
         id: "gcs",
         name: "Glasgow Coma Scale (GCS)",
-        summary: "Livello di coscienza e risposta neurologica.",
-        howToUse: "Valuta le 3 aree (motoria, verbale, apertura occhi) registrando il miglior punteggio.",
-        catApparato: "Neurologico",
-        catGordon: "Cognitivo - Percettivo",
-        ped: false,
+        summary: "Livello di coscienza e risposta neurologica nell'adulto.",
+        howToUse: "Valuta occhi, risposta verbale e motoria scegliendo il miglior punteggio.",
+        target: "adult",
+        apparato: "Neurologico",
+        gordon: "Cognitivo - Percettivo",
         items: [
           { id: "e", t: "Apertura occhi", o: [{ l: "Spontanea", p: 4 }, { l: "Allo stimolo verbale", p: 3 }, { l: "Al dolore", p: 2 }, { l: "Nessuna", p: 1 }] },
           { id: "v", t: "Risposta verbale", o: [{ l: "Orientata e corretta", p: 5 }, { l: "Confusa", p: 4 }, { l: "Parole inappropriate", p: 3 }, { l: "Suoni incomprensibili", p: 2 }, { l: "Nessuna", p: 1 }] },
@@ -303,129 +346,127 @@
         id: "rass",
         name: "Scala RASS (Richmond Agitation-Sedation Scale)",
         summary: "Livello di sedazione e agitazione psicomotoria.",
-        howToUse: "Osserva il paziente: se vigile, assegna da 0 a +4. Se assopito, chiama il paziente o applica stimolo fisico (da -1 a -5).",
-        catApparato: "Neurologico",
-        catGordon: "Sonno - Riposo",
-        ped: false,
+        howToUse: "Assegna da +4 a -5 in base al comportamento osservato o alla risposta verbale/fisica.",
+        target: "adult",
+        apparato: "Neurologico",
+        gordon: "Sonno - Riposo",
         items: [
           {
-            id: "rass_val",
-            t: "Stato osservato",
+            id: "r",
+            t: "Stato clinico",
             o: [
-              { l: "+4 Combattivo (violento, pericolo immediato)", p: 4 },
-              { l: "+3 Molto agitato (tira tubi o cateteri)", p: 3 },
-              { l: "+2 Agitato (movimenti frequenti e scoordinati)", p: 2 },
-              { l: "+1 Irrequieto (ansioso ma non aggressivo)", p: 1 },
-              { l: "0 Vigile e calmo", p: 0 },
-              { l: "-1 Sonnolento (apre occhi alla voce >10s)", p: -1 },
-              { l: "-2 Sedazione leggera (apre occhi alla voce <10s)", p: -2 },
-              { l: "-3 Sedazione moderata (movimento occhi ma no contatto)", p: -3 },
-              { l: "-4 Sedazione profonda (nessuna risposta alla voce, risponde a stimolo)", p: -4 },
-              { l: "-5 Non risvegliabile (nessuna risposta)", p: -5 }
+              { l: "+4 Combattivo (violento)", p: 4 }, { l: "+3 Molto agitato (tira tubi/cateteri)", p: 3 },
+              { l: "+2 Agitato (movimenti disordinati)", p: 2 }, { l: "+1 Irrequieto", p: 1 },
+              { l: "0 Vigile e calmo", p: 0 }, { l: "-1 Sonnolento (apre occhi alla voce >10s)", p: -1 },
+              { l: "-2 Sedazione leggera (apre occhi <10s)", p: -2 }, { l: "-3 Sedazione moderata", p: -3 },
+              { l: "-4 Sedazione profonda", p: -4 }, { l: "-5 Non risvegliabile", p: -5 }
             ]
           }
         ],
-        ranges: [
-          { min: 1, max: 4, m: "Agitazione psicomotoria" },
-          { min: 0, max: 0, m: "Paziente vigile e calmo (Target)" },
-          { min: -3, max: -1, m: "Sedazione cosciente / controllata" },
-          { min: -5, max: -4, m: "Sedazione profonda" }
-        ],
+        ranges: [{ min: 1, max: 4, m: "Agitazione psicomotoria" }, { min: 0, max: 0, m: "Vigile e calmo (Target)" }, { min: -3, max: -1, m: "Sedazione cosciente" }, { min: -5, max: -4, m: "Sedazione profonda" }],
         source: "Sessler CN, et al. Am J Respir Crit Care Med 2002; 166(10):1338-1344."
       },
       {
         id: "nrs",
         name: "Numeric Rating Scale (NRS)",
-        summary: "Autovalutazione dell'intensità del dolore.",
-        howToUse: "Chiedi al paziente di quantificare il dolore da 0 (nessun dolore) a 10 (massimo immaginabile).",
-        catApparato: "Dolore",
-        catGordon: "Cognitivo - Percettivo",
-        ped: false,
+        summary: "Autovalutazione dell'intensità del dolore da 0 a 10.",
+        howToUse: "Chiedi al paziente di indicare il dolore da 0 (nessuno) a 10 (massimo immaginabile).",
+        target: "adult",
+        apparato: "Dolore",
+        gordon: "Cognitivo - Percettivo",
         items: [
-          { id: "n", t: "Intensità del dolore", o: [{ l: "0 - Nessun dolore", p: 0 }, { l: "1", p: 1 }, { l: "2", p: 2 }, { l: "3 - Lieve", p: 3 }, { l: "4", p: 4 }, { l: "5", p: 5 }, { l: "6 - Moderato", p: 6 }, { l: "7", p: 7 }, { l: "8", p: 8 }, { l: "9", p: 9 }, { l: "10 - Massimo possibile", p: 10 }] }
+          { id: "p", t: "Intensità del dolore", o: [{ l: "0 - Nessun dolore", p: 0 }, { l: "1", p: 1 }, { l: "2", p: 2 }, { l: "3 - Lieve", p: 3 }, { l: "4", p: 4 }, { l: "5", p: 5 }, { l: "6 - Moderato", p: 6 }, { l: "7", p: 7 }, { l: "8", p: 8 }, { l: "9", p: 9 }, { l: "10 - Massimo possibile", p: 10 }] }
         ],
         ranges: [{ min: 0, max: 0, m: "Nessun dolore" }, { min: 1, max: 3, m: "Dolore lieve" }, { min: 4, max: 6, m: "Dolore moderato" }, { min: 7, max: 10, m: "Dolore severo" }],
         source: "Downie WW, et al. Ann Rheum Dis 1978; 37:378-381."
       },
       {
-        id: "flacc",
-        name: "Scala FLACC",
-        summary: "Dolore pediatrico (2 mesi - 7 anni) o non comunicante.",
-        howToUse: "Osserva il bambino per 1-5 minuti e assegna il punteggio per ciascuna categoria comportamentale.",
-        catApparato: "Dolore",
-        catGordon: "Cognitivo - Percettivo",
-        ped: true,
+        id: "news2",
+        name: "NEWS2 (National Early Warning Score)",
+        summary: "Rilevazione tempestiva del deterioramento clinico acuto.",
+        howToUse: "Inserisci i parametri vitali correnti dell'adulto.",
+        target: "adult",
+        apparato: "Cardiovascolare",
+        gordon: "Percezione - Gestione salute",
         items: [
-          { id: "f", t: "Facciale (Face)", o: [{ l: "Rilassata, neutra, sorridente", p: 0 }, { l: "Occasionale smorfia, fronte corrucciata", p: 1 }, { l: "Mento tremante, mascella serrata", p: 2 }] },
-          { id: "l", t: "Gambe (Legs)", o: [{ l: "Posizione normale o rilassata", p: 0 }, { l: "Irrequiete, tese", p: 1 }, { l: "Calci, gambe tese o flesse", p: 2 }] },
-          { id: "a", t: "Attività (Activity)", o: [{ l: "Tranquillo, si muove normalmente", p: 0 }, { l: "Si contorce, cambia posizione", p: 1 }, { l: "Incurvato, rigido, a scatti", p: 2 }] },
-          { id: "c", t: "Pianto (Cry)", o: [{ l: "Nessun pianto", p: 0 }, { l: "Lamenti o gemiti occasionali", p: 1 }, { l: "Pianto costante, urla", p: 2 }] },
-          { id: "co", t: "Consolabilità", o: [{ l: "Calmo, non necessita consolazione", p: 0 }, { l: "Rassicurato da carezze o voce", p: 1 }, { l: "Difficile o impossibile da consolare", p: 2 }] }
+          { id: "rr", t: "Atti respiratori/min", o: [{ l: "12 - 20", p: 0 }, { l: "9 - 11", p: 1 }, { l: "21 - 24", p: 2 }, { l: "≤ 8 oppure ≥ 25", p: 3 }] },
+          { id: "sp", t: "SpO2 (%)", o: [{ l: "≥ 96%", p: 0 }, { l: "94 - 95%", p: 1 }, { l: "92 - 93%", p: 2 }, { l: "≤ 91%", p: 3 }] },
+          { id: "ox", t: "Ossigenoterapia supplementare", o: [{ l: "Aria ambiente", p: 0 }, { l: "In ossigeno", p: 2 }] },
+          { id: "pa", t: "Pressione sistolica (mmHg)", o: [{ l: "111 - 219", p: 0 }, { l: "101 - 110", p: 1 }, { l: "91 - 100", p: 2 }, { l: "≤ 90 oppure ≥ 220", p: 3 }] },
+          { id: "hr", t: "Frequenza cardiaca (bpm)", o: [{ l: "51 - 90", p: 0 }, { l: "41 - 50 o 91 - 110", p: 1 }, { l: "111 - 130", p: 2 }, { l: "≤ 40 o ≥ 131", p: 3 }] },
+          { id: "co", t: "Stato di coscienza", o: [{ l: "Alert (Vigile)", p: 0 }, { l: "Confuso / Risponde a Voce o Dolore", p: 3 }] },
+          { id: "tp", t: "Temperatura (°C)", o: [{ l: "36.1 - 38.0", p: 0 }, { l: "35.1 - 36.0 o 38.1 - 39.0", p: 1 }, { l: "≥ 39.1", p: 2 }, { l: "≤ 35.0", p: 3 }] }
         ],
-        ranges: [{ min: 0, max: 0, m: "Rilassato (Nessun dolore)" }, { min: 1, max: 3, m: "Dolore lieve" }, { min: 4, max: 6, m: "Dolore moderato" }, { min: 7, max: 10, m: "Dolore severo" }],
-        source: "Merkel SI, et al. Pediatr Nurs 1997; 23(3):293-297."
-      },
-      {
-        id: "apgar",
-        name: "Indice di Apgar",
-        summary: "Adattamento e vitalità neonatale a 1 e 5 minuti dalla nascita.",
-        howToUse: "Valuta i 5 parametri clinici standard alla nascita.",
-        catApparato: "Cardiovascolare",
-        catGordon: "Percezione - Gestione salute",
-        ped: true,
-        items: [
-          { id: "ap_hr", t: "Frequenza cardiaca", o: [{ l: "Assente", p: 0 }, { l: "< 100 bpm", p: 1 }, { l: "≥ 100 bpm", p: 2 }] },
-          { id: "ap_rr", t: "Respirazione ed espansione", o: [{ l: "Assente", p: 0 }, { l: "Lenta, irregolare, pianto debole", p: 1 }, { l: "Buona, vigorosa, pianto valido", p: 2 }] },
-          { id: "ap_tone", t: "Tono muscolare", o: [{ l: "Atonico / Flaccido", p: 0 }, { l: "Lieve flessione delle estremità", p: 1 }, { l: "Movimenti attivi e vivaci", p: 2 }] },
-          { id: "ap_reflex", t: "Riflessi ed eccitabilità", o: [{ l: "Nessuna risposta", p: 0 }, { l: "Smorfia o pianto debole", p: 1 }, { l: "Pianto vigoroso, starnuto", p: 2 }] },
-          { id: "ap_color", t: "Colorito cutaneo", o: [{ l: "Cianotico o pallido", p: 0 }, { l: "Corpo roseo, estremità cianotiche", p: 1 }, { l: "Completamente roseo", p: 2 }] }
-        ],
-        ranges: [
-          { min: 7, max: 10, m: "Condizioni ottime / Normale adattamento" },
-          { min: 4, max: 6, m: "Difficoltà moderata (Assistenza/O2)" },
-          { min: 0, max: 3, m: "Grave asfissia / Rianimazione immediata" }
-        ],
-        source: "Apgar V. Curr Res Anesth Analg 1953; 32(4):260-267."
+        ranges: [{ min: 0, max: 4, m: "Rischio basso" }, { min: 5, max: 6, m: "Rischio medio" }, { min: 7, max: 20, m: "Rischio alto (Emergenza medica)" }],
+        source: "Royal College of Physicians. RCP 2017."
       },
       {
         id: "borg",
         name: "Scala di Borg CR10",
         summary: "Quantificazione della dispnea o dello sforzo percepito.",
-        howToUse: "Chiedi al paziente di stimare il livello di fatica respiratoria attuale.",
-        catApparato: "Respiratorio",
-        catGordon: "Attività - Esercizio",
-        ped: false,
+        howToUse: "Stima del grado di affanno respiratorio riferito.",
+        target: "adult",
+        apparato: "Respiratorio",
+        gordon: "Attività - Esercizio",
         items: [
           {
-            id: "borg_val",
-            t: "Grado di dispnea",
+            id: "b",
+            t: "Grado di affanno",
             o: [
-              { l: "0 Nulla (nessun affanno)", p: 0 },
-              { l: "1 Molto debole", p: 1 },
-              { l: "2 Debole (leggero)", p: 2 },
-              { l: "3 Moderato", p: 3 },
-              { l: "4 Un po' forte", p: 4 },
-              { l: "5 Forte (dispnea intensa)", p: 5 },
-              { l: "7 Molto forte", p: 7 },
-              { l: "10 Massimo / Estremo", p: 10 }
+              { l: "0 Nulla", p: 0 }, { l: "1 Molto debole", p: 1 }, { l: "2 Debole", p: 2 },
+              { l: "3 Moderato", p: 3 }, { l: "4 Un po' forte", p: 4 }, { l: "5 Forte", p: 5 },
+              { l: "7 Molto forte", p: 7 }, { l: "10 Massimo / Estremo", p: 10 }
             ]
           }
         ],
-        ranges: [
-          { min: 0, max: 1, m: "Respirazione normale" },
-          { min: 2, max: 4, m: "Dispnea moderata" },
-          { min: 5, max: 10, m: "Dispnea marcata / Insufficienza respiratoria" }
-        ],
+        ranges: [{ min: 0, max: 1, m: "Respirazione normale" }, { min: 2, max: 4, m: "Dispnea moderata" }, { min: 5, max: 10, m: "Dispnea marcata / Insufficienza respiratoria" }],
         source: "Borg GA. Med Sci Sports Exerc 1982; 14(5):377-381."
+      },
+      {
+        id: "braden",
+        name: "Scala di Braden",
+        summary: "Rischio di lesioni da pressione (LdP).",
+        howToUse: "Valuta i 6 parametri: punteggio totale inferiore indica rischio più alto.",
+        target: "adult",
+        apparato: "Cute e lesioni",
+        gordon: "Nutrizionale - Metabolico",
+        items: [
+          { id: "s", t: "Percezione sensoriale", o: [{ l: "Completamente limitata", p: 1 }, { l: "Molto limitata", p: 2 }, { l: "Leggermente limitata", p: 3 }, { l: "Nessuna compromissione", p: 4 }] },
+          { id: "u", t: "Umidità", o: [{ l: "Costantemente umida", p: 1 }, { l: "Spesso umida", p: 2 }, { l: "Occasionalmente umida", p: 3 }, { l: "Raramente umida", p: 4 }] },
+          { id: "af", t: "Attività fisica", o: [{ l: "Allettato", p: 1 }, { l: "In carrozzina", p: 2 }, { l: "Cammina occasionalmente", p: 3 }, { l: "Cammina frequentemente", p: 4 }] },
+          { id: "mb", t: "Mobilità", o: [{ l: "Completamente immobile", p: 1 }, { l: "Molto limitata", p: 2 }, { l: "Leggermente limitata", p: 3 }, { l: "Nessuna limitazione", p: 4 }] },
+          { id: "nu", t: "Nutrizione", o: [{ l: "Molto povera", p: 1 }, { l: "Inadeguata", p: 2 }, { l: "Adeguata", p: 3 }, { l: "Eccellente", p: 4 }] },
+          { id: "fr", t: "Frizione e scivolamento", o: [{ l: "Problema presente", p: 1 }, { l: "Problema potenziale", p: 2 }, { l: "Nessun problema apparente", p: 3 }] }
+        ],
+        ranges: [{ min: 6, max: 9, m: "Rischio altissimo" }, { min: 10, max: 12, m: "Rischio alto" }, { min: 13, max: 14, m: "Rischio moderato" }, { min: 15, max: 18, m: "Rischio basso" }, { min: 19, max: 23, m: "Nessun rischio" }],
+        source: "Bergstrom N, Braden BJ. Nurs Res 1987; 36(4):205-210."
+      },
+      {
+        id: "norton",
+        name: "Scala di Norton",
+        summary: "Screening sintetico del rischio di lesioni da decubito.",
+        howToUse: "Attribuisci un punteggio da 1 a 4 alle 5 condizioni cliniche.",
+        target: "adult",
+        apparato: "Cute e lesioni",
+        gordon: "Nutrizionale - Metabolico",
+        items: [
+          { id: "no_c", t: "Condizioni generali", o: [{ l: "Pessime", p: 1 }, { l: "Scadenti", p: 2 }, { l: "Discrete", p: 3 }, { l: "Buone", p: 4 }] },
+          { id: "no_s", t: "Stato mentale", o: [{ l: "Comatoso", p: 1 }, { l: "Confuso", p: 2 }, { l: "Apatico", p: 3 }, { l: "Lucido", p: 4 }] },
+          { id: "no_a", t: "Attività", o: [{ l: "Allettato", p: 1 }, { l: "In poltrona", p: 2 }, { l: "Cammina con aiuto", p: 3 }, { l: "Ambulante", p: 4 }] },
+          { id: "no_m", t: "Mobilità", o: [{ l: "Immobile", p: 1 }, { l: "Molto limitata", p: 2 }, { l: "Poco limitata", p: 3 }, { l: "Piena", p: 4 }] },
+          { id: "no_i", t: "Incontinenza", o: [{ l: "Urinaria e fecale", p: 1 }, { l: "Abituale", p: 2 }, { l: "Occasionale", p: 3 }, { l: "Continente", p: 4 }] }
+        ],
+        ranges: [{ min: 5, max: 9, m: "Rischio altissimo" }, { min: 10, max: 14, m: "Rischio elevato (Soglia critica ≤ 14)" }, { min: 15, max: 20, m: "Rischio minimo" }],
+        source: "Norton D, et al. Churchill Livingstone 1962."
       },
       {
         id: "barthel",
         name: "Indice di Barthel",
-        summary: "Grado di autonomia nelle attività di base (ADL).",
-        howToUse: "Valuta le performance effettive nelle ultime 24-48 ore.",
-        catApparato: "Cadute e mobilità",
-        catGordon: "Attività - Esercizio",
-        ped: false,
+        summary: "Autonomia nelle attività di base della vita quotidiana (ADL).",
+        howToUse: "Valuta le performance effettive del paziente nelle ultime 24-48 ore.",
+        target: "adult",
+        apparato: "Muscoloscheletrico",
+        gordon: "Attività - Esercizio",
         items: [
           { id: "b_feed", t: "Alimentazione", o: [{ l: "Incapace", p: 0 }, { l: "Ha bisogno di aiuto", p: 5 }, { l: "Autonomo", p: 10 }] },
           { id: "b_bath", t: "Bagno / Doccia", o: [{ l: "Dipendente", p: 0 }, { l: "Autonomo", p: 5 }] },
@@ -438,146 +479,240 @@
           { id: "b_walk", t: "Deambulazione", o: [{ l: "Immobile o < 50m", p: 0 }, { l: "In carrozzina", p: 5 }, { l: "Cammina con aiuto", p: 10 }, { l: "Autonomo > 50m", p: 15 }] },
           { id: "b_stairs", t: "Salire/scendere scale", o: [{ l: "Incapace", p: 0 }, { l: "Ha bisogno di aiuto", p: 5 }, { l: "Autonomo", p: 10 }] }
         ],
-        ranges: [
-          { min: 0, max: 20, m: "Dipendenza totale" },
-          { min: 21, max: 60, m: "Dipendenza grave" },
-          { min: 61, max: 90, m: "Dipendenza moderata" },
-          { min: 91, max: 99, m: "Lieve dipendenza" },
-          { min: 100, max: 100, m: "Completamente indipendente" }
-        ],
+        ranges: [{ min: 0, max: 20, m: "Dipendenza totale" }, { min: 21, max: 60, m: "Dipendenza grave" }, { min: 61, max: 90, m: "Dipendenza moderata" }, { min: 91, max: 99, m: "Lieve dipendenza" }, { min: 100, max: 100, m: "Completamente indipendente" }],
         source: "Mahoney FI, Barthel DW. Md State Med J 1965; 14:61-65."
-      },
-      {
-        id: "morse",
-        name: "Morse Fall Scale (MFS)",
-        summary: "Valutazione del rischio cadute in degenza.",
-        howToUse: "Compila i 6 fattori di rischio predisponenti.",
-        catApparato: "Cadute e mobilità",
-        catGordon: "Attività - Esercizio",
-        ped: false,
-        items: [
-          { id: "m_hist", t: "Cadute recenti negli ultimi 3 mesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 25 }] },
-          { id: "m_diag", t: "Diagnosi secondarie (≥ 2 diagnosi)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 15 }] },
-          { id: "m_aid", t: "Ausili per la deambulazione", o: [{ l: "Nessuno / Allettato", p: 0 }, { l: "Stampelle / Bastone", p: 15 }, { l: "Si appoggia all'arredo", p: 30 }] },
-          { id: "m_iv", t: "Terapia EV / Accesso venoso", o: [{ l: "No", p: 0 }, { l: "Sì", p: 20 }] },
-          { id: "m_gait", t: "Andatura", o: [{ l: "Normale / Allettato", p: 0 }, { l: "Debole", p: 10 }, { l: "Compromessa / Instabile", p: 20 }] },
-          { id: "m_stat", t: "Stato mentale", o: [{ l: "Consapevole delle proprie capacità", p: 0 }, { l: "Sopravvaluta le proprie abilità", p: 15 }] }
-        ],
-        ranges: [
-          { min: 0, max: 24, m: "Rischio basso" },
-          { min: 25, max: 44, m: "Rischio moderato" },
-          { min: 45, max: 125, m: "Rischio elevato (Misure intensive)" }
-        ],
-        source: "Morse JM. Sage Publications 1997."
-      },
-      {
-        id: "braden",
-        name: "Scala di Braden",
-        summary: "Rischio di lesioni da pressione (LdP).",
-        howToUse: "Valuta i 6 sub-item. Più basso è il totale, maggiore è il rischio.",
-        catApparato: "Cute e lesioni",
-        catGordon: "Nutrizionale - Metabolico",
-        ped: false,
-        items: [
-          { id: "s", t: "Percezione sensoriale", o: [{ l: "Completamente limitata", p: 1 }, { l: "Molto limitata", p: 2 }, { l: "Leggermente limitata", p: 3 }, { l: "Nessuna compromissione", p: 4 }] },
-          { id: "u", t: "Umidità cutanea", o: [{ l: "Costantemente umida", p: 1 }, { l: "Spesso umida", p: 2 }, { l: "Occasionalmente umida", p: 3 }, { l: "Raramente umida", p: 4 }] },
-          { id: "af", t: "Attività fisica", o: [{ l: "Allettato", p: 1 }, { l: "In carrozzina", p: 2 }, { l: "Cammina occasionalmente", p: 3 }, { l: "Cammina frequentemente", p: 4 }] },
-          { id: "mb", t: "Mobilità", o: [{ l: "Completamente immobile", p: 1 }, { l: "Molto limitata", p: 2 }, { l: "Leggermente limitata", p: 3 }, { l: "Nessuna limitazione", p: 4 }] },
-          { id: "nu", t: "Nutrizione", o: [{ l: "Molto povera", p: 1 }, { l: "Probabilmente inadeguata", p: 2 }, { l: "Adeguata", p: 3 }, { l: "Eccellente", p: 4 }] },
-          { id: "fr", t: "Frizione e scivolamento", o: [{ l: "Problema presente", p: 1 }, { l: "Problema potenziale", p: 2 }, { l: "Nessun problema apparente", p: 3 }] }
-        ],
-        ranges: [{ min: 6, max: 9, m: "Rischio altissimo" }, { min: 10, max: 12, m: "Rischio alto" }, { min: 13, max: 14, m: "Rischio moderato" }, { min: 15, max: 18, m: "Rischio basso / Borderline" }, { min: 19, max: 23, m: "Nessun rischio" }],
-        source: "Bergstrom N, Braden BJ. Nurs Res 1987; 36(4):205-210."
       },
       {
         id: "conley",
         name: "Scala di Conley",
-        summary: "Rischio cadute ospedaliero rapido.",
-        howToUse: "Compila le domande per individuare la propensione al rischio di caduta.",
-        catApparato: "Cadute e mobilità",
-        catGordon: "Attività - Esercizio",
-        ped: false,
+        summary: "Screening del rischio di caduta nel paziente ospedalizzato.",
+        howToUse: "Compila le 6 domande per verificare la presenza di rischio caduta.",
+        target: "adult",
+        apparato: "Muscoloscheletrico",
+        gordon: "Attività - Esercizio",
         items: [
-          { id: "c1", t: "Precedenti cadute negli ultimi 3 mesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
-          { id: "c2", t: "Episodi di vertigini o capogiri", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
-          { id: "c3", t: "Incontinenza urinaria o fecale", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "c1", t: "Cadute negli ultimi 3 mesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "c2", t: "Vertigini o capogiri", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
+          { id: "c3", t: "Incontinenza urinaria/fecale", o: [{ l: "No", p: 0 }, { l: "Sì", p: 1 }] },
           { id: "c4", t: "Giudizio deteriorato", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
           { id: "c5", t: "Agitazione psicomotoria", o: [{ l: "No", p: 0 }, { l: "Sì", p: 2 }] },
-          { id: "c6", t: "Difficoltà nella deambulazione", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] }
+          { id: "c6", t: "Deambulazione compromessa", o: [{ l: "No", p: 0 }, { l: "Sì", p: 3 }] }
         ],
         ranges: [{ min: 0, max: 1, m: "Basso rischio caduta" }, { min: 2, max: 10, m: "Alto rischio caduta" }],
         source: "Conley D, et al. Medsurg Nurs 1999; 8(5):348-354."
       },
       {
-        id: "news2",
-        name: "NEWS2 (National Early Warning Score)",
-        summary: "Rilevazione del deterioramento clinico.",
-        howToUse: "Inserisci i parametri vitali per stabilire il livello di allerta.",
-        catApparato: "Cardiovascolare",
-        catGordon: "Percezione - Gestione salute",
-        ped: false,
+        id: "morse",
+        name: "Morse Fall Scale (MFS)",
+        summary: "Valutazione multifattoriale del rischio cadute in reparto.",
+        howToUse: "Assegna i valori ponderati ai 6 fattori predisponenti.",
+        target: "adult",
+        apparato: "Muscoloscheletrico",
+        gordon: "Attività - Esercizio",
         items: [
-          { id: "rr", t: "Frequenza respiratoria", o: [{ l: "12 - 20", p: 0 }, { l: "9 - 11", p: 1 }, { l: "21 - 24", p: 2 }, { l: "≤ 8 o ≥ 25", p: 3 }] },
-          { id: "sp", t: "Saturazione SpO2 (%)", o: [{ l: "≥ 96%", p: 0 }, { l: "94 - 95%", p: 1 }, { l: "92 - 93%", p: 2 }, { l: "≤ 91%", p: 3 }] },
-          { id: "ox", t: "Ossigenoterapia supplementare", o: [{ l: "Aria ambiente", p: 0 }, { l: "In ossigeno", p: 2 }] },
-          { id: "pa", t: "Pressione sistolica (mmHg)", o: [{ l: "111 - 219", p: 0 }, { l: "101 - 110", p: 1 }, { l: "91 - 100", p: 2 }, { l: "≤ 90 o ≥ 220", p: 3 }] },
-          { id: "hr", t: "Frequenza cardiaca (bpm)", o: [{ l: "51 - 90", p: 0 }, { l: "41 - 50 o 91 - 110", p: 1 }, { l: "111 - 130", p: 2 }, { l: "≤ 40 o ≥ 131", p: 3 }] },
-          { id: "co", t: "Stato di coscienza", o: [{ l: "Alert (Vigile)", p: 0 }, { l: "Confuso / Risponde a Voce o Dolore", p: 3 }] },
-          { id: "tp", t: "Temperatura corporea (°C)", o: [{ l: "36.1 - 38.0", p: 0 }, { l: "35.1 - 36.0 o 38.1 - 39.0", p: 1 }, { l: "≥ 39.1", p: 2 }, { l: "≤ 35.0", p: 3 }] }
+          { id: "m_hist", t: "Cadute negli ultimi 3 mesi", o: [{ l: "No", p: 0 }, { l: "Sì", p: 25 }] },
+          { id: "m_diag", t: "Diagnosi secondarie (≥ 2 diagnosi)", o: [{ l: "No", p: 0 }, { l: "Sì", p: 15 }] },
+          { id: "m_aid", t: "Ausili per la deambulazione", o: [{ l: "Nessuno / Allettato", p: 0 }, { l: "Stampelle / Bastone", p: 15 }, { l: "Si appoggia a mobili/pareti", p: 30 }] },
+          { id: "m_iv", t: "Terapia EV / Accesso venoso", o: [{ l: "No", p: 0 }, { l: "Sì", p: 20 }] },
+          { id: "m_gait", t: "Andatura", o: [{ l: "Normale / Allettato", p: 0 }, { l: "Debole", p: 10 }, { l: "Instabile / Barcollante", p: 20 }] },
+          { id: "m_stat", t: "Stato mentale", o: [{ l: "Consapevole delle proprie capacità", p: 0 }, { l: "Sopravvaluta le proprie abilità", p: 15 }] }
         ],
-        ranges: [{ min: 0, max: 4, m: "Rischio basso" }, { min: 5, max: 6, m: "Rischio medio" }, { min: 7, max: 20, m: "Rischio alto (Emergenza medica)" }],
-        source: "Royal College of Physicians. RCP 2017."
+        ranges: [{ min: 0, max: 24, m: "Rischio basso" }, { min: 25, max: 44, m: "Rischio moderato" }, { min: 45, max: 125, m: "Rischio elevato" }],
+        source: "Morse JM. Sage Publications 1997."
       },
       {
         id: "four_at",
         name: "Scala 4AT",
         summary: "Screening del delirium e deficit cognitivo.",
         howToUse: "Valuta allerta, AMT4, attenzione a ritroso ed esordio acuto.",
-        catApparato: "Cognitivo e umore",
-        catGordon: "Cognitivo - Percettivo",
-        ped: false,
+        target: "adult",
+        apparato: "Cognitivo",
+        gordon: "Cognitivo - Percettivo",
         items: [
           { id: "a1", t: "1. Allerta / Vigilanza", o: [{ l: "Normale (vigile, calmo)", p: 0 }, { l: "Lieve sonnolenza < 10 sec", p: 0 }, { l: "Agitazione o sonnolenza persistente", p: 4 }] },
           { id: "a2", t: "2. AMT4 (Età, Nascita, Luogo, Anno)", o: [{ l: "Nessun errore", p: 0 }, { l: "1 errore", p: 1 }, { l: "≥ 2 errori / Non testabile", p: 2 }] },
           { id: "a3", t: "3. Attenzione (Mesi a ritroso da Dicembre)", o: [{ l: "Arriva a Luglio o oltre", p: 0 }, { l: "Si ferma prima di Luglio", p: 1 }, { l: "Rifiuta o non inizia", p: 2 }] },
           { id: "a4", t: "4. Variazione o fluttuazione acuta", o: [{ l: "Nessuna variazione acuta", p: 0 }, { l: "Sì, alterazione nelle ultime 24-48 ore", p: 4 }] }
         ],
-        ranges: [{ min: 0, max: 0, m: "Delirium improbabile" }, { min: 1, max: 3, m: "Possibile compromissione" }, { min: 4, max: 12, m: "Probabile DELIRIUM" }],
+        ranges: [{ min: 0, max: 0, m: "Delirium improbabile" }, { min: 1, max: 3, m: "Possibile compromissione cronica" }, { min: 4, max: 12, m: "Probabile DELIRIUM" }],
         source: "Bellelli G, et al. Age Ageing 2014; 43(4):496-502."
+      },
+      {
+        id: "camicu",
+        name: "CAM-ICU",
+        summary: "Delirium nel paziente critico in Terapia Intensiva.",
+        howToUse: "Segui le 4 fasi standard (esordio acuto, disattenzione, RASS, pensiero disorganizzato).",
+        target: "adult",
+        apparato: "Cognitivo",
+        gordon: "Cognitivo - Percettivo",
+        items: [
+          { id: "c1", t: "1: Esordio acuto o decorso fluttuante", o: [{ l: "Assente", p: 0 }, { l: "Presente", p: 1 }] },
+          { id: "c2", t: "2: Disattenzione (lettere S-A-V-E-A-H-A-A-R-T)", o: [{ l: "0-2 errori", p: 0 }, { l: "> 2 errori", p: 1 }] },
+          { id: "c3", t: "3: RASS attuale diverso da zero", o: [{ l: "RASS = 0 (Vigile e calmo)", p: 0 }, { l: "RASS ≠ 0", p: 1 }] },
+          { id: "c4", t: "4: Pensiero disorganizzato", o: [{ l: "0-1 errore", p: 0 }, { l: "> 1 errore", p: 1 }] }
+        ],
+        ranges: [{ min: 0, max: 1, m: "CAM-ICU Negativo (No delirium)" }, { min: 2, max: 2, m: "Verificare criteri: 1 + 2 e (3 o 4)" }, { min: 3, max: 4, m: "CAM-ICU Positivo: DELIRIUM" }],
+        source: "Ely EW, et al. Crit Care Med 2001; 29(7):1370-1379."
+      },
+      {
+        id: "bristol",
+        name: "Scala di Bristol (BSFS)",
+        summary: "Forma e consistenza delle feci umane.",
+        howToUse: "Identifica la tipologia fecale da tipo 1 a tipo 7.",
+        target: "adult",
+        apparato: "Escrezione",
+        gordon: "Eliminazione",
+        items: [
+          {
+            id: "b_type",
+            t: "Tipologia fecale",
+            o: [
+              { l: "Tipo 1: Grumi duri e separati (nocciole)", p: 1 },
+              { l: "Tipo 2: A salsiccia, ma formata da grumi", p: 2 },
+              { l: "Tipo 3: Come una salsiccia, con crepe sulla superficie", p: 3 },
+              { l: "Tipo 4: Come un serpente o salsiccia, liscia e morbida", p: 4 },
+              { l: "Tipo 5: Pezzi morbidi con bordi netti", p: 5 },
+              { l: "Tipo 6: Pezzi soffici con bordi frastagliati", p: 6 },
+              { l: "Tipo 7: Acquosa, nessun pezzo solido", p: 7 }
+            ]
+          }
+        ],
+        ranges: [{ min: 1, max: 2, m: "Costipazione / Stipsi marcata" }, { min: 3, max: 4, m: "Feci ideali e normoformate" }, { min: 5, max: 6, m: "Tendenza diarroica" }, { min: 7, max: 7, m: "Diarrea acquosa" }],
+        source: "Lewis SJ, Heaton KW. Scand J Gastroenterol 1997; 32(9):920-924."
+      },
+
+      // PEDIATRICO
+      {
+        id: "apgar",
+        name: "Indice di Apgar",
+        summary: "Adattamento neonatale a 1 e 5 minuti dalla nascita.",
+        howToUse: "Valuta i 5 parametri clinici standard alla nascita.",
+        target: "pedia",
+        apparato: "Cardiovascolare",
+        gordon: "Percezione - Gestione salute",
+        items: [
+          { id: "ap_hr", t: "Frequenza cardiaca", o: [{ l: "Assente", p: 0 }, { l: "< 100 bpm", p: 1 }, { l: "≥ 100 bpm", p: 2 }] },
+          { id: "ap_rr", t: "Respirazione ed espansione", o: [{ l: "Assente", p: 0 }, { l: "Lenta, irregolare, pianto debole", p: 1 }, { l: "Buona, vigorosa, pianto valido", p: 2 }] },
+          { id: "ap_tone", t: "Tono muscolare", o: [{ l: "Atonico / Flaccido", p: 0 }, { l: "Lieve flessione delle estremità", p: 1 }, { l: "Movimenti attivi e vivaci", p: 2 }] },
+          { id: "ap_reflex", t: "Riflessi ed eccitabilità", o: [{ l: "Nessuna risposta", p: 0 }, { l: "Smorfia o pianto debole", p: 1 }, { l: "Pianto vigoroso, tosse, starnuto", p: 2 }] },
+          { id: "ap_color", t: "Colorito cutaneo", o: [{ l: "Cianotico o pallido", p: 0 }, { l: "Corpo roseo, estremità cianotiche", p: 1 }, { l: "Completamente roseo", p: 2 }] }
+        ],
+        ranges: [{ min: 7, max: 10, m: "Condizioni ottime / Normale adattamento" }, { min: 4, max: 6, m: "Difficoltà moderata (Assistenza/O2)" }, { min: 0, max: 3, m: "Grave asfissia / Rianimazione immediata" }],
+        source: "Apgar V. Curr Res Anesth Analg 1953; 32(4):260-267."
+      },
+      {
+        id: "flacc",
+        name: "Scala FLACC",
+        summary: "Dolore pediatrico (2 mesi - 7 anni) o non comunicante.",
+        howToUse: "Osserva il bambino per 1-5 minuti e assegna il punteggio da 0 a 2.",
+        target: "pedia",
+        apparato: "Dolore",
+        gordon: "Cognitivo - Percettivo",
+        items: [
+          { id: "f", t: "Facciale (Face)", o: [{ l: "Rilassata, neutra, sorridente", p: 0 }, { l: "Occasionale smorfia, fronte corrucciata", p: 1 }, { l: "Mento tremante, mascella serrata", p: 2 }] },
+          { id: "l", t: "Gambe (Legs)", o: [{ l: "Posizione normale o rilassata", p: 0 }, { l: "Irrequiete, tese", p: 1 }, { l: "Calci, gambe tese o flesse", p: 2 }] },
+          { id: "a", t: "Attività (Activity)", o: [{ l: "Tranquillo, si muove normalmente", p: 0 }, { l: "Si contorce, cambia posizione", p: 1 }, { l: "Incurvato, rigido, a scatti", p: 2 }] },
+          { id: "c", t: "Pianto (Cry)", o: [{ l: "Nessun pianto", p: 0 }, { l: "Lamenti o gemiti occasionali", p: 1 }, { l: "Pianto costante, urla", p: 2 }] },
+          { id: "co", t: "Consolabilità", o: [{ l: "Calmo, non necessita consolazione", p: 0 }, { l: "Rassicurato da carezze o voce", p: 1 }, { l: "Difficile o impossibile da consolare", p: 2 }] }
+        ],
+        ranges: [{ min: 0, max: 0, m: "Rilassato (Nessun dolore)" }, { min: 1, max: 3, m: "Dolore lieve" }, { min: 4, max: 6, m: "Dolore moderato" }, { min: 7, max: 10, m: "Dolore severo" }],
+        source: "Merkel SI, et al. Pediatr Nurs 1997; 23(3):293-297."
+      },
+      {
+        id: "wong_baker",
+        name: "Scala dei Volti di Wong-Baker",
+        summary: "Autovalutazione del dolore pediatrico (dai 3 anni in su).",
+        howToUse: "Mostra i volti disegnati e chiedi al bambino di scegliere il viso.",
+        target: "pedia",
+        apparato: "Dolore",
+        gordon: "Cognitivo - Percettivo",
+        items: [
+          {
+            id: "wb",
+            t: "Espressione facciale scelta dal bambino",
+            o: [
+              { l: "Viso 0: Molto felice (Nessun dolore)", p: 0 },
+              { l: "Viso 2: Fa male solo un pochino", p: 2 },
+              { l: "Viso 4: Fa male un po' di più", p: 4 },
+              { l: "Viso 6: Fa ancora più male", p: 6 },
+              { l: "Viso 8: Fa davvero molto male", p: 8 },
+              { l: "Viso 10: Fa il massimo male possibile (in lacrime)", p: 10 }
+            ]
+          }
+        ],
+        ranges: [{ min: 0, max: 0, m: "Nessun dolore" }, { min: 2, max: 4, m: "Dolore lieve" }, { min: 6, max: 6, m: "Dolore moderato" }, { min: 8, max: 10, m: "Dolore severo" }],
+        source: "Wong DL, Baker CM. 1988."
+      },
+      {
+        id: "pews",
+        name: "PEWS (Pediatric Early Warning Score)",
+        summary: "Deterioramento clinico nel bambino ricoverato.",
+        howToUse: "Valuta comportamento, apparato cardiovascolare e respiratorio.",
+        target: "pedia",
+        apparato: "Cardiovascolare",
+        gordon: "Percezione - Gestione salute",
+        items: [
+          { id: "pe_b", t: "Comportamento", o: [{ l: "Gioca / Appropriato", p: 0 }, { l: "Sonnolento / Irritabile ma consolabile", p: 1 }, { l: "Irritabile non consolabile", p: 2 }, { l: "Letargico / Risposta ridotta al dolore", p: 3 }] },
+          { id: "pe_c", t: "Cardiovascolare (Colorito / Refill)", o: [{ l: "Roseo / Refill < 2 sec", p: 0 }, { l: "Pallido / Refill 2-3 sec", p: 1 }, { l: "Grigiastro / Refill 4 sec / Tachicardia (+20)", p: 2 }, { l: "Cianotico / Refill ≥ 5 sec / Tachicardia (+30) o Bradicardia", p: 3 }] },
+          { id: "pe_r", t: "Respiratorio", o: [{ l: "Normale frequenza, nessun rientro", p: 0 }, { l: "Tachipnea (+10) o rientri lievi", p: 1 }, { l: "Tachipnea (+20) o rientri moderati o O2 30%", p: 2 }, { l: "Tachipnea (+30 con gemito) o rientri severi o O2 ≥ 50%", p: 3 }] }
+        ],
+        ranges: [{ min: 0, max: 2, m: "Rischio basso (Monitoraggio standard)" }, { min: 3, max: 4, m: "Rischio medio (Allerta clinica)" }, { min: 5, max: 9, m: "Rischio critico (Team Emergenza Pediatrica)" }],
+        source: "Monaghan A. Paediatr Nurs 2005; 17(1):32-37."
+      },
+      {
+        id: "pgcs",
+        name: "GCS Pediatrico (pGCS)",
+        summary: "Livello di coscienza nel neonato e bambino sotto i 4 anni.",
+        howToUse: "Adattamento verbale e motorio per l'età prescolare e neonatale.",
+        target: "pedia",
+        apparato: "Neurologico",
+        gordon: "Cognitivo - Percettivo",
+        items: [
+          { id: "pe_e", t: "Apertura occhi", o: [{ l: "Spontanea", p: 4 }, { l: "Alla voce", p: 3 }, { l: "Al dolore", p: 2 }, { l: "Nessuna", p: 1 }] },
+          { id: "pe_v", t: "Risposta verbale pediatrica", o: [{ l: "Sorride, vocalizza, segue oggetti", p: 5 }, { l: "Pianto consolabile, interagisce a tratti", p: 4 }, { l: "Pianto inconsolabile o inappropriato", p: 3 }, { l: "Gemiti, suoni incomprensibili", p: 2 }, { l: "Nessuna risposta verbale", p: 1 }] },
+          { id: "pe_m", t: "Risposta motoria pediatrica", o: [{ l: "Movimenti spontanei e corretti", p: 6 }, { l: "Retrae al tocco", p: 5 }, { l: "Retrae al dolore", p: 4 }, { l: "Flessione anomala (decorticazione)", p: 3 }, { l: "Estensione (decerebrazione)", p: 2 }, { l: "Nessuna risposta", p: 1 }] }
+        ],
+        ranges: [{ min: 13, max: 15, m: "Compromissione lieve" }, { min: 9, max: 12, m: "Compromissione moderata" }, { min: 3, max: 8, m: "Grave compromissione (Coma pediatrico)" }],
+        source: "Reilly PL, et al. Lancet 1988."
       }
     ];
 
-    var apparati = [
-      { n: "Neurologico", icon: "🧠", bg: "#9333ea" },
-      { n: "Dolore", icon: "⚡", bg: "#ec4899" },
-      { n: "Cardiovascolare", icon: "❤️", bg: "#ef4444" },
-      { n: "Respiratorio", icon: "🫁", bg: "#06b6d4" },
-      { n: "Cute e lesioni", icon: "🩹", bg: "#f97316" },
-      { n: "Cadute e mobilità", icon: "🚶", bg: "#6366f1" },
-      { n: "Cognitivo e umore", icon: "💭", bg: "#3b82f6" }
+    var allApparati = [
+      { id: "Neurologico", n: "Neurologico ed Encefalo", icon: "🧠", bg: "#9333ea" },
+      { id: "Respiratorio", n: "Respiratorio e Polmonare", icon: "🫁", bg: "#06b6d4" },
+      { id: "Cardiovascolare", n: "Cardiovascolare ed Emodinamica", icon: "❤️", bg: "#ef4444" },
+      { id: "Cute e lesioni", n: "Cute, Tegumenti e Lesioni", icon: "🩹", bg: "#f97316" },
+      { id: "Muscoloscheletrico", n: "Muscoloscheletrico e Cadute", icon: "🚶", bg: "#6366f1" },
+      { id: "Dolore", n: "Dolore e Sintomi", icon: "⚡", bg: "#ec4899" },
+      { id: "Cognitivo", n: "Psichico, Cognitivo e Umore", icon: "💭", bg: "#3b82f6" },
+      { id: "Escrezione", n: "Escrezione, Renale e Urinario", icon: "💧", bg: "#0284c7" },
+      { id: "Digerente", n: "Deglutizione, Nutrizione e GI", icon: "🍴", bg: "#b45309" },
+      { id: "Tromboembolico", n: "Ematologico e Tromboembolico", icon: "🩸", bg: "#be123c" }
     ];
 
-    var gordons = [
-      { n: "Percezione - Gestione salute", icon: "🩺", bg: "#0f766e" },
-      { n: "Nutrizionale - Metabolico", icon: "🥗", bg: "#16a34a" },
-      { n: "Eliminazione", icon: "💧", bg: "#0284c7" },
-      { n: "Attività - Esercizio", icon: "🏃", bg: "#d97706" },
-      { n: "Sonno - Riposo", icon: "🌙", bg: "#4f46e5" },
-      { n: "Cognitivo - Percettivo", icon: "💡", bg: "#7c3aed" },
-      { n: "Autopercezione - Concetto di sé", icon: "🪞", bg: "#db2777" },
-      { n: "Ruoli - Relazioni", icon: "👥", bg: "#2563eb" },
-      { n: "Sessualità - Riproduzione", icon: "🧬", bg: "#e11d48" },
-      { n: "Coping - Tolleranza allo stress", icon: "🛡️", bg: "#475569" },
-      { n: "Valori - Convinzioni", icon: "⚖️", bg: "#52525b" }
+    var allGordons = [
+      { id: "Percezione - Gestione salute", n: "Percezione - Gestione salute", icon: "🩺", bg: "#0f766e" },
+      { id: "Nutrizionale - Metabolico", n: "Nutrizionale - Metabolico", icon: "🥗", bg: "#16a34a" },
+      { id: "Eliminazione", n: "Eliminazione", icon: "🚽", bg: "#0284c7" },
+      { id: "Attività - Esercizio", n: "Attività - Esercizio", icon: "🏃", bg: "#d97706" },
+      { id: "Sonno - Riposo", n: "Sonno - Riposo", icon: "🌙", bg: "#4f46e5" },
+      { id: "Cognitivo - Percettivo", n: "Cognitivo - Percettivo", icon: "💡", bg: "#7c3aed" },
+      { id: "Autopercezione - Concetto di sé", n: "Autopercezione - Concetto sé", icon: "🪞", bg: "#db2777" },
+      { id: "Ruoli - Relazioni", n: "Ruoli - Relazioni", icon: "👥", bg: "#2563eb" },
+      { id: "Sessualità - Riproduzione", n: "Sessualità - Riproduzione", icon: "🧬", bg: "#e11d48" },
+      { id: "Coping - Tolleranza allo stress", n: "Coping - Tolleranza stress", icon: "🛡️", bg: "#475569" },
+      { id: "Valori - Convinzioni", n: "Valori - Convinzioni", icon: "⚖️", bg: "#52525b" }
     ];
 
-    var favorites = JSON.parse(localStorage.getItem("app_favs") || "[]");
+    var currentTarget = "adult";
+    var currentGrouping = "apparati";
+    var favorites = JSON.parse(localStorage.getItem("app_favs_v2") || "[]");
     var activeScale = null;
     var userScores = {};
-    var currentCatName = null;
+    var currentCat = null;
 
     function saveFavs() {
-      localStorage.setItem("app_favs", JSON.stringify(favorites));
+      localStorage.setItem("app_favs_v2", JSON.stringify(favorites));
     }
 
     function toggleFavorite(id) {
@@ -591,104 +726,98 @@
       }
     }
 
+    function setTargetPopulation(target) {
+      currentTarget = target;
+      document.getElementById("tgt-adult").className = "target-opt" + (target === 'adult' ? ' active-adult' : '');
+      document.getElementById("tgt-pedia").className = "target-opt" + (target === 'pedia' ? ' active-pedia' : '');
+      renderGrids();
+      refreshFavorites();
+    }
+
+    function setGroupingMode(mode) {
+      currentGrouping = mode;
+      document.getElementById("sub-app").className = "sub-tab" + (mode === 'apparati' ? ' active' : '');
+      document.getElementById("sub-gor").className = "sub-tab" + (mode === 'gordon' ? ' active' : '');
+
+      document.getElementById("panel-apparati").className = mode === 'apparati' ? '' : 'hidden';
+      document.getElementById("panel-gordon").className = mode === 'gordon' ? '' : 'hidden';
+    }
+
     function renderGrids() {
+      var activePool = scales.filter(function(s) { return s.target === currentTarget; });
+
       var aHtml = "";
-      apparati.forEach(function(a) {
-        var count = scales.filter(function(s) { return s.catApparato === a.n; }).length;
-        aHtml += '<div class="card" onclick="openCatScales(\'' + a.n + '\')">' +
+      allApparati.forEach(function(a) {
+        var count = activePool.filter(function(s) { return s.apparato === a.id; }).length;
+        aHtml += '<div class="card" onclick="openCategory(\'' + a.id + '\', \'apparato\')">' +
           '<div class="badge" style="background:' + a.bg + ';">' + a.icon + '</div>' +
-          '<div><div style="font-weight:700; font-size:14px;">' + a.n + '</div>' +
-          '<div style="font-size:12px; color:var(--muted);">' + count + ' scale</div></div>' +
+          '<div><div style="font-weight:700; font-size:13px; line-height:1.2;">' + a.n + '</div>' +
+          '<div style="font-size:11px; color:var(--muted); margin-top:2px;">' + count + ' scale</div></div>' +
         '</div>';
       });
       document.getElementById("grid-apparati").innerHTML = aHtml;
 
       var gHtml = "";
-      gordons.forEach(function(g) {
-        var count = scales.filter(function(s) { return s.catGordon === g.n; }).length;
-        gHtml += '<div class="card" onclick="openCatScales(\'' + g.n + '\')">' +
+      allGordons.forEach(function(g) {
+        var count = activePool.filter(function(s) { return s.gordon === g.id; }).length;
+        gHtml += '<div class="card" onclick="openCategory(\'' + g.id + '\', \'gordon\')">' +
           '<div class="badge" style="background:' + g.bg + ';">' + g.icon + '</div>' +
           '<div><div style="font-weight:700; font-size:13px; line-height:1.2;">' + g.n + '</div>' +
           '<div style="font-size:11px; color:var(--muted); margin-top:2px;">' + count + ' scale</div></div>' +
         '</div>';
       });
       document.getElementById("grid-gordon").innerHTML = gHtml;
-
-      var pHtml = "";
-      scales.filter(function(s) { return s.ped === true; }).forEach(function(s) {
-        var isF = favorites.indexOf(s.id) > -1;
-        pHtml += '<div class="row" onclick="openScale(\'' + s.id + '\')">' +
-          '<div style="flex:1;">' +
-            '<div style="font-size:14px; font-weight:700;">' + s.name + '</div>' +
-            '<div style="font-size:12px; color:var(--muted); margin-top:2px;">' + s.summary + '</div>' +
-          '</div>' +
-          '<div style="display:flex; align-items:center; gap:6px;">' +
-            (isF ? '<span style="font-size:14px;">⭐</span>' : '') +
-            '<span style="color:#c7c7cc; font-weight:bold;">›</span>' +
-          '</div>' +
-        '</div>';
-      });
-      document.getElementById("pediatric-list").innerHTML = pHtml;
     }
 
     function refreshFavorites() {
       var box = document.getElementById("fav-container");
       var list = document.getElementById("fav-list");
-      var favScales = scales.filter(function(s) { return favorites.indexOf(s.id) > -1; });
+      var favScales = scales.filter(function(s) {
+        return favorites.indexOf(s.id) > -1 && s.target === currentTarget;
+      });
+
       if (favScales.length === 0) {
         box.className = "hidden";
       } else {
         box.className = "";
         var html = "";
-        favScales.forEach(function(s) {
-          html += '<div class="row" onclick="openScale(\'' + s.id + '\')">' +
-            '<div style="flex:1;">' +
-              '<div style="font-size:14px; font-weight:700;">' + s.name + '</div>' +
-              '<div style="font-size:12px; color:var(--muted); margin-top:2px;">' + s.summary + '</div>' +
-            '</div>' +
-            '<div style="display:flex; align-items:center; gap:6px;">' +
-              '<span style="font-size:14px;">⭐</span><span style="color:#c7c7cc; font-weight:bold;">›</span>' +
-            '</div>' +
-          '</div>';
-        });
+        favScales.forEach(function(s) { html += createRowHtml(s); });
         list.innerHTML = html;
       }
     }
 
-    function showTab(t) {
-      document.getElementById("tab-btn-app").className = "tab" + (t === 'apparati' ? ' active' : '');
-      document.getElementById("tab-btn-gor").className = "tab" + (t === 'gordon' ? ' active' : '');
-      document.getElementById("tab-btn-ped").className = "tab" + (t === 'pediatrico' ? ' active' : '');
-
-      document.getElementById("tab-apparati").className = t === 'apparati' ? '' : 'hidden';
-      document.getElementById("tab-gordon").className = t === 'gordon' ? '' : 'hidden';
-      document.getElementById("tab-pediatrico").className = t === 'pediatrico' ? '' : 'hidden';
+    function createRowHtml(s) {
+      var isF = favorites.indexOf(s.id) > -1;
+      return '<div class="row" onclick="openScale(\'' + s.id + '\')">' +
+        '<div style="flex:1;">' +
+          '<div style="font-size:14px; font-weight:700;">' + s.name + '</div>' +
+          '<div style="font-size:12px; color:var(--muted); margin-top:2px;">' + s.summary + '</div>' +
+        '</div>' +
+        '<div style="display:flex; align-items:center; gap:6px;">' +
+          (isF ? '<span style="font-size:14px;">⭐</span>' : '') +
+          '<span style="color:#c7c7cc; font-weight:bold;">›</span>' +
+        '</div>' +
+      '</div>';
     }
 
-    function openCatScales(name) {
-      currentCatName = name;
-      var list = scales.filter(function(s) {
-        return s.catApparato === name || s.catGordon === name;
+    function openCategory(catId, type) {
+      currentCat = { id: catId, type: type };
+      var matching = scales.filter(function(s) {
+        return s.target === currentTarget && (type === 'apparato' ? s.apparato === catId : s.gordon === catId);
       });
 
-      document.getElementById("cat-name-header").innerText = name;
+      var titleText = catId;
+      if (type === 'apparato') {
+        var foundA = allApparati.find(function(a) { return a.id === catId; });
+        if (foundA) titleText = foundA.n;
+      }
+
+      document.getElementById("cat-name-header").innerText = titleText;
       var html = "";
-      if (list.length === 0) {
-        html = '<p style="color:var(--muted); font-style:italic;">Nessuna scala presente in questa sezione al momento.</p>';
+      if (matching.length === 0) {
+        html = '<p style="color:var(--muted); font-style:italic; padding:12px 0;">Nessuna scala ' + (currentTarget === 'adult' ? 'adulto' : 'pediatrica') + ' attualmente registrata in questa sezione.</p>';
       } else {
-        list.forEach(function(s) {
-          var isF = favorites.indexOf(s.id) > -1;
-          html += '<div class="row" onclick="openScale(\'' + s.id + '\')">' +
-            '<div style="flex:1;">' +
-              '<div style="font-size:14px; font-weight:700;">' + s.name + '</div>' +
-              '<div style="font-size:12px; color:var(--muted); margin-top:2px;">' + s.summary + '</div>' +
-            '</div>' +
-            '<div style="display:flex; align-items:center; gap:6px;">' +
-              (isF ? '<span style="font-size:14px;">⭐</span>' : '') +
-              '<span style="color:#c7c7cc; font-weight:bold;">›</span>' +
-            '</div>' +
-          '</div>';
-        });
+        matching.forEach(function(s) { html += createRowHtml(s); });
       }
       document.getElementById("cat-items-list").innerHTML = html;
 
@@ -706,8 +835,21 @@
       if (!activeScale) return;
       userScores = {};
 
+      var popBadge = document.getElementById("scale-badge-pop");
+      if (activeScale.target === 'adult') {
+        popBadge.innerText = "Adulto";
+        popBadge.style.background = "var(--tint-soft)";
+        popBadge.style.color = "var(--tint)";
+      } else {
+        popBadge.innerText = "Pediatrico";
+        popBadge.style.background = "var(--pedia-soft)";
+        popBadge.style.color = "var(--pedia-tint)";
+      }
+
+      document.getElementById("scale-badge-app").innerText = activeScale.apparato;
       document.getElementById("scale-name-header").innerText = activeScale.name;
       document.getElementById("scale-summary-header").innerText = activeScale.summary;
+      document.getElementById("scale-gordon-ref").innerText = activeScale.gordon;
       document.getElementById("scale-how-text").innerText = activeScale.howToUse;
       document.getElementById("scale-source-text").innerText = activeScale.source;
 
@@ -737,7 +879,7 @@
       document.getElementById("view-category").className = "hidden";
       document.getElementById("view-scale").className = "";
 
-      var backAction = currentCatName ? "backToCat()" : "goHome()";
+      var backAction = currentCat ? "backToCat()" : "goHome()";
       document.getElementById("h-left").innerHTML = '<button class="back-btn" onclick="' + backAction + '">‹ Indietro</button>';
       updateHeaderButtons();
       window.scrollTo(0, 0);
@@ -788,7 +930,7 @@
     }
 
     function goHome() {
-      currentCatName = null;
+      currentCat = null;
       activeScale = null;
       document.getElementById("view-home").className = "";
       document.getElementById("view-category").className = "hidden";
@@ -801,8 +943,8 @@
     }
 
     function backToCat() {
-      if (currentCatName) {
-        openCatScales(currentCatName);
+      if (currentCat) {
+        openCategory(currentCat.id, currentCat.type);
       } else {
         goHome();
       }
@@ -824,33 +966,24 @@
       cBox.className = "hidden";
 
       var res = scales.filter(function(s) {
-        return s.name.toLowerCase().indexOf(query) > -1 ||
-               s.summary.toLowerCase().indexOf(query) > -1 ||
-               s.catApparato.toLowerCase().indexOf(query) > -1 ||
-               s.catGordon.toLowerCase().indexOf(query) > -1;
+        return s.target === currentTarget && (
+          s.name.toLowerCase().indexOf(query) > -1 ||
+          s.summary.toLowerCase().indexOf(query) > -1 ||
+          s.apparato.toLowerCase().indexOf(query) > -1 ||
+          s.gordon.toLowerCase().indexOf(query) > -1
+        );
       });
 
       if (res.length === 0) {
-        list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:24px 0;">Nessuna scala trovata</p>';
+        list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:24px 0;">Nessuna scala trovata per questa popolazione</p>';
       } else {
         var html = "";
-        res.forEach(function(s) {
-          var isF = favorites.indexOf(s.id) > -1;
-          html += '<div class="row" onclick="openScale(\'' + s.id + '\')">' +
-            '<div style="flex:1;">' +
-              '<div style="font-size:14px; font-weight:700;">' + s.name + '</div>' +
-              '<div style="font-size:12px; color:var(--muted); margin-top:2px;">' + s.summary + '</div>' +
-            '</div>' +
-            '<div style="display:flex; align-items:center; gap:6px;">' +
-              (isF ? '<span style="font-size:14px;">⭐</span>' : '') +
-              '<span style="color:#c7c7cc; font-weight:bold;">›</span>' +
-            '</div>' +
-          '</div>';
-        });
+        res.forEach(function(s) { html += createRowHtml(s); });
         list.innerHTML = html;
       }
     }
 
+    // Inizializzazione griglie e avvio
     renderGrids();
     refreshFavorites();
   </script>
