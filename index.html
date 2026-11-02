@@ -11,7 +11,7 @@
       --tint: #0f766e;
       --text: #1c1c1e;
       --muted: #8e8e93;
-      --border: rgba(0, 0, 0, 0.08);
+      --border: rgba(0,0,0,0.08);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -19,7 +19,7 @@
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
+      line-height: 1.4;
     }
     .container {
       max-width: 480px;
@@ -57,10 +57,7 @@
       font-size: 22px;
       cursor: pointer;
     }
-    main {
-      flex: 1;
-      padding: 16px;
-    }
+    main { flex: 1; padding: 16px; }
     .search-input {
       width: 100%;
       background: #e3e3e8;
@@ -115,9 +112,7 @@
       height: 120px;
       cursor: pointer;
     }
-    .card:active, .row:active {
-      background: #fafafa;
-    }
+    .card:active, .row:active { background: #fafafa; }
     .badge {
       width: 38px;
       height: 38px;
@@ -146,279 +141,4 @@
       border: 1px solid var(--border);
       margin-bottom: 14px;
     }
-    .label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      display: block;
-    }
-    select {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 10px;
-      padding: 10px;
-      font-size: 14px;
-      color: var(--text);
-      margin-top: 6px;
-      outline: none;
-    }
-    .score-view {
-      text-align: center;
-      padding: 20px;
-    }
-    .score-num {
-      font-size: 54px;
-      font-weight: 800;
-      color: var(--tint);
-      line-height: 1;
-    }
-    .score-text {
-      font-size: 16px;
-      font-weight: 700;
-      margin-top: 8px;
-    }
-    .btn-clear {
-      background: #fee2e2;
-      border: none;
-      color: #dc2626;
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 8px;
-      padding: 8px 16px;
-      cursor: pointer;
-      margin-top: 14px;
-    }
-    .range-line {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      font-size: 13px;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    .range-line:last-child { border-bottom: none; }
-    .hidden { display: none !important; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <div id="h-left"><h1 style="font-size:19px; font-weight:800;">Shift Scale</h1></div>
-      <div id="h-right"></div>
-    </header>
-
-    <main>
-      <!-- VISTA HOME -->
-      <div id="v-home">
-        <input type="text" id="search" class="search-input" placeholder="🔍 Cerca una scala..." oninput="onSearchChange(this.value)">
-
-        <div id="search-box" class="hidden">
-          <div class="title">Risultati</div>
-          <div id="search-list"></div>
-        </div>
-
-        <div id="catalog-box">
-          <div class="tabs">
-            <div id="t-app" class="tab active" onclick="setTab('apparati')">Apparati</div>
-            <div id="t-gor" class="tab" onclick="setTab('gordon')">Gordon</div>
-            <div id="t-ped" class="tab" onclick="setTab('pediatrico')">Pediatrico</div>
-          </div>
-
-          <div id="fav-box" class="hidden">
-            <div class="title">⭐ Preferiti</div>
-            <div id="fav-list"></div>
-          </div>
-
-          <div id="p-apparati">
-            <div class="title">Apparati e Sistemi</div>
-            <div class="grid" id="grid-apparati"></div>
-          </div>
-
-          <div id="p-gordon" class="hidden">
-            <div class="title">Modelli di Marjory Gordon</div>
-            <div class="grid" id="grid-gordon"></div>
-          </div>
-
-          <div id="p-pediatrico" class="hidden">
-            <div class="title">Area Neonatale e Pediatrica</div>
-            <div id="list-pediatrico"></div>
-            <div style="margin-top:20px;">
-              <div class="title" style="font-size:14px; color:var(--muted);">Prossimamente</div>
-              <div class="row" style="border-style:dashed; opacity:0.75; cursor:default;"><span>+ Wong-Baker FACES</span></div>
-              <div class="row" style="border-style:dashed; opacity:0.75; cursor:default;"><span>+ Indice di Apgar</span></div>
-              <div class="row" style="border-style:dashed; opacity:0.75; cursor:default;"><span>+ PEWS</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VISTA CATEGORIA -->
-      <div id="v-category" class="hidden">
-        <h2 id="cat-title" style="font-size:20px; font-weight:800; margin-bottom:14px;"></h2>
-        <div id="cat-list"></div>
-      </div>
-
-      <!-- VISTA DETTAGLIO SCALA -->
-      <div id="v-scale" class="hidden">
-        <div style="margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border);">
-          <h2 id="s-name" style="font-size:20px; font-weight:800;"></h2>
-          <p id="s-summary" style="font-size:13px; color:var(--muted); margin-top:2px;"></p>
-        </div>
-
-        <div class="block">
-          <span class="label">Come si usa</span>
-          <p id="s-how" style="font-size:14px; line-height:1.45;"></p>
-        </div>
-
-        <div class="block">
-          <span class="label">Valutazione</span>
-          <div id="s-items"></div>
-        </div>
-
-        <div class="block score-view">
-          <span class="label">Risultato</span>
-          <div id="score-box">
-            <p style="font-size:13px; color:var(--muted); padding:8px 0;">Compila tutte le voci per vedere il punteggio.</p>
-          </div>
-          <button class="btn-clear" onclick="clearAnswers()">Azzera selezione</button>
-        </div>
-
-        <div class="block">
-          <span class="label">Interpretazione clinica</span>
-          <div id="s-ranges"></div>
-        </div>
-
-        <div style="padding:0 8px;">
-          <span class="label">Fonte</span>
-          <p id="s-source" style="font-size:11px; color:var(--muted);"></p>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <script>
-    var scales = [
-      {
-        id: "gcs",
-        name: "Glasgow Coma Scale (GCS)",
-        summary: "Livello di coscienza e risposta neurologica.",
-        howToUse: "Valuta le 3 aree motoria, verbale e apertura occhi registrando il miglior punteggio.",
-        apparato: "Neurologico",
-        gordon: "Cognitivo - Percettivo",
-        pediatrico: false,
-        items: [
-          {
-            id: "eyes",
-            title: "Apertura occhi",
-            options: [
-              { l: "Spontanea", p: 4 },
-              { l: "Allo stimolo verbale", p: 3 },
-              { l: "Al dolore", p: 2 },
-              { l: "Nessuna", p: 1 }
-            ]
-          },
-          {
-            id: "verb",
-            title: "Risposta verbale",
-            options: [
-              { l: "Orientata e corretta", p: 5 },
-              { l: "Confusa", p: 4 },
-              { l: "Parole inappropriate", p: 3 },
-              { l: "Suoni incomprensibili", p: 2 },
-              { l: "Nessuna", p: 1 }
-            ]
-          },
-          {
-            id: "mot",
-            title: "Risposta motoria",
-            options: [
-              { l: "Obbedisce ai comandi", p: 6 },
-              { l: "Localizza il dolore", p: 5 },
-              { l: "Retrazione al dolore", p: 4 },
-              { l: "Flessione anomala (decorticazione)", p: 3 },
-              { l: "Estensione (decerebrazione)", p: 2 },
-              { l: "Nessuna", p: 1 }
-            ]
-          }
-        ],
-        ranges: [
-          { min: 13, max: 15, m: "Compromissione lieve" },
-          { min: 9, max: 12, m: "Compromissione moderata" },
-          { min: 3, max: 8, m: "Compromissione grave (Coma)" }
-        ],
-        source: "Teasdale G, Jennett B. Lancet 1974; 2:81-84."
-      },
-      {
-        id: "nrs",
-        name: "Numeric Rating Scale (NRS)",
-        summary: "Scala numerica di autovalutazione del dolore da 0 a 10.",
-        howToUse: "Chiedi al paziente di quantificare il dolore percepito da 0 (nessun dolore) a 10 (il massimo dolore immaginabile).",
-        apparato: "Dolore",
-        gordon: "Cognitivo - Percettivo",
-        pediatrico: false,
-        items: [
-          {
-            id: "p_level",
-            title: "Intensità del dolore",
-            options: [
-              { l: "0 - Nessun dolore", p: 0 },
-              { l: "1", p: 1 },
-              { l: "2", p: 2 },
-              { l: "3 - Dolore lieve", p: 3 },
-              { l: "4", p: 4 },
-              { l: "5", p: 5 },
-              { l: "6 - Dolore moderato", p: 6 },
-              { l: "7", p: 7 },
-              { l: "8", p: 8 },
-              { l: "9", p: 9 },
-              { l: "10 - Massimo dolore immaginabile", p: 10 }
-            ]
-          }
-        ],
-        ranges: [
-          { min: 0, max: 0, m: "Nessun dolore" },
-          { min: 1, max: 3, m: "Dolore lieve" },
-          { min: 4, max: 6, m: "Dolore moderato" },
-          { min: 7, max: 10, m: "Dolore severo" }
-        ],
-        source: "Downie WW, et al. Ann Rheum Dis 1978; 37:378-381."
-      },
-      {
-        id: "flacc",
-        name: "Scala FLACC",
-        summary: "Dolore in età pediatrica (2 mesi - 7 anni) o pazienti non collaboranti.",
-        howToUse: "Osserva il bambino per 1-5 minuti e assegna un valore da 0 a 2 per ogni categoria.",
-        apparato: "Dolore",
-        gordon: "Cognitivo - Percettivo",
-        pediatrico: true,
-        items: [
-          {
-            id: "f",
-            title: "Facciale (Face)",
-            options: [
-              { l: "Rilassata, neutra, sorridente", p: 0 },
-              { l: "Occasionale smorfia, fronte corrucciata", p: 1 },
-              { l: "Mento tremante, mascella serrata costante", p: 2 }
-            ]
-          },
-          {
-            id: "l",
-            title: "Gambe (Legs)",
-            options: [
-              { l: "Posizione normale o rilassata", p: 0 },
-              { l: "Irrequiete, tese", p: 1 },
-              { l: "Calci, gambe tese o flesse", p: 2 }
-            ]
-          },
-          {
-            id: "a",
-            title: "Attività (Activity)",
-            options: [
-              { l: "Tranquillo, si muove normalmente", p: 0 },
-              { l: "Si contorce, cambia posizione spesso", p: 1 },
-              { l: "Incurvato, rigido, a scatti", p: 2 }
-            ]
-          },
-          {
+    .label
